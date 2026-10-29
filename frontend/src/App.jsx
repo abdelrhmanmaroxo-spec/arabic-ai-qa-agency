@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react';
 
+// ============================import React, { useState, useEffect } from 'react';
+
 // ============================================================================
-// ARABEVAL QA — ENTERPRISE AI EVALUATION & QUALITY ASSURANCE PLATFORM
-// Production Build v3.0 (English-Only LTR, Advanced Live QA Telemetry Matrix,
-// CV/Resume Upload & Admin Download, Two-Way Support Ticket Tracker + Email Dispatch)
+// ARABEVAL QA – ENTERPRISE AI EVALUATION & QUALITY ASSURANCE PLATFORM
+// Production Build v3.1 (English-Only LTR, Advanced Live QA Telemetry Matrix,
+// Two-Way Support Ticket Tracker, Privacy Protection & Delivery Guarantee)
 // ============================================================================
 
 const INITIAL_BRAND = {
   name: 'ArabEval QA',
   tagline: 'Enterprise Arabic & Multimodal AI Evaluation & Quality Assurance',
   badge: 'AR-EG • Gulf (AR-SA/AE) • Levantine • MSA • Multimodal S2S & FP&A',
-  founder: 'Abdelrhman Essam Ali',
-  founderTitle: 'Founder & Lead AI Quality Architect',
+  founder: 'ArabEval Executive Desk',
+  founderTitle: 'Executive Support & AI Quality Management',
 };
 
 const CERTIFIED_TRACKS = [
@@ -22,7 +24,7 @@ const CERTIFIED_TRACKS = [
     domain: 'Audio & Multimodal',
     dialect: 'AR-EG / AR-SA / AR-AE / Levantine',
     badge: 'High Demand',
-    desc: 'Evaluate native pronunciation, prosody, interruption handling, acoustic naturalness, and regional idiom accuracy in real-time voice models.',
+    desc: 'Evaluate native pronunciation, prosody, interruption handling, acoustic naturalness, and regional idioms in real-time conversational AI models.'
   },
   {
     id: 'financial-modeling-fpa',
@@ -31,2261 +33,1032 @@ const CERTIFIED_TRACKS = [
     domain: 'Finance & STEM',
     dialect: 'Bilingual (EN / Arabic IFRS & Zakat)',
     badge: 'micro1 Certified Track',
-    desc: 'Audit LLM outputs on 3-statement financial modeling, DCF valuation, portfolio risk management, and GCC/Egyptian regulatory compliance.',
+    desc: 'Audit LLM outputs on 3-statement financial modeling, DCF valuation, portfolio risk management, and GCC corporate tax & compliance.'
   },
   {
-    id: 'fullstack-coding-agents',
-    title: 'Full-Stack Software Engineering & AI Agent Evaluation',
-    rate: '$60 – $120 / hr',
-    domain: 'Coding & Agents',
-    dialect: 'Python / Node.js / React / SQL',
-    badge: 'Alignerr Invited Track',
-    desc: 'Review multi-step code generation, tool-use trajectories, REST API security, and SQLite/PostgreSQL schema optimization.',
+    id: 'arabic-rlhf-redteaming',
+    title: 'Arabic RLHF, Cultural Safety & Red-Teaming',
+    rate: '$40 – $90 / hr',
+    domain: 'Safety & Alignment',
+    dialect: 'All Major Arabic Dialects + MSA',
+    badge: 'Core Security',
+    desc: 'Stress-test AI agents for regional compliance, hallucination prevention, toxic prompt resistance, and religious/cultural alignment.'
   },
   {
-    id: 'search-quality-rag',
-    title: 'Arabic Search Quality, RAG Grounding & Factuality Verification',
-    rate: '$30 – $65 / hr',
-    domain: 'Search & Factuality',
-    dialect: 'Multi-Dialect & MSA',
-    badge: 'Core RLHF',
-    desc: 'Detect fabricated citations, temporal hallucinations, and retrieval mismatches across regional Arabic news, legal, and medical corpora.',
-  },
-  {
-    id: 'red-teaming-safety',
-    title: 'Adversarial Red-Teaming, Trust & Cultural Safety Alignment',
-    rate: '$40 – $85 / hr',
-    domain: 'Trust & Safety',
-    dialect: 'MENA Cultural Nuance',
-    badge: 'Zero-Trust',
-    desc: 'Stress-test frontier models against jailbreaks, regional socio-political sensitivities, and dialect-coded toxicity.',
-  },
-  {
-    id: 'sxs-llm-ranking',
-    title: 'Side-by-Side (SxS) Comparative LLM Ranking & Rubric Authoring',
-    rate: '$35 – $70 / hr',
-    domain: 'RLHF & Ranking',
-    dialect: 'Native Arabic + Professional English',
-    badge: 'Golden Set',
-    desc: 'Write Evidence-Backed Comparative Justifications assessing instruction following, formatting constraints, and stylistic fluency.',
-  },
-];
-
-const AUDIT_SAMPLES = [
-  {
-    id: 'audit-s2s',
-    category: 'Arabic S2S Audio & Prosody',
-    auditId: 'AUD-S2S-9081',
-    dialectTag: 'AR-EG (Cairene Banking Support)',
-    severity: 'CRITICAL PROSODY & HALLUCINATION DEFECT',
-    prompt: 'User (Egyptian Voice Input): "يا باشا الفاتورة دي نازل عليها ضريبة مرتين، إزاي أقدم اعتراض دلوقتي؟"',
-    metricsA: { factuality: 28, dialect: 35, instruction: 60, latency: '1,420ms' },
-    metricsB: { factuality: 100, dialect: 98, instruction: 100, latency: '680ms' },
-    modelA:
-      'Responds in stiff Modern Standard Arabic with unnatural robotic pitch on "ضريبة", ignores the Egyptian conversational register, and hallucinates an invalid tax portal URL.',
-    modelB:
-      'Responds naturally in polite Egyptian customer-care tone, validates the duplicate charge concern, and provides the exact verified dispute workflow with natural prosodic cadence.',
-    verdict: 'Model B Strongly Superior (+3) | Inter-Annotator Agreement: 100% (3/3 Senior Audio QA Leads)',
-    jsonPayload: `{
-  "audit_id": "AUD-S2S-9081",
-  "locale": "ar-EG",
-  "winner": "model_b",
-  "preference_score": 3,
-  "defects_flagged": ["FACTUAL_URL_HALLUCINATION", "PROSODY_PITCH_MISMATCH", "REGISTER_SHIFT_MSA"],
-  "verified_by": "ArabEval_Senior_Audio_Lead"
-}`,
-  },
-  {
-    id: 'audit-fpa',
-    category: 'Financial Modeling & FP&A',
-    auditId: 'AUD-FPA-4412',
-    dialectTag: 'EN / Corporate Finance & Valuation',
-    severity: 'FATAL ARITHMETIC & FORMULA REVERSAL',
-    prompt:
-      'Calculate Free Cash Flow to Firm (FCFF) given EBIT = $4.2M, Tax Rate = 22.5%, D&A = $600k, CapEx = $950k, and Increase in NWC = $320k.',
-    metricsA: { factuality: 15, dialect: 95, instruction: 50, latency: '910ms' },
-    metricsB: { factuality: 100, dialect: 100, instruction: 100, latency: '790ms' },
-    modelA:
-      'Adds the $320k Increase in Net Working Capital instead of subtracting it, arriving at an overstated FCFF of $3,225,000 (Cash Flow Sign Reversal Error).',
-    modelB:
-      'Correctly computes NOPAT = $4.2M × (1 - 0.225) = $3.255M, then FCFF = $3.255M + $0.600M - $0.950M - $0.320M = $2,585,000 with full step-by-step reconciliation.',
-    verdict: 'Model B Strongly Superior (+3) | Audited under Zero-Tolerance FP&A Valuation Rubric',
-    jsonPayload: `{
-  "audit_id": "AUD-FPA-4412",
-  "domain": "financial_fpa_valuation",
-  "winner": "model_b",
-  "verified_fcff_usd": 2585000,
-  "model_a_error": "NWC_DELTA_SIGN_REVERSAL (+320k instead of -320k)",
-  "verified_by": "ArabEval_CFA_QA_Lead"
-}`,
-  },
-  {
-    id: 'audit-code',
-    category: 'Full-Stack Security & OWASP',
-    auditId: 'AUD-SEC-7730',
-    dialectTag: 'Node.js / SQLite / Auth Security',
-    severity: 'HIGH-RISK SQL INJECTION & TIMING LEAK',
-    prompt: 'Write a production Node.js endpoint to authenticate a workspace user and verify their password token.',
-    metricsA: { factuality: 40, dialect: 90, instruction: 45, latency: '840ms' },
-    metricsB: { factuality: 100, dialect: 100, instruction: 100, latency: '710ms' },
-    modelA:
-      'Uses raw string interpolation in SQL query (`WHERE email = \'${email}\'`) exposing the database to SQL Injection, and compares plain-text passwords with `===`.',
-    modelB:
-      'Uses parameterized prepared statements (`db.prepare`), hashes passwords with `crypto.scryptSync` + random salt, and enforces constant-time `crypto.timingSafeEqual`.',
-    verdict: 'Model B Strongly Superior (+3) | Model A Rejected by OWASP Security Gate',
-    jsonPayload: `{
-  "audit_id": "AUD-SEC-7730",
-  "domain": "fullstack_security_qa",
-  "winner": "model_b",
-  "cwe_vulnerabilities_caught": ["CWE-89_SQL_INJECTION", "CWE-208_TIMING_ATTACK", "CWE-256_PLAINTEXT_STORAGE"],
-  "verified_by": "ArabEval_Principal_SecEng"
-}`,
-  },
-];
-
-const MCQ_QUESTIONS = [
-  {
-    id: 'q1',
-    question:
-      '1. During a Side-by-Side (SxS) evaluation, Model A writes a fluent, polite Egyptian Arabic response but invents a non-existent Central Bank circular number. Model B gives a slightly dry response with 100% verified facts. How must you rate them?',
-    options: [
-      'Rate Model A slightly better because native dialect fluency is the top priority.',
-      'Penalize Model A heavily for factual hallucination and select Model B as superior, citing the fabricated circular in your justification.',
-      'Rate both Equal since one has better style and the other has better facts.',
-      'Rewrite Model A using ChatGPT to fix the circular number.',
-    ],
-    correct: 1,
-  },
-  {
-    id: 'q2',
-    question:
-      '2. In Speech-to-Speech (S2S) Arabic audio evaluation, which defect is classified as a "Prosody & Supra-segmental Failure" rather than a lexical transcription error?',
-    options: [
-      'The model spells a word with ة instead of ه in the text log.',
-      'The voice model places robotic declarative pitch at the end of an Egyptian interrogative question ("إنت جاي النهاردة؟") making it sound unnatural.',
-      'The user microphone had background fan noise.',
-      'The model translates English to French.',
-    ],
-    correct: 1,
-  },
-  {
-    id: 'q3',
-    question:
-      '3. Under Section 1 & Section 3 of the Master Contractor & NDA Agreement, which action results in immediate termination and forfeiture of accrued fees?',
-    options: [
-      'Taking a 10-minute break between tasks.',
-      'Pasting confidential client prompts into an external LLM (ChatGPT/Claude) or sharing task screenshots on Discord/Telegram.',
-      'Asking a clarification question to the QA Lead via the internal Support Helpdesk.',
-      'Consulting official public documentation for fact-checking.',
-    ],
-    correct: 1,
-  },
-  {
-    id: 'q4',
-    question:
-      '4. When evaluating a Financial Analysis (FP&A) prompt where a model calculates WACC or FCFF, what is your mandatory verification protocol?',
-    options: [
-      'Trust the model if the formatting and markdown tables look clean.',
-      'Independently recompute every intermediate step (NOPAT, NWC delta, discount factor) and verify zero arithmetic or sign-reversal errors.',
-      'Only check the final paragraph summary.',
-      'Skip math prompts.',
-    ],
-    correct: 1,
-  },
-];
-
-const MASTER_AGREEMENT_SECTIONS = [
-  {
-    title: 'PREAMBLE & BINDING ELECTRONIC EXECUTION',
-    body: `PLEASE READ THIS MASTER INDEPENDENT CONTRACTOR, NON-DISCLOSURE & AI DATA INTEGRITY AGREEMENT ("AGREEMENT") CAREFULLY. THIS AGREEMENT CONTAINS EXCLUSIVE BINDING TERMS BETWEEN ARABEVAL QA ("CLIENT" OR "COMPANY") AND YOU ("CONTRACTOR"), INCLUDING A MANDATORY ZERO-AI POLICY, WORK-MADE-FOR-HIRE IP ASSIGNMENT, RECORDED/BIOMETRIC DATA RELEASE, BINDING INDIVIDUAL ARBITRATION (JAMS), AND WAIVER OF JURY TRIALS AND CLASS ACTIONS. BY TYPING YOUR FULL LEGAL NAME AND CLICKING "SIGN & PROCEED" BELOW, YOU CREATE A LEGALLY ENFORCEABLE CONTRACT.`,
-  },
-  {
-    title: '1. SERVICES, STATEMENTS OF WORK (SOW) & ZERO-EXTERNAL-AI INTEGRITY POLICY',
-    body: `1.1 Statements of Work & Task Descriptions: Contractor agrees to perform AI evaluation, red-teaming, audio recording, financial auditing, or software verification services detailed in project rate cards or task descriptions ("Statements of Work" or "Services").
-1.2 Strict Human-Only Execution (Zero-LLM / Zero-Automation Rule): All Services must be performed 100% by Contractor personally. Using ChatGPT, Claude, Gemini, browser extensions, auto-typers, proxy/VPN spoofing, or account sharing to generate justifications or complete assessments is strictly prohibited and constitutes material fraud resulting in immediate termination and forfeiture of unpaid fees.`,
-  },
-  {
-    title: '2. COMPENSATION, RATE CARDS & DISPUTE RESOLUTION WINDOW',
-    body: `2.1 Fees: As sole compensation for verified Services meeting Client's 99%+ quality rubric, Client will pay Contractor according to the applicable SOW rate card.
-2.2 Audit & Quality Holdbacks: Submissions flagged by anti-cheat telemetry (clipboard paste injection, anomalous typing cadence, or rubric fabrication) are subject to QA Lead audit and non-payment.`,
-  },
-  {
-    title: '3. STRICT CONFIDENTIALITY & NON-DISCLOSURE (NDA)',
-    body: `3.1 Definition & Economic Value: All prompts, unreleased model outputs, rubric guidelines, client identities (including frontier AI labs), evaluation interfaces, and rate cards constitute strictly non-public "Confidential Information" (and "Proprietary Information").
-3.2 Non-Use, Non-Disclosure & Third-Party Protection: Contractor shall hold all Client and Third-Party Partner Confidential Information in strictest confidence during and perpetually after this Agreement. Posting screenshots, task names, or project details on Discord, Reddit, LinkedIn, Telegram, or GitHub is strictly prohibited. Upon termination or request, Contractor shall immediately purge and destroy all local copies.`,
-  },
-  {
-    title: '4. INDEPENDENT CONTRACTOR RELATIONSHIP, TAXES & INDEMNIFICATION',
-    body: `4.1 Independent Contractor: Contractor is an independent service provider and not an employee, agent, or partner of Client. Contractor is not entitled to employee benefits, unemployment insurance, pension, or statutory severance.
-4.2 Taxes & Indemnification: Contractor is solely responsible for all local and national income taxes, social insurance, and self-employment filings, and agrees to indemnify and hold Client harmless from any breach of this Agreement or tax claims.`,
-  },
-  {
-    title: '5. WORK-MADE-FOR-HIRE OWNERSHIP, IP ASSIGNMENT, MORAL RIGHTS & ATTORNEY-IN-FACT',
-    body: `5.1 Exclusive Ownership & Assignment: All Contractor Work Product, annotations, rubrics, code, audio recordings, and inventions (including sui generis database rights) are "Work Made for Hire" and the sole, exclusive property of Client. Contractor irrevocably assigns all worldwide Intellectual Property rights therein to Client.
-5.2 Moral Rights Waiver & Power of Attorney: Contractor irrevocably waives all "Moral Rights" (droit moral) worldwide and irrevocably appoints Client as Contractor's Attorney-in-Fact coupled with an interest to execute any documents required to perfect such IP rights.`,
-  },
-  {
-    title: '6. GLOBAL DATA PROTECTION (GDPR, CCPA, KSA PDPL & EGYPT LAW 151/2020) & PLATFORM MONITORING',
-    body: `6.1 Data Privacy Compliance: Contractor shall process any Personal Data strictly in compliance with EU GDPR (2016/679), California CCPA, Saudi PDPL, and Egyptian Data Protection Law No. 151 of 2020.
-6.2 No Expectation of Privacy on Workspace Systems: Contractor acknowledges that Client monitors workspace sessions, keystroke cadence, tab-focus switches, clipboard events, and platform communications without notice to enforce quality and security.`,
-  },
-  {
-    title: '7. WARRANTIES, NO FOUNDATIONAL LAB CONFLICT & 1-YEAR NON-SOLICITATION',
-    body: `7.1 Age & Originality: Contractor warrants they are at least 18 years old, all work is 100% original, and Contractor has no conflicting employment with any competing foundational AI model laboratory that would prohibit performing these Services.
-7.2 Non-Solicitation: During the term of this Agreement and for one (1) year thereafter, Contractor shall not directly or indirectly solicit Client's enterprise customers, employees, or other vetted evaluators.`,
-  },
-  {
-    title: '8. TERM, IMMEDIATE TERMINATION FOR BREACH & SURVIVAL',
-    body: `Client may terminate this Agreement or any SOW immediately without liability for further payment if Contractor breaches confidentiality, violates the Zero-AI Policy, or fails quality calibration. Either party may terminate for convenience upon five (5) business days' written notice. Sections 2 through 12 survive termination perpetually.`,
-  },
-  {
-    title: '9. LIMITATION OF LIABILITY & EQUITABLE INJUNCTIVE RELIEF',
-    body: `IN NO EVENT SHALL CLIENT BE LIABLE FOR ANY INDIRECT, SPECIAL, INCIDENTAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES. Client's maximum aggregate liability shall not exceed fees paid to Contractor in the preceding twelve (12) months. Any breach of Confidentiality or IP Assignment causes irreparable harm entitling Client to immediate injunctive relief without bond.`,
-  },
-  {
-    title: '10. PROJECT-SPECIFIC TERMS: RECORDED VOICE, BIOMETRIC & DERIVED AI TRAINING DATA RELEASE',
-    body: `To the extent Services involve audio, voice, speech-to-speech (S2S), video, or behavioral interaction ("Recorded Data"), Contractor expressly authorizes Client and its third-party AI laboratory Partners worldwide to record, reproduce, modify, synthesize, and perpetually exploit such Recorded Data and any machine-generated "Derived Data" to train, fine-tune, evaluate, and commercialize artificial intelligence models without additional compensation.`,
-  },
-  {
-    title: '11. BINDING ARBITRATION (JAMS / FAA), CLASS ACTION WAIVER & JURY WAIVER',
-    body: `Any dispute arising out of or relating to this Agreement shall be resolved exclusively by final and binding arbitration administered by JAMS pursuant to the Federal Arbitration Act (9 U.S.C. § 1 et seq.) and JAMS Rules. CONTRACTOR EXPRESSLY WAIVES ANY RIGHT TO A TRIAL BY JURY OR TO PARTICIPATE AS A PLAINTIFF OR CLASS MEMBER IN ANY CLASS, COLLECTIVE, OR REPRESENTATIVE ACTION.`,
-  },
-  {
-    title: '12. GENERAL PROVISIONS & FEDERAL TRADE SECRET IMMUNITY NOTICE (18 U.S.C. § 1833(b))',
-    body: `This Agreement may not be assigned or subcontracted by Contractor. Pursuant to 18 U.S.C. § 1833(b), an individual shall not be held criminally or civilly liable under any trade secret law for the disclosure of a trade secret made in confidence to a government official or attorney solely for reporting or investigating a suspected violation of law, or in a complaint filed under seal.`,
-  },
-];
-
-const DEFAULT_USERS = [
-  {
-    id: 'usr-owner-1',
-    name: 'Abdelrhman Essam Ali',
-    email: 'abdelrhman.maroxo@gmail.com',
-    role: 'owner',
-    tokenHash: 'ArabEval#Owner2026!',
-    status: 'Active Master Owner',
-  },
-  {
-    id: 'usr-qa-1',
-    name: 'Salma Mansour (Lead QA Auditor)',
-    email: 'salma.qa@arabeval.qa',
-    role: 'qa_lead',
-    tokenHash: 'QA#Lead2026!',
-    status: 'Active QA Lead',
-  },
-  {
-    id: 'usr-client-1',
-    name: 'Dr. Tariq Al-Dosari (Khaleej FinTech AI)',
-    email: 'tariq@khaleejfintech.sa',
-    role: 'client',
-    tokenHash: 'Client#PoC2026!',
-    status: 'Enterprise PoC Active',
-  },
-];
-
-const DEFAULT_APPLICANTS = [
-  {
-    id: 'EV-9041',
-    fullName: 'Nourhan El-Sayed',
-    email: 'nourhan.voice@gmail.com',
-    phone: '+20 109 283 7465',
-    linkedin: 'https://linkedin.com/in/nourhan-voice-qa',
-    dialect: 'Egyptian (AR-EG)',
-    track: 'Arabic Speech-to-Speech (S2S) & Dialect Audio QA',
-    experience: '3 years S2S voice evaluation & phonetic transcription',
-    cvFileName: 'Nourhan_ElSayed_AudioQA_CV.pdf',
-    cvFileSize: '248 KB',
-    cvDataUrl: '',
-    ndaSignedAs: 'Nourhan El-Sayed',
-    ndaTimestamp: '2026-10-29 21:14 UTC',
-    mcqScore: '100% (4/4)',
-    sandboxScore: '96/100',
-    pasteAttempts: 0,
-    tabSwitches: 0,
-    status: 'Approved & Certified',
-    justification:
-      'Model B is strongly preferred (+3). Model A fabricates Article 88 of the Egyptian Central Bank law and exhibits unnatural prosody on interrogative clauses, whereas Model B maintains 100% factual grounding and native Cairene phrasing.',
-  },
-  {
-    id: 'EV-9042',
-    fullName: 'Faisal Al-Harbi',
-    email: 'faisal.fpa@outlook.sa',
-    phone: '+966 55 412 3987',
-    linkedin: 'https://linkedin.com/in/faisal-fpa-cfa',
-    dialect: 'Gulf (AR-SA / Najdi & Hejazi)',
-    track: 'Financial Modeling, FP&A & Arabic FinTech AI Evaluation',
-    experience: 'CFA Level II, 4 years FP&A & IFRS valuation auditing',
-    cvFileName: 'Faisal_AlHarbi_CFA_Resume.pdf',
-    cvFileSize: '312 KB',
-    cvDataUrl: '',
-    ndaSignedAs: 'Faisal Al-Harbi',
-    ndaTimestamp: '2026-10-29 22:05 UTC',
-    mcqScore: '100% (4/4)',
-    sandboxScore: '98/100',
-    pasteAttempts: 0,
-    tabSwitches: 1,
-    status: 'Pending Review',
-    justification:
-      'Model A fails the FCFF calculation by adding the $320k increase in Net Working Capital instead of subtracting it. Model B accurately computes NOPAT ($3.255M) and arrives at the verified FCFF of $2,585,000.',
-  },
-];
-
-const DEFAULT_TICKETS = [
-  {
-    id: 'TKT-701',
-    senderName: 'Dr. Tariq Al-Dosari',
-    senderEmail: 'tariq@khaleejfintech.sa',
-    role: 'client',
-    subject: 'Add Hijazi Audio Dialect Subset to Batch #2',
-    message: 'Can we allocate 15 of the 50 PoC prompts specifically to Hijazi S2S banking customer support calls?',
-    reply: 'Confirmed! Our Saudi S2S QA Lead has allocated 15 Hijazi acoustic stress prompts to Batch #2.',
-    repliedBy: 'Abdelrhman Essam Ali (Owner)',
-    repliedAt: '2026-10-29 23:10 UTC',
-    status: 'Resolved',
-  },
-];
-
-function loadStorage(key, fallback) {
-  try {
-    const raw = localStorage.getItem(key);
-    return raw ? JSON.parse(raw) : fallback;
-  } catch {
-    return fallback;
+    id: 'code-dev-benchmark',
+    title: 'Full-Stack Code QA & Arabic Localization Benchmarks',
+    rate: '$45 – $95 / hr',
+    domain: 'Software & Code',
+    dialect: 'English / Arabic UI-UX Code',
+    badge: 'Technical',
+    desc: 'Verify code generation accuracy, RTL UI formatting, Arabic tokenization handling, and SQL/Python script generation for enterprise software.'
   }
-}
+];
+
+const INITIAL_TICKETS = [
+  {
+    id: 'TKT-8021',
+    subject: 'Audio Disruption on AR-EG Interruption Benchmark',
+    email: 'qa.lead@dubai-ai-labs.ae',
+    category: 'S2S Audio QA',
+    priority: 'High',
+    status: 'Resolved & Replied',
+    createdAt: '2026-10-28 14:20',
+    description: 'Noticeable latency delay (approx 650ms) during speech interruption test on Egyptian dialect dataset.',
+    reply: 'Our S2S evaluation team re-calibrated the audio buffer window and optimized the VAD threshold. Latency is now reduced to 180ms.',
+    repliedAt: '2026-10-29 09:15',
+    repliedBy: 'ArabEval Executive Desk',
+    viewedByComplainantAt: '2026-10-29 11:40',
+    confirmedByComplainantAt: '2026-10-29 12:00',
+    followUpMessage: 'Thank you! The latency issue is fully resolved on our side now.'
+  },
+  {
+    id: 'TKT-8022',
+    subject: 'Inquiry regarding GCC Zakat Calculation Evaluation Track',
+    email: 'cfo@saudi-fintech-hub.sa',
+    category: 'Financial Modeling',
+    priority: 'Medium',
+    status: 'Open',
+    createdAt: '2026-10-30 08:10',
+    description: 'We would like to request custom RLHF dataset validation for Saudi Zakat & Tax authority guidelines.',
+    reply: '',
+    repliedAt: '',
+    repliedBy: '',
+    viewedByComplainantAt: null,
+    confirmedByComplainantAt: null,
+    followUpMessage: ''
+  }
+];
 
 export default function App() {
-  const [brand, setBrand] = useState(() => loadStorage('ae_brand_v3', INITIAL_BRAND));
-  const [activePage, setActivePage] = useState('home'); // home | apply | assessment | client-portal | admin
-  const [adminTab, setAdminTab] = useState('applicants');
-  const [selectedAudit, setSelectedAudit] = useState(AUDIT_SAMPLES[0]);
-  const [showJsonPayload, setShowJsonPayload] = useState(false);
-
-  // Zero-Trust Auth State
-  const [currentUser, setCurrentUser] = useState(null);
+  // Navigation & Modal States
+  const [activeTab, setActiveTab] = useState('tracks');
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
-  const [supportModalTab, setSupportModalTab] = useState('submit'); // submit | track
+  const [supportTab, setSupportTab] = useState('submit'); // 'submit' | 'track'
+
+  // Admin Auth State
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(() => {
+    return localStorage.getItem('arabEval_isAdmin') === 'true';
+  });
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // Persistent Databases (localStorage synced)
-  const [users, setUsers] = useState(() => loadStorage('ae_users_v3', DEFAULT_USERS));
-  const [applicants, setApplicants] = useState(() => loadStorage('ae_applicants_v3', DEFAULT_APPLICANTS));
-  const [clientLeads, setClientLeads] = useState(() =>
-    loadStorage('ae_leads_v3', [
-      {
-        id: 'POC-301',
-        company: 'Khaleej FinTech AI Lab (Riyadh)',
-        contact: 'Dr. Tariq Al-Dosari',
-        email: 'tariq@khaleejfintech.sa',
-        useCase: '50-Prompt Arabic S2S Voice + Financial FP&A Hallucination Audit',
-        volume: '15,000 prompts / month',
-        status: 'In Calibration (38/50 Completed)',
-        submittedAt: '2026-10-29',
-      },
-    ])
-  );
-  const [tickets, setTickets] = useState(() => loadStorage('ae_tickets_v3', DEFAULT_TICKETS));
-
-  // Sync changes to localStorage so Owner replies & CV uploads persist
-  useEffect(() => {
-    try {
-      localStorage.setItem('ae_brand_v3', JSON.stringify(brand));
-      localStorage.setItem('ae_users_v3', JSON.stringify(users));
-      localStorage.setItem('ae_applicants_v3', JSON.stringify(applicants));
-      localStorage.setItem('ae_leads_v3', JSON.stringify(clientLeads));
-      localStorage.setItem('ae_tickets_v3', JSON.stringify(tickets));
-    } catch {
-      // Ignore storage quota warnings
+  // Tickets State
+  const [tickets, setTickets] = useState(() => {
+    const saved = localStorage.getItem('arabEval_tickets');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { return INITIAL_TICKETS; }
     }
-  }, [brand, users, applicants, clientLeads, tickets]);
-
-  // Application Form State (/apply) with CV Upload
-  const [applyForm, setApplyForm] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    linkedin: '',
-    dialect: 'Egyptian (AR-EG — Cairene / Alexandrian / Saidi)',
-    track: CERTIFIED_TRACKS[0].title,
-    experience: '',
-    cvFileName: '',
-    cvFileSize: '',
-    cvDataUrl: '',
-    ndaSignature: '',
-    ndaChecked1: false,
-    ndaChecked2: false,
-    ndaChecked3: false,
+    return INITIAL_TICKETS;
   });
-  const [applyError, setApplyError] = useState('');
 
-  // Assessment Sandbox State (/assessment)
-  const [mcqAnswers, setMcqAnswers] = useState({});
-  const [mcqSubmitted, setMcqSubmitted] = useState(false);
-  const [mcqPassed, setMcqPassed] = useState(false);
-  const [sandboxChoice, setSandboxChoice] = useState('');
-  const [sandboxJustification, setSandboxJustification] = useState('');
-  const [pasteCount, setPasteCount] = useState(0);
-  const [tabSwitchCount, setTabSwitchCount] = useState(0);
-  const [keystrokeCount, setKeystrokeCount] = useState(0);
-  const [assessmentDone, setAssessmentDone] = useState(false);
-
-  // B2B PoC Form State
-  const [pocForm, setPocForm] = useState({
-    company: '',
-    contact: '',
-    email: '',
-    useCase: CERTIFIED_TRACKS[0].title,
-    volume: '50-Prompt Free Diagnostic PoC',
-  });
-  const [pocSuccess, setPocSuccess] = useState(false);
-
-  // Support Helpdesk Modal State (Submit + Track Replies)
-  const [supportForm, setSupportForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [lastCreatedTicketId, setLastCreatedTicketId] = useState('');
-  const [ticketLookupQuery, setTicketLookupQuery] = useState('');
-  const [adminReplyDrafts, setAdminReplyDrafts] = useState({});
-
-  // New Role Creation in Admin
-  const [newUserForm, setNewUserForm] = useState({ name: '', email: '', role: 'qa_lead', tokenHash: '' });
-
-  // Track tab-focus changes during Stage 3 Sandbox
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.hidden && activePage === 'assessment' && mcqPassed && !assessmentDone) {
-        setTabSwitchCount((prev) => prev + 1);
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-    return () => document.removeEventListener('visibilitychange', handleVisibility);
-  }, [activePage, mcqPassed, assessmentDone]);
-
-  // Handle CV / Resume File Upload (Converts to Base64 Data URL for Admin Preview/Download)
-  const handleCvUpload = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    if (file.size > 4 * 1024 * 1024) {
-      setApplyError('CV file size must be under 4 MB (PDF, DOC, or DOCX).');
-      return;
+  // User Saved Ticket IDs in LocalStorage
+  const [userTicketIds, setUserTicketIds] = useState(() => {
+    const saved = localStorage.getItem('arabEval_userTicketIds');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { return ['TKT-8021']; }
     }
-    const sizeKB = `${Math.max(1, Math.round(file.size / 1024))} KB`;
-    const reader = new FileReader();
-    reader.onload = () => {
-      setApplyForm((prev) => ({
-        ...prev,
-        cvFileName: file.name,
-        cvFileSize: sizeKB,
-        cvDataUrl: typeof reader.result === 'string' ? reader.result : '',
-      }));
-      setApplyError('');
-    };
-    reader.readAsDataURL(file);
-  };
+    return ['TKT-8021'];
+  });
 
-  // Zero-Trust Authentication Handler
-  const handleWorkspaceSignIn = (e) => {
+  // Ticket Submission Form
+  const [newSubject, setNewSubject] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [newCategory, setNewCategory] = useState('S2S Audio QA');
+  const [newPriority, setNewPriority] = useState('Medium');
+  const [newDesc, setNewDesc] = useState('');
+  const [submitSuccess, setSubmitSuccess] = useState('');
+
+  // Public Ticket Lookup
+  const [searchTicketId, setSearchTicketId] = useState('');
+  const [trackedTicket, setTrackedTicket] = useState(null);
+  const [lookupError, setLookupError] = useState('');
+  const [userFollowUpInput, setUserFollowUpInput] = useState('');
+
+  // Admin Helpdesk Search & Filter
+  const [adminSearch, setAdminSearch] = useState('');
+  const [adminFilterStatus, setAdminFilterStatus] = useState('All');
+  const [selectedTicketIdForReply, setSelectedTicketIdForReply] = useState(null);
+  const [adminReplyText, setAdminReplyText] = useState('');
+
+  // Save tickets & userTicketIds to localStorage
+  useEffect(() => {
+    localStorage.setItem('arabEval_tickets', JSON.stringify(tickets));
+  }, [tickets]);
+
+  useEffect(() => {
+    localStorage.setItem('arabEval_userTicketIds', JSON.stringify(userTicketIds));
+  }, [userTicketIds]);
+
+  // Sync tracked ticket if tickets state changes
+  useEffect(() => {
+    if (trackedTicket) {
+      const updated = tickets.find(t => t.id === trackedTicket.id);
+      if (updated) setTrackedTicket(updated);
+    }
+  }, [tickets]);
+
+  // Handle Admin Login
+  const handleAdminLogin = (e) => {
     e.preventDefault();
-    setLoginError('');
-    const normalizedEmail = loginEmail.trim().toLowerCase();
-    const trimmedPass = loginPassword.trim();
-
-    const matchedUser = users.find(
-      (u) => u.email.toLowerCase() === normalizedEmail && u.tokenHash === trimmedPass
-    );
-
-    if (!matchedUser) {
-      setLoginError('Invalid credentials or unauthorized security token. Access denied.');
-      return;
-    }
-
-    setCurrentUser(matchedUser);
-    setShowSignInModal(false);
-    setLoginEmail('');
-    setLoginPassword('');
-
-    if (matchedUser.role === 'owner' || matchedUser.role === 'qa_lead') {
-      setActivePage('admin');
-    } else if (matchedUser.role === 'client') {
-      setActivePage('client-portal');
+    if (loginEmail === 'abdelrhman.maroxo@gmail.com' && loginPassword === 'ArabEval#Owner2026!') {
+      setIsAdminLoggedIn(true);
+      localStorage.setItem('arabEval_isAdmin', 'true');
+      setShowSignInModal(false);
+      setLoginError('');
+      setActiveTab('admin');
     } else {
-      setActivePage('apply');
+      setLoginError('Invalid credentials. Access restricted to Master Admin.');
     }
   };
 
-  // Submit Stage 1: Legal Agreement, CV & Application
-  const handleApplySubmit = (e) => {
-    e.preventDefault();
-    setApplyError('');
-    if (!applyForm.fullName || !applyForm.email || !applyForm.phone) {
-      setApplyError('Please complete all mandatory personal and contact fields.');
-      return;
-    }
-    if (!applyForm.cvFileName) {
-      setApplyError('Please upload your CV / Resume (PDF or DOCX) before proceeding.');
-      return;
-    }
-    if (!applyForm.ndaChecked1 || !applyForm.ndaChecked2 || !applyForm.ndaChecked3) {
-      setApplyError('You must check all three legal compliance boxes (NDA, Zero-AI Policy, IP & Arbitration).');
-      return;
-    }
-    if (applyForm.ndaSignature.trim().toLowerCase() !== applyForm.fullName.trim().toLowerCase()) {
-      setApplyError('Your electronic signature must exactly match your Full Legal Name.');
-      return;
-    }
-    setActivePage('assessment');
+  const handleAdminLogout = () => {
+    setIsAdminLoggedIn(false);
+    localStorage.removeItem('arabEval_isAdmin');
+    setActiveTab('tracks');
   };
 
-  // Submit Stage 2: Automated MCQ Gate
-  const handleMcqSubmit = (e) => {
+  // Submit Ticket
+  const handleSubmitTicket = (e) => {
     e.preventDefault();
-    let score = 0;
-    MCQ_QUESTIONS.forEach((q) => {
-      if (mcqAnswers[q.id] === q.correct) score += 1;
-    });
-    setMcqSubmitted(true);
-    setMcqPassed(score >= 3);
-  };
+    if (!newSubject || !newEmail || !newDesc) return;
 
-  // Submit Stage 3: Anti-Cheat Practical Sandbox
-  const handleSandboxSubmit = (e) => {
-    e.preventDefault();
-    if (!sandboxChoice || sandboxJustification.trim().length < 80) {
-      alert('Please select a preference rating and write at least 80 characters of evidence-backed justification.');
-      return;
-    }
-    const newApplicant = {
-      id: `EV-${Math.floor(1000 + Math.random() * 9000)}`,
-      fullName: applyForm.fullName || 'Verified Candidate',
-      email: applyForm.email || 'candidate@evaluator.org',
-      phone: applyForm.phone || 'N/A',
-      linkedin: applyForm.linkedin || '',
-      dialect: applyForm.dialect,
-      track: applyForm.track,
-      experience: applyForm.experience,
-      cvFileName: applyForm.cvFileName || 'Candidate_Resume.pdf',
-      cvFileSize: applyForm.cvFileSize || '180 KB',
-      cvDataUrl: applyForm.cvDataUrl || '',
-      ndaSignedAs: applyForm.ndaSignature,
-      ndaTimestamp: new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC',
-      mcqScore: '100% (Passed)',
-      sandboxScore: pasteCount === 0 ? '96/100 (Clean Telemetry)' : '62/100 (Flagged Paste)',
-      pasteAttempts: pasteCount,
-      tabSwitches: tabSwitchCount,
-      status: pasteCount > 0 ? 'Flagged (Anti-Cheat)' : 'Pending Review',
-      justification: `[Selected: ${sandboxChoice}] ${sandboxJustification}`,
-    };
-    setApplicants([newApplicant, ...applicants]);
-    setAssessmentDone(true);
-  };
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const generatedId = `TKT-${randomNum}`;
+    const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
 
-  // Submit B2B PoC Request
-  const handlePocSubmit = (e) => {
-    e.preventDefault();
-    if (!pocForm.company || !pocForm.email) return;
-    setClientLeads([
-      {
-        id: `POC-${Math.floor(100 + Math.random() * 900)}`,
-        company: pocForm.company,
-        contact: pocForm.contact,
-        email: pocForm.email,
-        useCase: pocForm.useCase,
-        volume: pocForm.volume,
-        status: 'New PoC Request (Awaiting Scoping)',
-        submittedAt: new Date().toISOString().slice(0, 10),
-      },
-      ...clientLeads,
-    ]);
-    setPocSuccess(true);
-  };
-
-  // Submit Support Ticket (Saves & returns Tracking ID)
-  const handleSupportSubmit = (e) => {
-    e.preventDefault();
-    if (!supportForm.email || !supportForm.message) return;
-    const newId = `TKT-${Math.floor(1000 + Math.random() * 9000)}`;
-    const newTicket = {
-      id: newId,
-      senderName: supportForm.name || 'Workspace User',
-      senderEmail: supportForm.email.trim(),
-      role: currentUser?.role || 'visitor',
-      subject: supportForm.subject || 'General QA Inquiry',
-      message: supportForm.message,
+    const newTkt = {
+      id: generatedId,
+      subject: newSubject,
+      email: newEmail,
+      category: newCategory,
+      priority: newPriority,
+      status: 'Open',
+      createdAt: now,
+      description: newDesc,
       reply: '',
-      repliedBy: '',
       repliedAt: '',
-      status: 'Open (Awaiting QA Lead)',
+      repliedBy: '',
+      viewedByComplainantAt: null,
+      confirmedByComplainantAt: null,
+      followUpMessage: ''
     };
-    setTickets([newTicket, ...tickets]);
-    setLastCreatedTicketId(newId);
-    setTicketLookupQuery(supportForm.email.trim());
-    setSupportForm({ name: '', email: '', subject: '', message: '' });
+
+    setTickets(prev => [newTkt, ...prev]);
+    setUserTicketIds(prev => [generatedId, ...prev.filter(id => id !== generatedId)]);
+    setSubmitSuccess(`Ticket successfully submitted! Your Ticket ID is: ${generatedId}`);
+    setNewSubject('');
+    setNewEmail('');
+    setNewDesc('');
   };
 
-  // Save Official Admin/Support Reply & Notify User
-  const handleSaveTicketReply = (ticketId) => {
-    const draft = adminReplyDrafts[ticketId];
-    if (!draft || !draft.trim()) return;
-    const responder = currentUser ? `${currentUser.name} (${currentUser.role.toUpperCase()})` : 'Owner / QA Support';
-    const timestamp = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
-    setTickets(
-      tickets.map((t) =>
-        t.id === ticketId
-          ? {
-              ...t,
-              reply: draft.trim(),
-              repliedBy: responder,
-              repliedAt: timestamp,
-              status: 'Resolved & Replied',
-            }
-          : t
-      )
-    );
+  // Public Search Ticket & Auto Mark viewedByComplainantAt
+  const handleSearchTicket = (e, targetId = null) => {
+    if (e) e.preventDefault();
+    const idToSearch = (targetId || searchTicketId).trim().toUpperCase();
+    if (!idToSearch) return;
+
+    const found = tickets.find(t => t.id.toUpperCase() === idToSearch);
+    if (found) {
+      setLookupError('');
+      const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
+      
+      // Auto mark viewedByComplainantAt if replied and not viewed yet
+      if (found.reply && !found.viewedByComplainantAt) {
+        setTickets(prev => prev.map(t => {
+          if (t.id === found.id) {
+            return { ...t, viewedByComplainantAt: now };
+          }
+          return t;
+        }));
+      }
+      setTrackedTicket(found);
+    } else {
+      setTrackedTicket(null);
+      setLookupError(`No ticket found matching ID: ${idToSearch}`);
+    }
   };
 
-  // Filter tickets for the "Track My Ticket" tab
-  const matchedLookupTickets = tickets.filter((t) => {
-    const q = ticketLookupQuery.trim().toLowerCase();
-    if (!q) return false;
-    return t.id.toLowerCase() === q || t.senderEmail.toLowerCase() === q;
+  // Confirm Receipt by Complainant
+  const handleConfirmReceipt = (ticketId) => {
+    const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
+    setTickets(prev => prev.map(t => {
+      if (t.id === ticketId) {
+        return { ...t, confirmedByComplainantAt: now };
+      }
+      return t;
+    }));
+  };
+
+  // Submit Complainant Follow-up
+  const handleAddFollowUp = (ticketId) => {
+    if (!userFollowUpInput.trim()) return;
+    setTickets(prev => prev.map(t => {
+      if (t.id === ticketId) {
+        return { ...t, followUpMessage: userFollowUpInput.trim() };
+      }
+      return t;
+    }));
+    setUserFollowUpInput('');
+  };
+
+  // Admin Publish Reply
+  const handleAdminPublishReply = (ticketId) => {
+    if (!adminReplyText.trim()) return;
+    const now = new Date().toISOString().replace('T', ' ').substring(0, 16);
+
+    setTickets(prev => prev.map(t => {
+      if (t.id === ticketId) {
+        return {
+          ...t,
+          reply: adminReplyText,
+          repliedAt: now,
+          repliedBy: 'ArabEval Executive Desk',
+          status: 'Resolved & Replied'
+        };
+      }
+      return t;
+    }));
+
+    setSelectedTicketIdForReply(null);
+    setAdminReplyText('');
+  };
+
+  // Delete Ticket (Admin)
+  const handleDeleteTicket = (ticketId) => {
+    if (window.confirm(`Are you sure you want to permanently delete ticket ${ticketId}?`)) {
+      setTickets(prev => prev.filter(t => t.id !== ticketId));
+      setUserTicketIds(prev => prev.filter(id => id !== ticketId));
+      if (trackedTicket && trackedTicket.id === ticketId) {
+        setTrackedTicket(null);
+      }
+    }
+  };
+
+  // Admin Verify in Public Tracker
+  const handleAdminVerifyInTracker = (ticketId) => {
+    setSearchTicketId(ticketId);
+    setShowSupportModal(true);
+    setSupportTab('track');
+    handleSearchTicket(null, ticketId);
+  };
+
+  // Filtered Tickets for Admin Console
+  const filteredAdminTickets = tickets.filter(t => {
+    const matchesSearch =
+      t.id.toLowerCase().includes(adminSearch.toLowerCase()) ||
+      t.email.toLowerCase().includes(adminSearch.toLowerCase()) ||
+      t.subject.toLowerCase().includes(adminSearch.toLowerCase());
+
+    if (adminFilterStatus === 'All') return matchesSearch;
+    if (adminFilterStatus === 'Open') return matchesSearch && t.status === 'Open';
+    if (adminFilterStatus === 'Resolved & Replied') return matchesSearch && t.status === 'Resolved & Replied';
+    return matchesSearch;
   });
 
   return (
-    <div dir="ltr" className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500 selection:text-slate-950">
-      {/* OWNER / QA LEAD MASTER CONTROL BAR (ONLY VISIBLE AFTER AUTHENTICATION) */}
-      {currentUser && (
-        <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border-b border-emerald-500/40 px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="px-2 py-0.5 rounded bg-emerald-500 text-slate-950 font-bold uppercase">
-              {currentUser.role.toUpperCase()} SESSION
-            </span>
-            <span className="text-emerald-200 font-medium">{currentUser.name}</span>
-            <span className="text-slate-400">({currentUser.email})</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <button onClick={() => setActivePage('home')} className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700">
-              1. B2B Home
-            </button>
-            <button onClick={() => setActivePage('apply')} className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700">
-              2. Legal NDA & CV Apply
-            </button>
-            <button onClick={() => setActivePage('assessment')} className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700">
-              3. Anti-Cheat Sandbox
-            </button>
-            <button onClick={() => setActivePage('client-portal')} className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700">
-              4. Client Portal
-            </button>
-            {(currentUser.role === 'owner' || currentUser.role === 'qa_lead') && (
-              <button
-                onClick={() => setActivePage('admin')}
-                className="px-3 py-1 rounded bg-amber-400 text-slate-950 font-bold hover:bg-amber-300"
-              >
-                5. Master Admin Console
-              </button>
-            )}
-            <button
-              onClick={() => {
-                setCurrentUser(null);
-                setActivePage('home');
-              }}
-              className="px-2.5 py-1 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 hover:bg-rose-500/30"
-            >
-              Sign Out
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* TOP NAVIGATION BAR (100% ENGLISH LTR ENTERPRISE HEADER) */}
-      <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/90 border-b border-slate-800/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
-          <div onClick={() => setActivePage('home')} className="flex items-center gap-3 cursor-pointer group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-emerald-500/20">
-              QA
+    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased flex flex-col selection:bg-cyan-500 selection:text-white">
+      {/* HEADER / NAVIGATION BAR */}
+      <header className="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setActiveTab('tracks')}>
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-lg shadow-lg shadow-cyan-500/20">
+              AE
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-extrabold text-lg tracking-tight text-white group-hover:text-emerald-400 transition">
-                  {brand.name}
-                </span>
-                <span className="hidden sm:inline-block text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                  {brand.badge}
-                </span>
-              </div>
-              <p className="text-xs text-slate-400">{brand.tagline}</p>
+              <span className="text-xl font-bold tracking-tight text-white">{INITIAL_BRAND.name}</span>
+              <span className="hidden md:inline-block ml-2 px-2 py-0.5 text-xs font-semibold bg-cyan-950 text-cyan-400 border border-cyan-800/50 rounded-full">
+                v3.1 Production
+              </span>
             </div>
           </div>
 
-          <nav className="hidden lg:flex items-center gap-6 text-sm text-slate-300">
-            <button onClick={() => setActivePage('home')} className="hover:text-emerald-400 transition">
-              Enterprise Solutions
-            </button>
+          <nav className="flex items-center space-x-2 sm:space-x-4">
             <button
-              onClick={() => {
-                setActivePage('home');
-                setTimeout(() => document.getElementById('tracks-section')?.scrollIntoView({ behavior: 'smooth' }), 50);
-              }}
-              className="hover:text-emerald-400 transition"
+              onClick={() => setActiveTab('tracks')}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                activeTab === 'tracks' ? 'bg-slate-800 text-cyan-400 border border-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+              }`}
             >
-              Certified Tracks (6)
+              Evaluation Tracks
             </button>
-            <button onClick={() => setActivePage('apply')} className="hover:text-emerald-400 transition">
-              Evaluator Portal & CV
-            </button>
-            <button
-              onClick={() => {
-                setSupportModalTab('submit');
-                setShowSupportModal(true);
-              }}
-              className="hover:text-emerald-400 transition flex items-center gap-1.5"
-            >
-              <span>Support & Ticket Tracker</span>
-              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">
-                Live
-              </span>
-            </button>
-          </nav>
 
-          <div className="flex items-center gap-2.5">
-            {!currentUser ? (
-              <button
-                onClick={() => {
-                  setLoginEmail('');
-                  setLoginPassword('');
-                  setLoginError('');
-                  setShowSignInModal(true);
-                }}
-                className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"
-              >
-                <span>🔒</span> Workspace Sign-In
-              </button>
+            <button
+              onClick={() => setActiveTab('telemetry')}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                activeTab === 'telemetry' ? 'bg-slate-800 text-cyan-400 border border-slate-700' : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+              }`}
+            >
+              Live Telemetry
+            </button>
+
+            <button
+              onClick={() => {
+                setShowSupportModal(true);
+                setSupportTab('submit');
+              }}
+              className="px-3 py-2 rounded-lg text-sm font-medium bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 transition flex items-center gap-1.5"
+            >
+              <span>💬 Support & Tracker</span>
+            </button>
+
+            {isAdminLoggedIn ? (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setActiveTab('admin')}
+                  className={`px-3 py-2 rounded-lg text-sm font-medium transition ${
+                    activeTab === 'admin' ? 'bg-cyan-600 text-white shadow-md shadow-cyan-500/20' : 'bg-slate-800 text-cyan-400 border border-slate-700'
+                  }`}
+                >
+                  ⚡ Master Admin
+                </button>
+                <button
+                  onClick={handleAdminLogout}
+                  className="px-2.5 py-2 rounded-lg text-xs font-semibold bg-red-950/60 hover:bg-red-900/80 text-red-300 border border-red-800/50 transition"
+                  title="Sign Out"
+                >
+                  Exit
+                </button>
+              </div>
             ) : (
               <button
-                onClick={() => setActivePage(currentUser.role === 'client' ? 'client-portal' : 'admin')}
-                className="px-3.5 py-2 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-xs font-bold text-emerald-300"
+                onClick={() => setShowSignInModal(true)}
+                className="px-3.5 py-2 rounded-lg text-sm font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition"
               >
-                Open Dashboard
+                Sign In
               </button>
             )}
-
-            <button
-              onClick={() => {
-                setActivePage('home');
-                setTimeout(() => document.getElementById('poc-section')?.scrollIntoView({ behavior: 'smooth' }), 50);
-              }}
-              className="hidden sm:inline-flex px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 transition"
-            >
-              Request Free 50-Prompt PoC
-            </button>
-          </div>
+          </nav>
         </div>
       </header>
 
-      {/* =====================================================================
-          PAGE 1: ENTERPRISE B2B LANDING PAGE
-         ===================================================================== */}
-      {activePage === 'home' && (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-20">
-          {/* HERO SECTION + UPGRADED ENTERPRISE LIVE QA TELEMETRY CONSOLE */}
-          <section className="grid lg:grid-cols-12 gap-10 items-start">
-            <div className="lg:col-span-6 space-y-6 pt-2">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
-                <span>⚡</span> Outperforming Generic Crowd Platforms in MENA, S2S Audio & Financial STEM
-              </div>
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.06] text-white">
-                Arabic & Multimodal <span className="text-emerald-400">AI Evaluation</span>, Red-Teaming & FP&A QA.
-              </h1>
-              <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
-                Eliminate regional dialect hallucinations, robotic Speech-to-Speech (S2S) prosody, and financial calculation errors before model deployment. Every prompt is calibrated by human specialists vetted under a <strong>3-Stage Anti-Cheat Gate</strong> and a <strong>12-Section Ironclad NDA</strong>.
-              </p>
-              <div className="flex flex-wrap gap-3 pt-2">
-                <a
-                  href="#poc-section"
-                  className="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-sm shadow-xl shadow-emerald-500/20 transition"
-                >
-                  Request Free 50-Prompt Diagnostic PoC →
-                </a>
-                <button
-                  onClick={() => setActivePage('apply')}
-                  className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm transition"
-                >
-                  Apply as Certified Evaluator (Upload CV & NDA)
-                </button>
-              </div>
+      {/* HERO BANNER */}
+      <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-b border-slate-800 py-10 px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-4xl mx-auto space-y-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium bg-cyan-950/80 text-cyan-300 border border-cyan-800/60">
+            <span>🌍 Enterprise Arabic AI Safety & Performance Matrix</span>
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          </div>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+            Enterprise Arabic & Multimodal <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">AI Quality Assurance</span>
+          </h1>
+          <p className="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto">
+            High-precision evaluation for Arabic S2S Audio, Financial Modeling, RLHF Red-Teaming, and Regional Dialects.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-xs text-slate-400">
+            <span className="px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700">{INITIAL_BRAND.badge}</span>
+            <span className="px-2.5 py-1 rounded-md bg-slate-800 border border-slate-700">Official Desk: {INITIAL_BRAND.founder}</span>
+          </div>
+        </div>
+      </div>
 
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="text-2xl font-black text-emerald-400">99.4%</div>
-                  <div className="text-xs font-semibold text-white mt-0.5">Golden-Set Agreement</div>
-                  <div className="text-[11px] text-slate-400 mt-1">Dual-pass QA Lead calibration</div>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="text-2xl font-black text-emerald-400">Zero-AI</div>
-                  <div className="text-xs font-semibold text-white mt-0.5">Anti-Cheat Sandbox</div>
-                  <div className="text-[11px] text-slate-400 mt-1">Clipboard & keystroke telemetry</div>
-                </div>
-                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="text-2xl font-black text-emerald-400">48 Hours</div>
-                  <div className="text-xs font-semibold text-white mt-0.5">50-Prompt PoC SLA</div>
-                  <div className="text-[11px] text-slate-400 mt-1">With JSON & taxonomy report</div>
-                </div>
-              </div>
-            </div>
-
-            {/* UPGRADED LIVE QA AUDIT & HALLUCINATION TELEMETRY CONSOLE */}
-            <div className="lg:col-span-6 bg-slate-900/95 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
-                      Live Telemetry & Rubric Inspection
-                    </span>
-                  </div>
-                  <h3 className="text-base font-extrabold text-white mt-0.5">
-                    Enterprise QA Audit & Hallucination Explorer
-                  </h3>
-                </div>
-                <div className="flex items-center gap-2">
-                  <button
-                    onClick={() => setShowJsonPayload(!showJsonPayload)}
-                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-mono text-emerald-300 border border-slate-700"
-                  >
-                    {showJsonPayload ? 'View Visual Audit' : '{ } View JSON Output'}
-                  </button>
-                </div>
-              </div>
-
-              {/* DOMAIN SELECTOR TABS */}
-              <div className="grid grid-cols-3 gap-1.5">
-                {AUDIT_SAMPLES.map((s) => (
-                  <button
-                    key={s.id}
-                    onClick={() => setSelectedAudit(s)}
-                    className={`px-3 py-2 rounded-xl text-xs font-bold transition text-center ${
-                      selectedAudit.id === s.id
-                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
-                        : 'bg-slate-950 text-slate-300 hover:bg-slate-800 border border-slate-800'
-                    }`}
-                  >
-                    {s.category}
-                  </button>
-                ))}
-              </div>
-
-              {/* METADATA HEADER */}
-              <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800/90 text-[11px]">
-                <span className="font-mono text-slate-400">
-                  ID: <strong className="text-white">{selectedAudit.auditId}</strong>
-                </span>
-                <span className="text-emerald-400 font-semibold">{selectedAudit.dialectTag}</span>
-                <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/30 font-bold">
-                  {selectedAudit.severity}
-                </span>
-              </div>
-
-              {showJsonPayload ? (
-                <pre className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 text-xs font-mono text-emerald-300 overflow-x-auto leading-relaxed">
-                  {selectedAudit.jsonPayload}
-                </pre>
-              ) : (
-                <>
-                  {/* PROMPT BOX */}
-                  <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
-                    <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
-                      Input Prompt / Evaluation Stimulus:
-                    </div>
-                    <div className="text-slate-100 font-medium leading-relaxed">{selectedAudit.prompt}</div>
-                  </div>
-
-                  {/* SIDE-BY-SIDE RUBRIC SCORE BARS */}
-                  <div className="grid sm:grid-cols-2 gap-3 text-xs">
-                    {/* MODEL A (REJECTED) */}
-                    <div className="p-3.5 rounded-2xl bg-rose-950/20 border border-rose-500/30 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="font-extrabold text-rose-400">❌ Model A (Unaligned)</span>
-                        <span className="text-[11px] font-mono text-slate-400">{selectedAudit.metricsA.latency}</span>
-                      </div>
-                      <p className="text-slate-300 text-[11px] leading-relaxed">{selectedAudit.modelA}</p>
-                      <div className="space-y-1 pt-1 border-t border-rose-500/20 text-[11px]">
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Factuality & Grounding</span>
-                          <span className="text-rose-400 font-bold">{selectedAudit.metricsA.factuality}%</span>
-                        </div>
-                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                          <div
-                            className="h-full bg-rose-500"
-                            style={{ width: `${selectedAudit.metricsA.factuality}%` }}
-                          />
-                        </div>
-                        <div className="flex justify-between pt-1">
-                          <span className="text-slate-400">Dialect / Domain Precision</span>
-                          <span className="text-rose-400 font-bold">{selectedAudit.metricsA.dialect}%</span>
-                        </div>
-                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                          <div
-                            className="h-full bg-rose-500"
-                            style={{ width: `${selectedAudit.metricsA.dialect}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* MODEL B (GOLD VERIFIED) */}
-                    <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-2.5">
-                      <div className="flex items-center justify-between">
-                        <span className="font-extrabold text-emerald-400">✅ Model B (Gold Calibrated)</span>
-                        <span className="text-[11px] font-mono text-slate-400">{selectedAudit.metricsB.latency}</span>
-                      </div>
-                      <p className="text-slate-200 text-[11px] leading-relaxed">{selectedAudit.modelB}</p>
-                      <div className="space-y-1 pt-1 border-t border-emerald-500/20 text-[11px]">
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Factuality & Grounding</span>
-                          <span className="text-emerald-400 font-bold">{selectedAudit.metricsB.factuality}%</span>
-                        </div>
-                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                          <div
-                            className="h-full bg-emerald-400"
-                            style={{ width: `${selectedAudit.metricsB.factuality}%` }}
-                          />
-                        </div>
-                        <div className="flex justify-between pt-1">
-                          <span className="text-slate-400">Dialect / Domain Precision</span>
-                          <span className="text-emerald-400 font-bold">{selectedAudit.metricsB.dialect}%</span>
-                        </div>
-                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
-                          <div
-                            className="h-full bg-emerald-400"
-                            style={{ width: `${selectedAudit.metricsB.dialect}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </>
-              )}
-
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-amber-300 flex items-center justify-between">
-                <span>
-                  <strong>QA Lead Verdict:</strong> {selectedAudit.verdict}
-                </span>
-              </div>
-            </div>
-          </section>
-
-          {/* WHY FRONTIER LABS CHOOSE US OVER GENERIC CROWD PLATFORMS */}
-          <section className="space-y-6">
-            <div className="max-w-3xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                Competitive Benchmark
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Why Frontier AI Labs Choose {brand.name} Over Generic Crowd Marketplaces
-              </h2>
-            </div>
-
-            <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-900/60">
-              <table className="w-full text-left text-xs sm:text-sm">
-                <thead className="bg-slate-900 border-b border-slate-800 text-slate-300">
-                  <tr>
-                    <th className="p-4">Quality & Security Dimension</th>
-                    <th className="p-4 text-emerald-400 font-extrabold">{brand.name} (Specialized Boutique)</th>
-                    <th className="p-4 text-slate-400">Generic Crowd Platforms</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800/70">
-                  <tr>
-                    <td className="p-4 font-semibold text-white">Dialect & Phonetic Authenticity</td>
-                    <td className="p-4 text-emerald-300">100% Native in-country Egyptian, Saudi/Gulf & Levantine specialists</td>
-                    <td className="p-4 text-slate-400">Non-native speakers using machine translation into stiff MSA</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-semibold text-white">Zero-AI Anti-Cheat Enforcement</td>
-                    <td className="p-4 text-emerald-300">Hard clipboard lock + keystroke cadence + tab-focus telemetry</td>
-                    <td className="p-4 text-slate-400">High volume of copy-pasted ChatGPT/Claude spam annotations</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-semibold text-white">Domain Depth (FP&A, Coding, S2S)</td>
-                    <td className="p-4 text-emerald-300">Direct audit by micro1 & Alignerr certified domain specialists</td>
-                    <td className="p-4 text-slate-400">Generalist crowd workers guessing complex financial/code formulas</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-semibold text-white">Legal & IP Protection</td>
-                    <td className="p-4 text-emerald-300">12-Section Ironclad NDA + Work-for-Hire IP + Biometric S2S Release</td>
-                    <td className="p-4 text-slate-400">Frequent task leaks on public Discord & Reddit forums</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* 6 CERTIFIED EVALUATION & DOMAIN TRACKS */}
-          <section id="tracks-section" className="space-y-6">
-            <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* MAIN CONTENT AREA */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* TAB 1: EVALUATION TRACKS */}
+        {activeTab === 'tracks' && (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
-                  Specialized Domain Pipelines & Talent Marketplace
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                  6 Certified Evaluation Tracks (B2B Delivery & Evaluator Vetting)
-                </h2>
+                <h2 className="text-2xl font-bold text-white">Certified Evaluation Tracks</h2>
+                <p className="text-sm text-slate-400">Select an enterprise track to view specialized QA criteria and dialect benchmarks.</p>
               </div>
-              <button
-                onClick={() => setActivePage('apply')}
-                className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400"
-              >
-                Upload CV & Apply to Any Track →
-              </button>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {CERTIFIED_TRACKS.map((t) => (
-                <div
-                  key={t.id}
-                  className="p-6 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 transition flex flex-col justify-between space-y-4"
-                >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {CERTIFIED_TRACKS.map(track => (
+                <div key={track.id} className="bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-6 transition duration-200 flex flex-col justify-between shadow-xl">
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                        {t.badge}
+                    <div className="flex items-start justify-between gap-2">
+                      <span className="px-2.5 py-1 rounded-md text-xs font-semibold bg-cyan-950 text-cyan-300 border border-cyan-800/60">
+                        {track.domain}
                       </span>
-                      <span className="text-xs font-extrabold text-amber-300">{t.rate}</span>
+                      <span className="px-2 py-0.5 rounded text-xs font-bold bg-amber-950/80 text-amber-300 border border-amber-800/50">
+                        {track.badge}
+                      </span>
                     </div>
-                    <h3 className="text-base font-bold text-white leading-snug">{t.title}</h3>
-                    <p className="text-xs text-slate-400 leading-relaxed">{t.desc}</p>
+
+                    <h3 className="text-lg font-bold text-white">{track.title}</h3>
+                    <p className="text-sm text-slate-400 leading-relaxed">{track.desc}</p>
+
+                    <div className="pt-2 text-xs text-slate-300 space-y-1">
+                      <div><strong className="text-slate-500">Dialects / Target:</strong> {track.dialect}</div>
+                      <div><strong className="text-slate-500">Standard Comp:</strong> {track.rate}</div>
+                    </div>
                   </div>
-                  <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                    <span className="text-slate-400">{t.dialect}</span>
+
+                  <div className="mt-6 pt-4 border-t border-slate-800/80 flex items-center justify-between">
                     <button
                       onClick={() => {
-                        setApplyForm({ ...applyForm, track: t.title });
-                        setActivePage('apply');
+                        setShowSupportModal(true);
+                        setSupportTab('submit');
+                        setNewCategory(track.domain);
                       }}
-                      className="text-emerald-400 font-bold hover:underline"
+                      className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white transition shadow-md shadow-cyan-600/20"
                     >
-                      Apply with CV →
+                      Request Track Audit
                     </button>
+                    <span className="text-xs text-slate-500 font-mono">ID: {track.id}</span>
                   </div>
                 </div>
               ))}
             </div>
-          </section>
-
-          {/* LEADERSHIP & VERIFIED TRACK RECORD */}
-          <section className="p-8 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950/40 border border-slate-800 grid lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-8 space-y-4">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-bold">
-                Verified Founder Track Record
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black text-white">
-                Architected by {brand.founder} — Certified Across Global Frontier AI Ecosystems
-              </h2>
-              <p className="text-slate-300 text-sm leading-relaxed">
-                Combining production full-stack engineering (Python, Node.js, React, SQLite), studio-grade acoustic audio QA, and certified expertise in <strong>Financial Modeling, Valuation, FP&A, and Multimodal RLHF</strong> across the world’s leading AI data organizations:
-              </p>
-              <div className="flex flex-wrap gap-2 pt-1">
-                {[
-                  'micro1 (Certified Financial Modeling, FP&A & AI Specialist)',
-                  'Alignerr / Labelbox (AI Data Quality, Coding & Search Evaluator)',
-                  'Google AI (Productive Playhouse — Arabic S2S & Dialect Lead)',
-                  'RWS Group (Multimodal & Linguistic QA)',
-                  'Outlier & Mercor (RLHF & Red-Teaming)',
-                ].map((cred) => (
-                  <span
-                    key={cred}
-                    className="px-3 py-1.5 rounded-xl bg-slate-950/90 border border-slate-700 text-xs font-semibold text-emerald-300"
-                  >
-                    ✓ {cred}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="lg:col-span-4 bg-slate-950/90 border border-slate-800 p-6 rounded-2xl space-y-3 text-xs">
-              <div className="text-emerald-400 font-bold uppercase">Certified Domain Competencies</div>
-              <ul className="space-y-2 text-slate-300">
-                <li>• Native Arabic S2S Audio & Phonetic Prosody Calibration</li>
-                <li>• Financial Modeling, Valuation, FP&A & Portfolio Risk QA</li>
-                <li>• Full-Stack Python / JS / SQL Code & Agent Trajectory Audit</li>
-                <li>• Zero-Trust Anti-Cheat Evaluation Pipeline Architecture</li>
-              </ul>
-            </div>
-          </section>
-
-          {/* REQUEST FREE 50-PROMPT B2B POC FORM */}
-          <section id="poc-section" className="p-8 rounded-3xl bg-slate-900 border border-slate-800 grid lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-5 space-y-3">
-              <span className="text-xs font-bold uppercase text-emerald-400">Enterprise B2B Onboarding</span>
-              <h2 className="text-2xl font-black text-white">Request a Free 50-Prompt Diagnostic PoC</h2>
-              <p className="text-xs text-slate-400 leading-relaxed">
-                Send us 50 challenging Arabic dialect, Speech-to-Speech (S2S), Financial FP&A, or Coding prompts. Within 48 hours, we deliver a calibrated Golden Dataset + Hallucination Taxonomy Report.
-              </p>
-            </div>
-            <form onSubmit={handlePocSubmit} className="lg:col-span-7 grid sm:grid-cols-2 gap-4 text-xs">
-              <input
-                type="text"
-                required
-                placeholder="Company / AI Lab Name *"
-                value={pocForm.company}
-                onChange={(e) => setPocForm({ ...pocForm, company: e.target.value })}
-                className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              />
-              <input
-                type="text"
-                required
-                placeholder="Your Name & Title *"
-                value={pocForm.contact}
-                onChange={(e) => setPocForm({ ...pocForm, contact: e.target.value })}
-                className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              />
-              <input
-                type="email"
-                required
-                placeholder="Work Email (e.g. name@company.ai) *"
-                value={pocForm.email}
-                onChange={(e) => setPocForm({ ...pocForm, email: e.target.value })}
-                className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              />
-              <select
-                value={pocForm.useCase}
-                onChange={(e) => setPocForm({ ...pocForm, useCase: e.target.value })}
-                className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              >
-                {CERTIFIED_TRACKS.map((t) => (
-                  <option key={t.id} value={t.title}>
-                    {t.title}
-                  </option>
-                ))}
-              </select>
-              <div className="sm:col-span-2 flex items-center justify-between gap-4 pt-2">
-                {pocSuccess ? (
-                  <span className="text-emerald-400 font-bold">
-                    ✓ PoC Request Logged! Our Lead Architect will contact your work email within 4 hours.
-                  </span>
-                ) : (
-                  <span className="text-slate-400">Protected under Mutual Enterprise NDA.</span>
-                )}
-                <button
-                  type="submit"
-                  className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold"
-                >
-                  Launch 50-Prompt PoC →
-                </button>
-              </div>
-            </form>
-          </section>
-        </main>
-      )}
-
-      {/* =====================================================================
-          PAGE 2: STAGE 1 — CV UPLOAD & 12-SECTION MASTER AGREEMENT (/apply)
-         ===================================================================== */}
-      {activePage === 'apply' && (
-        <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <span className="text-xs font-bold uppercase text-emerald-400">
-                Stage 1 of 3 • Candidate Dossier, CV Upload & Legal Onboarding
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Evaluator Application, CV Upload & 12-Section Master NDA
-              </h1>
-              <p className="text-xs text-slate-400 mt-1">
-                Upload your resume/CV and execute the Master Independent Contractor Agreement to unlock the Stage 2 Calibration Gate.
-              </p>
-            </div>
-            <button
-              onClick={() => setActivePage('home')}
-              className="px-3.5 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300"
-            >
-              ← Back to Home
-            </button>
           </div>
+        )}
 
-          <form onSubmit={handleApplySubmit} className="space-y-6">
-            {/* CANDIDATE PROFILE + CV UPLOAD */}
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 grid sm:grid-cols-2 gap-4 text-xs">
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">
-                  Full Legal Name (As on Passport / National ID) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  autoComplete="off"
-                  placeholder="Enter your full legal name"
-                  value={applyForm.fullName}
-                  onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Email Address *</label>
-                <input
-                  type="email"
-                  required
-                  autoComplete="off"
-                  placeholder="candidate@domain.com"
-                  value={applyForm.email}
-                  onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Phone / WhatsApp Number *</label>
-                <input
-                  type="text"
-                  required
-                  autoComplete="off"
-                  placeholder="+20 100 000 0000 / +966 50 000 0000"
-                  value={applyForm.phone}
-                  onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">LinkedIn or GitHub Profile URL</label>
-                <input
-                  type="url"
-                  autoComplete="off"
-                  placeholder="https://linkedin.com/in/your-profile"
-                  value={applyForm.linkedin}
-                  onChange={(e) => setApplyForm({ ...applyForm, linkedin: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-              </div>
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Primary Native Arabic Dialect *</label>
-                <select
-                  value={applyForm.dialect}
-                  onChange={(e) => setApplyForm({ ...applyForm, dialect: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                >
-                  <option>Egyptian (AR-EG — Cairene / Alexandrian / Saidi)</option>
-                  <option>Saudi / Gulf (AR-SA / AR-AE / Najdi / Hejazi / Khaleeji)</option>
-                  <option>Levantine (AR-SY / AR-LB / AR-JO / AR-PS)</option>
-                  <option>Maghrebi (AR-MA / AR-DZ / AR-TN)</option>
-                  <option>Modern Standard Arabic (Fusha) + Bilingual STEM</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Selected Certification Track *</label>
-                <select
-                  value={applyForm.track}
-                  onChange={(e) => setApplyForm({ ...applyForm, track: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-300 font-bold"
-                >
-                  {CERTIFIED_TRACKS.map((t) => (
-                    <option key={t.id} value={t.title}>
-                      {t.title} ({t.rate})
-                    </option>
-                  ))}
-                </select>
-              </div>
+        {/* TAB 2: LIVE TELEMETRY MATRIX */}
+        {activeTab === 'telemetry' && (
+          <div className="space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+              <h2 className="text-2xl font-bold text-white mb-2">Live QA Telemetry & Model Benchmarks</h2>
+              <p className="text-sm text-slate-400 mb-6">Real-time dialect latency, financial precision, and red-teaming compliance scores across regional AI deployments.</p>
 
-              {/* MANDATORY CV / RESUME FILE UPLOAD */}
-              <div className="sm:col-span-2 p-4 rounded-xl bg-slate-950 border border-dashed border-emerald-500/50 space-y-2">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <div>
-                    <label className="block text-emerald-400 font-bold">
-                      Upload CV / Resume (PDF, DOC, DOCX — Max 4MB) *
-                    </label>
-                    <p className="text-[11px] text-slate-400">
-                      Your CV is encrypted and attached directly to your evaluator dossier for Owner & QA Lead review.
-                    </p>
-                  </div>
-                  {applyForm.cvFileName && (
-                    <span className="px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">
-                      📄 {applyForm.cvFileName} ({applyForm.cvFileSize})
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                  <div className="text-xs text-slate-500 mb-1">Average S2S Latency</div>
+                  <div className="text-2xl font-extrabold text-cyan-400">185 ms</div>
+                  <div className="text-xs text-emerald-400 mt-1">✓ Within benchmark target (&lt;200ms)</div>
+                </div>
+                <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                  <div className="text-xs text-slate-500 mb-1">FP&A Financial Calculation Accuracy</div>
+                  <div className="text-2xl font-extrabold text-emerald-400">99.4%</div>
+                  <div className="text-xs text-slate-400 mt-1">Verified against GCC Zakat / IFRS</div>
+                </div>
+                <div className="bg-slate-950 border border-slate-800 p-4 rounded-xl">
+                  <div className="text-xs text-slate-500 mb-1">Red-Teaming Safety Index</div>
+                  <div className="text-2xl font-extrabold text-purple-400">98.9%</div>
+                  <div className="text-xs text-purple-300 mt-1">Zero high-severity violations</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 3: MASTER ADMIN CONSOLE */}
+        {activeTab === 'admin' && isAdminLoggedIn && (
+          <div className="space-y-6">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-2xl">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-slate-800 gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-white flex items-center gap-2">
+                    <span>👑 Master Admin Console</span>
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-950 text-amber-300 border border-amber-800/60">
+                      Executive Level
                     </span>
-                  )}
-                </div>
-                <input
-                  type="file"
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleCvUpload}
-                  className="block w-full text-xs text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 cursor-pointer"
-                />
-              </div>
-
-              <div className="sm:col-span-2">
-                <label className="block text-slate-300 font-semibold mb-1">
-                  Summary of Relevant AI Evaluation, S2S Audio, Financial or Coding Experience
-                </label>
-                <input
-                  type="text"
-                  placeholder="Briefly describe your domain background, degrees, or prior RLHF platform experience..."
-                  value={applyForm.experience}
-                  onChange={(e) => setApplyForm({ ...applyForm, experience: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-              </div>
-            </div>
-
-            {/* FULL 12-SECTION LEGAL CONTRACT SCROLL BOX */}
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                <div>
-                  <span className="text-xs font-bold text-amber-400 uppercase">
-                    Mandatory Legal Contract (12 Articles — Read Carefully)
-                  </span>
-                  <h3 className="text-base font-bold text-white">
-                    {brand.name} Master Contractor, Non-Disclosure & AI Data Integrity Agreement
-                  </h3>
-                </div>
-                <span className="text-[11px] px-2.5 py-1 rounded bg-slate-800 text-slate-300">
-                  Rev. 2026.10 (Enterprise Standard)
-                </span>
-              </div>
-
-              <div className="h-96 overflow-y-auto p-5 rounded-xl bg-slate-950 border border-slate-800 space-y-5 text-xs leading-relaxed text-slate-300 font-mono">
-                {MASTER_AGREEMENT_SECTIONS.map((sec, idx) => (
-                  <div key={idx} className="space-y-1.5">
-                    <h4 className="font-bold text-emerald-400">{sec.title}</h4>
-                    <p className="whitespace-pre-line text-slate-300">{sec.body}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* 3 MANDATORY LEGAL CHECKBOXES */}
-              <div className="space-y-2.5 pt-2 text-xs">
-                <label className="flex items-start gap-2.5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={applyForm.ndaChecked1}
-                    onChange={(e) => setApplyForm({ ...applyForm, ndaChecked1: e.target.checked })}
-                    className="mt-1 accent-emerald-500"
-                  />
-                  <span>
-                    <strong>Confidentiality & Non-Disclosure (Section 3):</strong> I agree never to disclose, screenshot, or share any client prompts, model outputs, rubrics, or platform identities on Discord, Reddit, Telegram, or any third-party forum.
-                  </span>
-                </label>
-                <label className="flex items-start gap-2.5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={applyForm.ndaChecked2}
-                    onChange={(e) => setApplyForm({ ...applyForm, ndaChecked2: e.target.checked })}
-                    className="mt-1 accent-emerald-500"
-                  />
-                  <span>
-                    <strong>Zero-External-AI & Anti-Cheat Telemetry Consent (Sections 1 & 6):</strong> I warrant that 100% of my work will be human-authored without ChatGPT/Claude/LLMs or VPNs, and I consent to workspace keystroke, clipboard, and tab-focus monitoring.
-                  </span>
-                </label>
-                <label className="flex items-start gap-2.5 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={applyForm.ndaChecked3}
-                    onChange={(e) => setApplyForm({ ...applyForm, ndaChecked3: e.target.checked })}
-                    className="mt-1 accent-emerald-500"
-                  />
-                  <span>
-                    <strong>Work-Made-for-Hire IP Assignment, Moral Rights Waiver, Recorded/Biometric Data Release & Binding JAMS Arbitration (Sections 5, 10 & 11):</strong> I irrevocably assign all IP and Recorded/Derived S2S Data rights to {brand.name} and agree to individual binding arbitration with Class Action Waiver.
-                  </span>
-                </label>
-              </div>
-
-              {/* ELECTRONIC SIGNATURE */}
-              <div className="pt-3 border-t border-slate-800 grid sm:grid-cols-2 gap-4 items-end">
-                <div>
-                  <label className="block text-xs text-slate-300 font-semibold mb-1">
-                    Electronic Signature (Type Your Exact Full Legal Name) *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    autoComplete="off"
-                    placeholder="Type your exact full legal name to sign..."
-                    value={applyForm.ndaSignature}
-                    onChange={(e) => setApplyForm({ ...applyForm, ndaSignature: e.target.value })}
-                    className="w-full p-3 rounded-xl bg-slate-950 border border-emerald-500/50 text-emerald-300 font-bold text-xs"
-                  />
-                </div>
-                <div className="flex flex-col items-end gap-2">
-                  {applyError && <p className="text-xs text-rose-400 font-semibold">{applyError}</p>}
-                  <button
-                    type="submit"
-                    className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20"
-                  >
-                    Submit CV, Sign 12-Section NDA & Launch Stage 2 Gate →
-                  </button>
-                </div>
-              </div>
-            </div>
-          </form>
-        </main>
-      )}
-
-      {/* =====================================================================
-          PAGE 3: STAGE 2 (MCQ GATE) & STAGE 3 (ANTI-CHEAT SANDBOX) (/assessment)
-         ===================================================================== */}
-      {activePage === 'assessment' && (
-        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-xs font-bold uppercase text-emerald-400">
-                Automated Vetting Engine • Anti-Cheat Telemetry Active
-              </span>
-              <h1 className="text-2xl font-black text-white mt-1">
-                Stage 2 (Calibration Gate) & Stage 3 (Anti-Cheat Practical Sandbox)
-              </h1>
-            </div>
-            <div className="text-right text-xs text-slate-400">
-              <div>
-                Blocked Paste Events: <strong className="text-rose-400">{pasteCount}</strong>
-              </div>
-              <div>
-                Tab Focus Switches: <strong className="text-amber-400">{tabSwitchCount}</strong>
-              </div>
-            </div>
-          </div>
-
-          {!mcqPassed ? (
-            <form onSubmit={handleMcqSubmit} className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
-              <div className="border-b border-slate-800 pb-3">
-                <h2 className="text-lg font-bold text-white">
-                  Stage 2: Automated Calibration Gate (Pass Mark: 75% / 3 of 4)
-                </h2>
-                <p className="text-xs text-slate-400">
-                  Verifying your mastery of hallucination detection, Arabic S2S prosody, NDA compliance, and FP&A math verification.
-                </p>
-              </div>
-
-              {MCQ_QUESTIONS.map((q) => (
-                <div key={q.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2.5 text-xs">
-                  <div className="font-bold text-white">{q.question}</div>
-                  <div className="space-y-1.5">
-                    {q.options.map((opt, idx) => (
-                      <label
-                        key={idx}
-                        className="flex items-center gap-2.5 cursor-pointer text-slate-300 hover:text-white"
-                      >
-                        <input
-                          type="radio"
-                          name={q.id}
-                          checked={mcqAnswers[q.id] === idx}
-                          onChange={() => setMcqAnswers({ ...mcqAnswers, [q.id]: idx })}
-                          className="accent-emerald-500"
-                        />
-                        <span>{opt}</span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
-              ))}
-
-              {mcqSubmitted && !mcqPassed && (
-                <div className="p-3.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-xs text-rose-300 font-semibold">
-                  You scored below 75%. Please review the rubric rules and re-submit to unlock the Stage 3 Practical Sandbox.
-                </div>
-              )}
-
-              <button
-                type="submit"
-                className="px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs"
-              >
-                Grade Stage 2 Calibration Gate →
-              </button>
-            </form>
-          ) : !assessmentDone ? (
-            <form onSubmit={handleSandboxSubmit} className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
-                <div>
-                  <span className="text-xs font-bold text-emerald-400">
-                    ✓ Stage 2 Passed! Unlocked Stage 3 Practical Sandbox
-                  </span>
-                  <h2 className="text-lg font-bold text-white">
-                    Side-by-Side (SxS) Arabic Dialect & Factuality Evaluation
                   </h2>
-                </div>
-                <span className="px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[11px] font-bold">
-                  🔒 Copy-Paste Blocked • Keystroke Telemetry Recording
-                </span>
-              </div>
-
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-2">
-                <div className="text-slate-400 font-bold">User Prompt (Egyptian Arabic Banking Inquiry):</div>
-                <p className="text-white text-sm">
-                  "لو سمحت أنا حولت فلوس عن طريق إنستاباي بالغلط لحساب تاني، هل البنك المركزي المصري بيلزم البنك يرجعهالي أوتوماتيك في نفس الساعة؟"
-                </p>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-4 text-xs">
-                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="font-bold text-amber-400">Model A Output</div>
-                  <p className="text-slate-300 leading-relaxed">
-                    "أهلاً بك يا فندم! نعم بكل تأكيد، طبقاً للمادة 88 من قانون البنك المركزي المصري لعام 2025، يتم استرداد تحاويل إنستاباي الخاطئة أوتوماتيكياً خلال 45 دقيقة بمجرد الاتصال بخدمة العملاء."
+                  <p className="text-xs text-slate-400 mt-1">
+                    Logged in as: <span className="text-slate-200 font-mono">abdelrhman.maroxo@gmail.com</span> | Official Signature: <strong className="text-cyan-400">{INITIAL_BRAND.founder}</strong>
                   </p>
                 </div>
-                <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="font-bold text-emerald-400">Model B Output</div>
-                  <p className="text-slate-300 leading-relaxed">
-                    "أهلاً بحضرتك. في الحقيقة تحويلات إنستاباي (InstaPay) لحظية ولا يمكن للبنك عكسها أوتوماتيكياً بدون موافقة المستلم. الإجراء الصحيح هو التواصل فوراً مع البنك أو دعم إنستاباي لتقديم طلب استرداد ودي، وإذا رفض المستلم يتم تحرير محضر رسمي بمباحث الإنترنت."
-                  </p>
+
+                <div className="flex items-center gap-2 text-xs font-semibold bg-slate-950 px-3 py-2 rounded-xl border border-slate-800">
+                  <span className="text-emerald-400">● Live System Desk</span>
                 </div>
               </div>
 
-              <div className="space-y-2 text-xs">
-                <label className="block font-bold text-white">1. Select Comparative Preference Rating *</label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    'Model A Strongly Better (+3)',
-                    'Model A Slightly Better (+1)',
-                    'Equal (0)',
-                    'Model B Slightly Better (+1)',
-                    'Model B Strongly Better (+3)',
-                  ].map((choice) => (
-                    <button
-                      type="button"
-                      key={choice}
-                      onClick={() => setSandboxChoice(choice)}
-                      className={`px-3 py-2 rounded-xl font-bold border transition ${
-                        sandboxChoice === choice
-                          ? 'bg-emerald-500 text-slate-950 border-emerald-400'
-                          : 'bg-slate-950 text-slate-300 border-slate-800'
-                      }`}
-                    >
-                      {choice}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="space-y-2 text-xs">
-                <div className="flex justify-between">
-                  <label className="font-bold text-white">
-                    2. Evidence-Backed Comparative Justification (Min 80 chars — External Paste Blocked) *
-                  </label>
-                  <span className="text-slate-400">
-                    Keystrokes: {keystrokeCount} | Chars: {sandboxJustification.length}
-                  </span>
-                </div>
-                <textarea
-                  rows={4}
-                  required
-                  value={sandboxJustification}
-                  onPaste={(e) => {
-                    e.preventDefault();
-                    setPasteCount((prev) => prev + 1);
-                    alert(
-                      'ANTI-CHEAT BLOCK: External copy-paste is prohibited under the Zero-AI Policy. This attempt has been logged.'
-                    );
-                  }}
-                  onKeyDown={() => setKeystrokeCount((prev) => prev + 1)}
-                  onChange={(e) => setSandboxJustification(e.target.value)}
-                  placeholder="Write your original evaluation explaining why one model is superior, citing specific factual hallucinations and dialect naturalness..."
-                  className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs"
-              >
-                Submit Encrypted Assessment, CV & Telemetry →
-              </button>
-            </form>
-          ) : (
-            <div className="p-8 rounded-2xl bg-slate-900 border border-emerald-500/40 text-center space-y-4">
-              <div className="text-3xl">✅</div>
-              <h2 className="text-xl font-black text-white">3-Stage Assessment, CV & Legal NDA Logged!</h2>
-              <p className="text-xs text-slate-300 max-w-lg mx-auto">
-                Your uploaded CV ({applyForm.cvFileName}), signed 12-Section Contractor Agreement, MCQ score, and anti-cheat telemetry have been transmitted to the Master Owner Console.
-              </p>
-              <button
-                onClick={() => setActivePage('home')}
-                className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs"
-              >
-                Return to Homepage
-              </button>
-            </div>
-          )}
-        </main>
-      )}
-
-      {/* =====================================================================
-          PAGE 4: B2B ENTERPRISE CLIENT PORTAL (/client-portal)
-         ===================================================================== */}
-      {activePage === 'client-portal' && (
-        <main className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
-            <div>
-              <span className="text-xs font-bold uppercase text-emerald-400">Enterprise Client Workspace</span>
-              <h1 className="text-2xl font-black text-white">50-Prompt Diagnostic PoC & Live Batch Tracker</h1>
-            </div>
-            <button
-              onClick={() => {
-                setSupportModalTab('submit');
-                setShowSupportModal(true);
-              }}
-              className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs"
-            >
-              + Open Priority QA Ticket
-            </button>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-4 text-xs">
-            <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-              <div className="text-slate-400">Active Batch Status</div>
-              <div className="text-xl font-black text-emerald-400 mt-1">38 / 50 Prompts Audited</div>
-              <div className="text-slate-400 mt-1">Dual-Pass Inter-Annotator Agreement: 99.2%</div>
-            </div>
-            <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-              <div className="text-slate-400">Critical Hallucinations Caught</div>
-              <div className="text-xl font-black text-rose-400 mt-1">14 Fatal Model Defects</div>
-              <div className="text-slate-400 mt-1">9 S2S Prosody Errors • 5 FP&A Formula Errors</div>
-            </div>
-            <div className="p-5 rounded-2xl bg-slate-900 border border-slate-800">
-              <div className="text-slate-400">Assigned Lead Architect</div>
-              <div className="text-xl font-black text-white mt-1">{brand.founder}</div>
-              <div className="text-emerald-400 mt-1">12-Section Mutual NDA Active</div>
-            </div>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-            <h3 className="text-sm font-bold text-white">Live Support & Calibration Tickets (Synced with QA Lead)</h3>
-            <div className="space-y-3 text-xs">
-              {tickets.map((t) => (
-                <div key={t.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-                  <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="font-bold text-emerald-400">
-                      {t.id}: {t.subject} <span className="text-slate-400">({t.senderEmail})</span>
+              {/* ADMIN HELPDESK SECTION */}
+              <div className="mt-6 space-y-4">
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <span>3. Support Helpdesk</span>
+                    <span className="px-2 py-0.5 rounded-full text-xs bg-slate-800 text-slate-300 border border-slate-700">
+                      {tickets.length} Total Tickets
                     </span>
-                    <span className="px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-bold">
-                      {t.status}
-                    </span>
-                  </div>
-                  <p className="text-slate-300">{t.message}</p>
-                  {t.reply ? (
-                    <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 space-y-1">
-                      <div className="flex justify-between text-[11px] text-emerald-400 font-bold">
-                        <span>Official Response from {t.repliedBy || 'Owner / QA Support'}</span>
-                        <span>{t.repliedAt}</span>
-                      </div>
-                      <p>{t.reply}</p>
-                    </div>
-                  ) : (
-                    <div className="text-[11px] text-amber-400">⏳ Awaiting response from QA Support Lead...</div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
-      )}
+                  </h3>
 
-      {/* =====================================================================
-          PAGE 5: MASTER OWNER & QA LEAD ADMIN CONSOLE (/admin)
-         ===================================================================== */}
-      {activePage === 'admin' && (
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-          {!currentUser || (currentUser.role !== 'owner' && currentUser.role !== 'qa_lead') ? (
-            <div className="p-10 rounded-3xl bg-slate-900 border border-rose-500/40 text-center space-y-4">
-              <h2 className="text-xl font-black text-white">🔒 Restricted Zero-Trust Workspace</h2>
-              <p className="text-xs text-slate-400">
-                Please authenticate via Workspace Sign-In with an Owner or QA Lead security token.
-              </p>
-              <button
-                onClick={() => setShowSignInModal(true)}
-                className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs"
-              >
-                Open Workspace Sign-In
-              </button>
-            </div>
-          ) : (
-            <>
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
-                <div>
-                  <span className="text-xs font-bold uppercase text-amber-400">
-                    Zero-Trust Master Control Center ({currentUser.role.toUpperCase()})
-                  </span>
-                  <h1 className="text-2xl font-black text-white">
-                    {brand.name} — Executive Operations, CV Dossiers & Helpdesk Console
-                  </h1>
-                </div>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  {[
-                    { id: 'applicants', label: `1. Evaluators & CVs (${applicants.length})` },
-                    { id: 'leads', label: `2. B2B Client PoCs (${clientLeads.length})` },
-                    { id: 'tickets', label: `3. Support Helpdesk (${tickets.length})` },
-                    ...(currentUser.role === 'owner'
-                      ? [
-                          { id: 'roles', label: `4. Team Roles & Security (${users.length})` },
-                          { id: 'brand', label: '5. Live Rebranding Studio' },
-                        ]
-                      : []),
-                  ].map((tab) => (
-                    <button
-                      key={tab.id}
-                      onClick={() => setAdminTab(tab.id)}
-                      className={`px-3.5 py-2 rounded-xl font-bold transition ${
-                        adminTab === tab.id
-                          ? 'bg-emerald-500 text-slate-950'
-                          : 'bg-slate-900 text-slate-300 border border-slate-800'
-                      }`}
-                    >
-                      {tab.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                  {/* ADMIN SEARCH & FILTERS */}
+                  <div className="flex flex-wrap items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Search Ticket ID, Email, Subject..."
+                      value={adminSearch}
+                      onChange={(e) => setAdminSearch(e.target.value)}
+                      className="px-3 py-1.5 rounded-lg text-xs bg-slate-950 border border-slate-800 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 w-full sm:w-64"
+                    />
 
-              {/* TAB 1: EVALUATOR SUBMISSIONS, CV DOWNLOAD & ANTI-CHEAT TELEMETRY */}
-              {adminTab === 'applicants' && (
-                <div className="space-y-4">
-                  {applicants.map((app) => (
-                    <div key={app.id} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3 text-xs">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                          <span className="font-black text-sm text-white">{app.fullName}</span>
-                          <span className="text-slate-400 ml-2">
-                            ({app.email} • {app.phone})
-                          </span>
-                          {app.linkedin && (
-                            <a
-                              href={app.linkedin}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="ml-2 text-emerald-400 underline"
-                            >
-                              LinkedIn/Portfolio ↗
-                            </a>
-                          )}
-                        </div>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className="px-2.5 py-1 rounded bg-slate-800 text-emerald-300 font-semibold">
-                            {app.track}
-                          </span>
-                          <span
-                            className={`px-2.5 py-1 rounded font-bold ${
-                              app.status.includes('Approved')
-                                ? 'bg-emerald-500/20 text-emerald-300'
-                                : app.status.includes('Flagged')
-                                ? 'bg-rose-500/20 text-rose-300'
-                                : 'bg-amber-500/20 text-amber-300'
-                            }`}
-                          >
-                            {app.status}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="grid sm:grid-cols-5 gap-2 p-3 rounded-xl bg-slate-950 border border-slate-800">
-                        <div>
-                          12-Sec NDA Signed: <strong className="text-emerald-400">{app.ndaSignedAs}</strong>
-                        </div>
-                        <div>
-                          Uploaded CV:{' '}
-                          <strong className="text-amber-300">
-                            {app.cvFileName || 'Attached'} ({app.cvFileSize || 'PDF'})
-                          </strong>
-                        </div>
-                        <div>
-                          MCQ Gate: <strong className="text-white">{app.mcqScore}</strong>
-                        </div>
-                        <div>
-                          Blocked Pastes: <strong className="text-rose-400">{app.pasteAttempts}</strong>
-                        </div>
-                        <div>
-                          Tab Switches: <strong className="text-amber-400">{app.tabSwitches}</strong>
-                        </div>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-300">
-                        <strong className="text-slate-400 block mb-1">Stage 3 SxS Justification Sample:</strong>
-                        {app.justification}
-                      </div>
-
-                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                        <div className="flex flex-wrap gap-2">
-                          <button
-                            onClick={() =>
-                              setApplicants(
-                                applicants.map((a) =>
-                                  a.id === app.id ? { ...a, status: 'Approved & Certified' } : a
-                                )
-                              )
-                            }
-                            className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold"
-                          >
-                            ✓ Approve Evaluator
-                          </button>
-                          <button
-                            onClick={() =>
-                              setApplicants(
-                                applicants.map((a) => (a.id === app.id ? { ...a, status: 'Rejected' } : a))
-                              )
-                            }
-                            className="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold"
-                          >
-                            ✕ Reject
-                          </button>
-                        </div>
-
-                        {/* CV VIEW / DOWNLOAD BUTTON */}
-                        {app.cvDataUrl ? (
-                          <a
-                            href={app.cvDataUrl}
-                            download={app.cvFileName || `${app.fullName}_CV.pdf`}
-                            className="px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold flex items-center gap-1.5"
-                          >
-                            <span>📄 Download Uploaded CV ({app.cvFileName})</span>
-                          </a>
-                        ) : (
-                          <button
-                            onClick={() =>
-                              alert(
-                                `Candidate CV Summary for ${app.fullName}:\nTrack: ${app.track}\nExperience: ${app.experience}\nFile: ${app.cvFileName}`
-                              )
-                            }
-                            className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold"
-                          >
-                            📄 Inspect Dossier ({app.cvFileName || 'CV.pdf'})
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* TAB 2: B2B CLIENT POC LEADS */}
-              {adminTab === 'leads' && (
-                <div className="space-y-3 text-xs">
-                  {clientLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      className="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4"
-                    >
-                      <div className="space-y-1">
-                        <div className="text-sm font-bold text-white">
-                          {lead.company} ({lead.id})
-                        </div>
-                        <div className="text-slate-400">
-                          Contact: {lead.contact} • {lead.email}
-                        </div>
-                        <div className="text-emerald-400 font-semibold">
-                          Track: {lead.useCase} ({lead.volume})
-                        </div>
-                      </div>
-                      <span className="px-3 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-300 font-bold">
-                        {lead.status}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {/* TAB 3: TWO-WAY SUPPORT HELPDESK TICKETS + EMAIL DISPATCH */}
-              {adminTab === 'tickets' && (
-                <div className="space-y-4 text-xs">
-                  {tickets.map((t) => (
-                    <div key={t.id} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-                      <div className="flex flex-wrap items-center justify-between gap-2">
-                        <div>
-                          <span className="font-bold text-white text-sm">
-                            {t.id} — {t.subject}
-                          </span>
-                          <span className="text-slate-400 ml-2">
-                            From: {t.senderName} ({t.senderEmail})
-                          </span>
-                        </div>
-                        <span
-                          className={`px-2.5 py-1 rounded font-bold ${
-                            t.reply
-                              ? 'bg-emerald-500/20 text-emerald-300'
-                              : 'bg-amber-500/20 text-amber-300'
+                    <div className="flex items-center bg-slate-950 rounded-lg p-1 border border-slate-800 text-xs">
+                      {['All', 'Open', 'Resolved & Replied'].map(statusOption => (
+                        <button
+                          key={statusOption}
+                          onClick={() => setAdminFilterStatus(statusOption)}
+                          className={`px-2.5 py-1 rounded-md font-medium transition ${
+                            adminFilterStatus === statusOption ? 'bg-cyan-600 text-white shadow' : 'text-slate-400 hover:text-white'
                           }`}
                         >
-                          {t.status}
-                        </span>
-                      </div>
-
-                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
-                        <strong className="text-slate-400 block mb-1">Complainant Message:</strong>
-                        {t.message}
-                      </div>
-
-                      {t.reply && (
-                        <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-emerald-200">
-                          <strong className="text-emerald-400 block mb-0.5">
-                            ✓ Published Reply ({t.repliedBy} at {t.repliedAt}) — Visible in User Ticket Tracker:
-                          </strong>
-                          {t.reply}
-                        </div>
-                      )}
-
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        <input
-                          type="text"
-                          placeholder="Type official Owner / QA Support resolution reply..."
-                          value={adminReplyDrafts[t.id] ?? t.reply ?? ''}
-                          onChange={(e) =>
-                            setAdminReplyDrafts({ ...adminReplyDrafts, [t.id]: e.target.value })
-                          }
-                          className="flex-1 min-w-[240px] p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleSaveTicketReply(t.id)}
-                          className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold"
-                        >
-                          ✓ Publish Reply to Portal
+                          {statusOption}
                         </button>
-                        <a
-                          href={`mailto:${t.senderEmail}?subject=${encodeURIComponent(
-                            `[${brand.name} Support ${t.id}] Re: ${t.subject}`
-                          )}&body=${encodeURIComponent(
-                            `Hello ${t.senderName},\n\nRegarding your support ticket (${t.id} - "${t.subject}"):\n\n${
-                              adminReplyDrafts[t.id] || t.reply || ''
-                            }\n\nBest regards,\n${brand.founder}\n${brand.name} Support Operations`
-                          )}`}
-                          className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 font-bold"
-                        >
-                          ✉️ Dispatch via Email
-                        </a>
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              )}
 
-              {/* TAB 4: ZERO-TRUST TEAM ROLES & ACCESS CONTROL (OWNER ONLY) */}
-              {adminTab === 'roles' && currentUser.role === 'owner' && (
-                <div className="grid lg:grid-cols-12 gap-6 text-xs">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      if (!newUserForm.email || !newUserForm.tokenHash) return;
-                      setUsers([
-                        ...users,
-                        {
-                          id: `usr-${Date.now()}`,
-                          name: newUserForm.name || 'Team Member',
-                          email: newUserForm.email.trim(),
-                          role: newUserForm.role,
-                          tokenHash: newUserForm.tokenHash.trim(),
-                          status: 'Active',
-                        },
-                      ]);
-                      setNewUserForm({ name: '', email: '', role: 'qa_lead', tokenHash: '' });
-                    }}
-                    className="lg:col-span-5 p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3"
-                  >
-                    <h3 className="text-sm font-bold text-white">Provision New Workspace Account</h3>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Full Name"
-                      value={newUserForm.name}
-                      onChange={(e) => setNewUserForm({ ...newUserForm, name: e.target.value })}
-                      className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <input
-                      type="email"
-                      required
-                      placeholder="Email Address"
-                      value={newUserForm.email}
-                      onChange={(e) => setNewUserForm({ ...newUserForm, email: e.target.value })}
-                      className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <select
-                      value={newUserForm.role}
-                      onChange={(e) => setNewUserForm({ ...newUserForm, role: e.target.value })}
-                      className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    >
-                      <option value="qa_lead">Support / QA Lead (qa_lead)</option>
-                      <option value="client">Enterprise B2B Client (client)</option>
-                      <option value="evaluator">Certified Evaluator (evaluator)</option>
-                      <option value="owner">Co-Owner (owner)</option>
-                    </select>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Assign Security Password / Token"
-                      value={newUserForm.tokenHash}
-                      onChange={(e) => setNewUserForm({ ...newUserForm, tokenHash: e.target.value })}
-                      className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-300 font-mono"
-                    />
-                    <button type="submit" className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-bold">
-                      + Create Encrypted Role Account
-                    </button>
-                  </form>
+                {/* TICKETS LIST IN ADMIN PANEL */}
+                <div className="space-y-4 pt-2">
+                  {filteredAdminTickets.length === 0 ? (
+                    <div className="bg-slate-950 border border-slate-800/80 rounded-xl p-8 text-center text-slate-500 text-sm">
+                      No tickets match the search criteria.
+                    </div>
+                  ) : (
+                    filteredAdminTickets.map(tkt => (
+                      <div key={tkt.id} className="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-4 shadow-md">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
+                          <div className="flex items-center gap-3">
+                            <span className="font-mono text-xs font-bold px-2.5 py-1 bg-cyan-950 text-cyan-300 border border-cyan-800/60 rounded-md">
+                              {tkt.id}
+                            </span>
+                            <h4 className="font-bold text-white text-base">{tkt.subject}</h4>
+                          </div>
 
-                  <div className="lg:col-span-7 space-y-2.5">
-                    {users.map((u) => (
-                      <div
-                        key={u.id}
-                        className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between"
-                      >
-                        <div>
-                          <div className="font-bold text-white">{u.name}</div>
-                          <div className="text-slate-400">{u.email}</div>
+                          <div className="flex items-center gap-2">
+                            <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold border ${
+                              tkt.status === 'Resolved & Replied'
+                                ? 'bg-emerald-950 text-emerald-300 border-emerald-800/60'
+                                : 'bg-amber-950 text-amber-300 border-amber-800/60'
+                            }`}>
+                              {tkt.status}
+                            </span>
+
+                            {/* DELETE TICKET BUTTON */}
+                            <button
+                              onClick={() => handleDeleteTicket(tkt.id)}
+                              className="px-2.5 py-1 rounded-md text-xs font-semibold bg-red-950/70 hover:bg-red-900 text-red-300 border border-red-800/50 transition"
+                              title="Delete Ticket Permanently"
+                            >
+                              🗑️ Delete Ticket
+                            </button>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                          <span className="px-2.5 py-1 rounded bg-emerald-500/15 text-emerald-300 font-bold uppercase">
-                            {u.role}
-                          </span>
+
+                        {/* TICKET DETAILS */}
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-400">
+                          <div><strong className="text-slate-500">Complainant Email:</strong> {tkt.email}</div>
+                          <div><strong className="text-slate-500">Category:</strong> {tkt.category}</div>
+                          <div><strong className="text-slate-500">Submitted:</strong> {tkt.createdAt}</div>
+                        </div>
+
+                        <div className="bg-slate-900/80 p-3 rounded-lg text-xs text-slate-300 border border-slate-800">
+                          <strong className="text-slate-400 block mb-1">Description:</strong>
+                          {tkt.description}
+                        </div>
+
+                        {/* DELIVERY GUARANTEE & READ RECEIPT BADGE FOR ADMIN */}
+                        {tkt.status === 'Resolved & Replied' && (
+                          <div className="bg-slate-900/90 p-3.5 rounded-xl border border-cyan-900/40 space-y-2">
+                            <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                              <span className="text-cyan-400 font-semibold">Official Reply ({tkt.repliedAt}):</span>
+                              
+                              {/* VERIFY IN TRACKER BUTTON */}
+                              <button
+                                onClick={() => handleAdminVerifyInTracker(tkt.id)}
+                                className="px-2.5 py-1 rounded-md bg-cyan-950 hover:bg-cyan-900 text-cyan-300 border border-cyan-800/60 transition text-xs font-semibold"
+                              >
+                                🔍 Verify in Tracker
+                              </button>
+                            </div>
+
+                            <p className="text-xs text-slate-200">{tkt.reply}</p>
+
+                            {/* DELIVERY STATUS BADGES */}
+                            <div className="pt-2 border-t border-slate-800 text-xs flex flex-wrap items-center gap-2">
+                              <span className="text-slate-400 font-medium">Delivery Guarantee Status:</span>
+                              {tkt.confirmedByComplainantAt ? (
+                                <span className="px-2.5 py-1 rounded-md bg-emerald-950 text-emerald-300 border border-emerald-800/60 font-semibold">
+                                  ✅ Receipt Confirmed by Complainant at {tkt.confirmedByComplainantAt}
+                                </span>
+                              ) : tkt.viewedByComplainantAt ? (
+                                <span className="px-2.5 py-1 rounded-md bg-blue-950 text-blue-300 border border-blue-800/60 font-semibold">
+                                  👁️ Viewed by Complainant at {tkt.viewedByComplainantAt}
+                                </span>
+                              ) : (
+                                <span className="px-2.5 py-1 rounded-md bg-amber-950 text-amber-300 border border-amber-800/60 font-semibold">
+                                  📤 Published to Portal (Awaiting User View)
+                                </span>
+                              )}
+                            </div>
+
+                            {tkt.followUpMessage && (
+                              <div className="mt-2 p-2.5 bg-amber-950/30 border border-amber-800/40 rounded-lg text-xs text-amber-200">
+                                <strong>Complainant Follow-up:</strong> "{tkt.followUpMessage}"
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {/* ADMIN REPLY ACTION / FORM */}
+                        <div className="pt-2 flex flex-wrap items-center gap-2">
+                          {selectedTicketIdForReply === tkt.id ? (
+                            <div className="w-full space-y-3 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                              <label className="block text-xs font-semibold text-slate-300">
+                                Write Official Resolution Reply (Signed as {INITIAL_BRAND.founder}):
+                              </label>
+                              <textarea
+                                rows={3}
+                                value={adminReplyText}
+                                onChange={(e) => setAdminReplyText(e.target.value)}
+                                placeholder="Type the official technical resolution details..."
+                                className="w-full p-3 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500"
+                              />
+
+                              <div className="flex flex-wrap items-center gap-2">
+                                <button
+                                  onClick={() => handleAdminPublishReply(tkt.id)}
+                                  className="px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-md shadow-emerald-600/20"
+                                >
+                                  Publish Reply to Portal
+                                </button>
+
+                                {/* SEND DIRECT EMAIL COPY BUTTON */}
+                                <a
+                                  href={`mailto:${tkt.email}?subject=${encodeURIComponent(`[ArabEval QA #${tkt.id}] Official Support Resolution`)}&body=${encodeURIComponent(`Dear User,\n\nHere is the official resolution regarding your support ticket #${tkt.id} (${tkt.subject}):\n\n${adminReplyText}\n\nBest regards,\n${INITIAL_BRAND.founder}\nArabEval QA Platform`)}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-900/80 hover:bg-cyan-800 text-cyan-200 border border-cyan-700/60 transition inline-flex items-center gap-1"
+                                >
+                                  📧 Send Email Copy to Complainant
+                                </a>
+
+                                <button
+                                  onClick={() => setSelectedTicketIdForReply(null)}
+                                  className="px-3 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700 transition"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setSelectedTicketIdForReply(tkt.id);
+                                setAdminReplyText(tkt.reply || '');
+                              }}
+                              className="px-3.5 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600/20 hover:bg-cyan-600/30 text-cyan-300 border border-cyan-500/30 transition"
+                            >
+                              {tkt.reply ? '✏️ Edit Reply' : '💬 Respond & Resolve'}
+                            </button>
+                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    ))
+                  )}
                 </div>
-              )}
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
 
-              {/* TAB 5: LIVE BRANDING STUDIO */}
-              {adminTab === 'brand' && currentUser.role === 'owner' && (
-                <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4 text-xs">
-                  <h3 className="text-sm font-bold text-white">Instant Agency Brand Presets (1-Click Switch)</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {[
-                      {
-                        name: 'ArabEval QA',
-                        tagline: 'Enterprise Arabic & Multimodal AI Evaluation & Quality Assurance',
-                      },
-                      {
-                        name: 'Mizan AI Labs',
-                        tagline: 'Precision Arabic RLHF, Speech-to-Speech & Financial AI Auditing',
-                      },
-                      {
-                        name: 'Qiyas Multimodal',
-                        tagline: 'MENA Sovereign AI Alignment, Red-Teaming & S2S Quality Assurance',
-                      },
-                      {
-                        name: 'Sanad AI Verification',
-                        tagline: 'Zero-Trust Human-in-the-Loop Evaluation for Frontier Models',
-                      },
-                    ].map((preset) => (
-                      <button
-                        key={preset.name}
-                        onClick={() => setBrand({ ...brand, name: preset.name, tagline: preset.tagline })}
-                        className="px-4 py-2 rounded-xl bg-slate-950 border border-slate-800 hover:border-emerald-500 text-emerald-300 font-bold"
-                      >
-                        Apply "{preset.name}"
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </>
-          )}
-        </main>
-      )}
+      {/* FOOTER */}
+      <footer className="mt-auto bg-slate-900 border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+        <div className="max-w-7xl mx-auto px-4 space-y-1">
+          <p>{INITIAL_BRAND.name} — Executive Quality Assurance & Dialect AI Benchmarking Platform</p>
+          <p>Managed by {INITIAL_BRAND.founder} • All rights reserved 2026</p>
+        </div>
+      </footer>
 
-      {/* =====================================================================
-          MODAL 1: ZERO-TRUST WORKSPACE SIGN-IN (AUTOCOMPLETE OFF)
-         ===================================================================== */}
+      {/* ============================================================================ */}
+      {/* MODAL 1: WORKSPACE SIGN-IN MODAL */}
+      {/* ============================================================================ */}
       {showSignInModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <form
-            onSubmit={handleWorkspaceSignIn}
-            autoComplete="off"
-            className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-2xl"
-          >
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div>
-                <span className="text-[11px] font-bold uppercase text-emerald-400">Zero-Trust RBAC Gateway</span>
-                <h3 className="text-lg font-black text-white">Workspace Sign-In</h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setShowSignInModal(false)}
-                className="text-slate-400 hover:text-white text-sm"
-              >
-                ✕
-              </button>
-            </div>
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-md p-6 relative shadow-2xl">
+            {/* CLEAR CLOSE BUTTON ✕ */}
+            <button
+              onClick={() => setShowSignInModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg w-8 h-8 flex items-center justify-center text-base font-bold transition"
+              title="Close Modal"
+            >
+              ✕
+            </button>
 
-            <div className="space-y-3 text-xs">
+            <h3 className="text-xl font-bold text-white mb-1">Workspace & Admin Sign-In</h3>
+            <p className="text-xs text-slate-400 mb-6">Enter Master Admin credentials to access executive controls.</p>
+
+            <form onSubmit={handleAdminLogin} className="space-y-4">
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Registered Workspace Email *</label>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Email Address</label>
                 <input
                   type="email"
                   required
-                  autoComplete="new-password"
-                  placeholder="name@company.com"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  placeholder="abdelrhman.maroxo@gmail.com"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
                 />
               </div>
+
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Security Password / Access Token *</label>
+                <label className="block text-xs font-semibold text-slate-300 mb-1">Password</label>
                 <input
                   type="password"
                   required
-                  autoComplete="new-password"
-                  placeholder="Enter your workspace security token"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  placeholder="••••••••••••"
+                  className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
                 />
               </div>
-              {loginError && <p className="text-rose-400 font-semibold">{loginError}</p>}
-            </div>
 
-            <div className="flex items-center justify-between pt-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowSignInModal(false);
-                  setActivePage('apply');
-                }}
-                className="text-xs text-emerald-400 hover:underline"
-              >
-                New Evaluator? Upload CV & Sign NDA →
-              </button>
+              {loginError && (
+                <div className="p-3 bg-red-950/60 border border-red-800/50 rounded-xl text-xs text-red-300">
+                  {loginError}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs"
+                className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition shadow-lg shadow-cyan-600/20"
               >
-                Authenticate →
+                Sign In to Executive Console
               </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       )}
 
-      {/* =====================================================================
-          MODAL 2: TWO-WAY SUPPORT HELPDESK & LIVE TICKET REPLY TRACKER
-         ===================================================================== */}
+      {/* ============================================================================ */}
+      {/* MODAL 2: SUPPORT & TICKET TRACKER MODAL */}
+      {/* ============================================================================ */}
       {showSupportModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="w-full max-w-lg p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-2xl text-xs">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div>
-                <span className="text-[11px] font-bold uppercase text-emerald-400">24/7 QA Operations Helpdesk</span>
-                <h3 className="text-base font-black text-white">Support Ticket & Live Resolution Tracker</h3>
-              </div>
-              <button type="button" onClick={() => setShowSupportModal(false)} className="text-slate-400">
-                ✕
-              </button>
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl max-h-[90vh] flex flex-col overflow-hidden">
+            {/* CLEAR CLOSE BUTTON ✕ */}
+            <button
+              onClick={() => setShowSupportModal(false)}
+              className="absolute top-4 right-4 text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700 rounded-lg w-8 h-8 flex items-center justify-center text-base font-bold transition z-10"
+              title="Close Modal"
+            >
+              ✕
+            </button>
+
+            <div className="mb-4 pr-10">
+              <h3 className="text-xl font-bold text-white">Support & Ticket Tracker</h3>
+              <p className="text-xs text-slate-400">Submit an inquiry or track your ticket status & official responses in real-time.</p>
             </div>
 
-            {/* SWITCH BETWEEN SUBMITTING A TICKET AND CHECKING OWNER/SUPPORT REPLIES */}
-            <div className="grid grid-cols-2 gap-2">
+            {/* MODAL TAB NAVIGATION */}
+            <div className="flex border-b border-slate-800 mb-4">
               <button
-                type="button"
-                onClick={() => setSupportModalTab('submit')}
-                className={`py-2 rounded-xl font-bold ${
-                  supportModalTab === 'submit'
-                    ? 'bg-emerald-500 text-slate-950'
-                    : 'bg-slate-950 text-slate-300 border border-slate-800'
+                onClick={() => setSupportTab('submit')}
+                className={`pb-3 px-4 text-xs font-bold transition border-b-2 ${
+                  supportTab === 'submit' ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'
                 }`}
               >
                 1. Submit New Ticket
               </button>
               <button
-                type="button"
-                onClick={() => setSupportModalTab('track')}
-                className={`py-2 rounded-xl font-bold ${
-                  supportModalTab === 'track'
-                    ? 'bg-emerald-500 text-slate-950'
-                    : 'bg-slate-950 text-slate-300 border border-slate-800'
+                onClick={() => setSupportTab('track')}
+                className={`pb-3 px-4 text-xs font-bold transition border-b-2 ${
+                  supportTab === 'track' ? 'border-cyan-500 text-cyan-400' : 'border-transparent text-slate-400 hover:text-white'
                 }`}
               >
                 2. Track Ticket & View Replies
               </button>
             </div>
 
-            {supportModalTab === 'submit' ? (
-              <form onSubmit={handleSupportSubmit} className="space-y-3">
-                <input
-                  type="text"
-                  required
-                  placeholder="Your Name"
-                  value={supportForm.name}
-                  onChange={(e) => setSupportForm({ ...supportForm, name: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <input
-                  type="email"
-                  required
-                  placeholder="Your Email Address (Used to track replies)"
-                  value={supportForm.email}
-                  onChange={(e) => setSupportForm({ ...supportForm, email: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <input
-                  type="text"
-                  required
-                  placeholder="Subject (e.g. PoC Batch Calibration / Evaluator Onboarding)"
-                  value={supportForm.subject}
-                  onChange={(e) => setSupportForm({ ...supportForm, subject: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <textarea
-                  rows={3}
-                  required
-                  placeholder="Describe your inquiry..."
-                  value={supportForm.message}
-                  onChange={(e) => setSupportForm({ ...supportForm, message: e.target.value })}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                {lastCreatedTicketId && (
-                  <div className="p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 space-y-1">
-                    <div className="font-bold text-emerald-400">
-                      ✓ Ticket Logged! Your Reference ID: {lastCreatedTicketId}
+            {/* MODAL BODY */}
+            <div className="flex-1 overflow-y-auto pr-1 space-y-4">
+              {/* SUBMIT TICKET FORM */}
+              {supportTab === 'submit' && (
+                <form onSubmit={handleSubmitTicket} className="space-y-4">
+                  {submitSuccess && (
+                    <div className="p-3 bg-emerald-950/80 border border-emerald-800/60 rounded-xl text-xs text-emerald-300">
+                      {submitSuccess}
                     </div>
-                    <p>
-                      Switch to the <strong>"2. Track Ticket & View Replies"</strong> tab anytime using your email or ID{' '}
-                      <strong>{lastCreatedTicketId}</strong> to view the Owner/Support response.
-                    </p>
+                  )}
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Subject</label>
+                      <input
+                        type="text"
+                        required
+                        value={newSubject}
+                        onChange={(e) => setNewSubject(e.target.value)}
+                        placeholder="e.g. S2S Audio Dialect Evaluation Inquiry"
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Your Email</label>
+                      <input
+                        type="email"
+                        required
+                        value={newEmail}
+                        onChange={(e) => setNewEmail(e.target.value)}
+                        placeholder="you@company.com"
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
+                      />
+                    </div>
                   </div>
-                )}
-                <button type="submit" className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">
-                  Submit Support Ticket
-                </button>
-              </form>
-            ) : (
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Enter your Email Address or Ticket ID (e.g. TKT-701 or tariq@khaleejfintech.sa)"
-                  value={ticketLookupQuery}
-                  onChange={(e) => setTicketLookupQuery(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <div className="max-h-64 overflow-y-auto space-y-2.5">
-                  {matchedLookupTickets.length === 0 ? (
-                    <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 text-center">
-                      Enter the email address or Ticket ID you used when submitting your ticket to view live replies.
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                      <select
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500"
+                      >
+                        <option value="S2S Audio QA">S2S Audio QA</option>
+                        <option value="Financial Modeling">Financial Modeling</option>
+                        <option value="RLHF Red-Teaming">RLHF Red-Teaming</option>
+                        <option value="Code QA">Code QA</option>
+                        <option value="General Support">General Support</option>
+                      </select>
                     </div>
-                  ) : (
-                    matchedLookupTickets.map((t) => (
-                      <div key={t.id} className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
-                        <div className="flex justify-between">
-                          <span className="font-bold text-emerald-400">
-                            {t.id} — {t.subject}
-                          </span>
-                          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold">{t.status}</span>
-                        </div>
-                        <p className="text-slate-300">{t.message}</p>
-                        {t.reply ? (
-                          <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 space-y-1">
-                            <div className="font-bold text-emerald-400">
-                              ✓ Official Resolution from {t.repliedBy} ({t.repliedAt}):
-                            </div>
-                            <p>{t.reply}</p>
-                          </div>
-                        ) : (
-                          <div className="text-amber-400 font-semibold">
-                            ⏳ Status: Open — Assigned to QA Support Lead for review.
-                          </div>
-                        )}
+
+                    <div>
+                      <label className="block text-xs font-semibold text-slate-300 mb-1">Priority</label>
+                      <select
+                        value={newPriority}
+                        onChange={(e) => setNewPriority(e.target.value)}
+                        className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white focus:outline-none focus:border-cyan-500"
+                      >
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-300 mb-1">Description</label>
+                    <textarea
+                      rows={4}
+                      required
+                      value={newDesc}
+                      onChange={(e) => setNewDesc(e.target.value)}
+                      placeholder="Provide details about your evaluation requirement or inquiry..."
+                      className="w-full p-3 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition shadow-lg shadow-cyan-600/20"
+                  >
+                    Submit Ticket & Generate ID
+                  </button>
+                </form>
+              )}
+
+              {/* TRACK TICKET TAB */}
+              {supportTab === 'track' && (
+                <div className="space-y-4">
+                  <form onSubmit={(e) => handleSearchTicket(e)} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter Ticket ID (e.g. TKT-8021)"
+                      value={searchTicketId}
+                      onChange={(e) => setSearchTicketId(e.target.value)}
+                      className="flex-1 px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 uppercase font-mono"
+                    />
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-xl text-xs font-semibold transition"
+                    >
+                      Search Ticket
+                    </button>
+                  </form>
+
+                  {/* SAVED USER TICKET QUICK LIST WITH NOTIFICATION BADGE */}
+                  {userTicketIds.length > 0 && (
+                    <div className="bg-slate-950/60 p-3 rounded-xl border border-slate-800/80 space-y-2">
+                      <div className="text-xs text-slate-400 font-semibold">Your Recent Tickets (Saved in Browser):</div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        {userTicketIds.map(tId => {
+                          const matchingTkt = tickets.find(t => t.id === tId);
+                          const isReplied = matchingTkt && matchingTkt.reply;
+                          return (
+                            <button
+                              key={tId}
+                              onClick={() => {
+                                setSearchTicketId(tId);
+                                handleSearchTicket(null, tId);
+                              }}
+                              className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold border flex items-center gap-1.5 transition ${
+                                searchTicketId === tId
+                                  ? 'bg-cyan-600 text-white border-cyan-500'
+                                  : 'bg-slate-900 text-cyan-300 border-slate-800 hover:bg-slate-800'
+                              }`}
+                            >
+                              <span>{tId}</span>
+                              {isReplied && (
+                                <span className="px-1.5 py-0.2 text-[10px] bg-emerald-500 text-slate-950 rounded-full font-sans font-extrabold" title="Official Reply Received!">
+                                  🔔 Reply!
+                                </span>
+                              )}
+                            </button>
+                          );
+                        })}
                       </div>
-                    ))
+                    </div>
+                  )}
+
+                  {lookupError && (
+                    <div className="p-3 bg-red-950/60 border border-red-800/50 rounded-xl text-xs text-red-300">
+                      {lookupError}
+                    </div>
+                  )}
+
+                  {/* DISPLAY TRACKED TICKET DETAILS & COMPLAINANT ACTIONS */}
+                  {trackedTicket && (
+                    <div className="bg-slate-950 border border-slate-800 rounded-xl p-5 space-y-4">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <div>
+                          <span className="font-mono text-xs font-bold px-2 py-1 bg-cyan-950 text-cyan-300 border border-cyan-800/60 rounded">
+                            {trackedTicket.id}
+                          </span>
+                          <h4 className="font-bold text-white text-base mt-2">{trackedTicket.subject}</h4>
+                        </div>
+                        <span className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${
+                          trackedTicket.status === 'Resolved & Replied'
+                            ? 'bg-emerald-950 text-emerald-300 border-emerald-800/60'
+                            : 'bg-amber-950 text-amber-300 border-amber-800/60'
+                        }`}>
+                          {trackedTicket.status}
+                        </span>
+                      </div>
+
+                      <div className="text-xs text-slate-400 space-y-1">
+                        <div><strong className="text-slate-500">Submitted by:</strong> {trackedTicket.email}</div>
+                        <div><strong className="text-slate-500">Date:</strong> {trackedTicket.createdAt}</div>
+                        <div><strong className="text-slate-500">Category:</strong> {trackedTicket.category}</div>
+                      </div>
+
+                      <div className="bg-slate-900 p-3 rounded-lg text-xs text-slate-300 border border-slate-800">
+                        <strong className="text-slate-400 block mb-1">Your Issue Description:</strong>
+                        {trackedTicket.description}
+                      </div>
+
+                      {/* OFFICIAL REPLY SECTION & COMPLAINANT CONFIRMATION BUTTON */}
+                      {trackedTicket.reply ? (
+                        <div className="bg-slate-900 p-4 rounded-xl border border-cyan-800/50 space-y-3">
+                          <div className="flex items-center justify-between text-xs text-cyan-400 font-semibold border-b border-slate-800 pb-2">
+                            <span>Official Support Resolution ({trackedTicket.repliedAt}):</span>
+                            <span>Signed: {trackedTicket.repliedBy}</span>
+                          </div>
+
+                          <p className="text-xs text-slate-200 leading-relaxed">{trackedTicket.reply}</p>
+
+                          {/* COMPLAINANT CONFIRMATION & ACKNOWLEDGMENT */}
+                          <div className="pt-3 border-t border-slate-800 space-y-3">
+                            {trackedTicket.confirmedByComplainantAt ? (
+                              <div className="p-3 bg-emerald-950/70 border border-emerald-800/60 rounded-xl text-xs text-emerald-300 font-semibold flex items-center gap-2">
+                                <span>✓</span>
+                                <span>Receipt officially confirmed by you on {trackedTicket.confirmedByComplainantAt}</span>
+                              </div>
+                            ) : (
+                              <button
+                                onClick={() => handleConfirmReceipt(trackedTicket.id)}
+                                className="w-full py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition shadow-lg shadow-emerald-600/20"
+                              >
+                                ✓ Confirm Receipt & Acknowledge Resolution
+                              </button>
+                            )}
+
+                            {/* FOLLOW-UP MESSAGE INPUT */}
+                            <div className="space-y-2 pt-2">
+                              {trackedTicket.followUpMessage && (
+                                <div className="p-2.5 bg-amber-950/30 border border-amber-800/40 rounded-lg text-xs text-amber-200">
+                                  <strong>Your Recorded Follow-up:</strong> "{trackedTicket.followUpMessage}"
+                                </div>
+                              )}
+
+                              <div className="flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  placeholder="Write a follow-up inquiry if needed..."
+                                  value={userFollowUpInput}
+                                  onChange={(e) => setUserFollowUpInput(e.target.value)}
+                                  className="flex-1 px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500"
+                                />
+                                <button
+                                  onClick={() => handleAddFollowUp(trackedTicket.id)}
+                                  className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold transition"
+                                >
+                                  Submit Follow-up
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="p-4 bg-amber-950/20 border border-amber-800/40 rounded-xl text-xs text-amber-300">
+                          ⏳ Your ticket is currently queued and under active review by the Executive Desk. Please check back shortly.
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       )}
-
-      {/* FOOTER */}
-      <footer className="border-t border-slate-900 mt-20 py-8 px-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} {brand.name} • Architected by {brand.founder} • Enterprise Arabic & Multimodal AI Quality Assurance.
-      </footer>
     </div>
   );
-}
+}==============================
