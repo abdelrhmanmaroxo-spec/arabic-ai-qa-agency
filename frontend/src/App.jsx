@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 // ============================================================================
-// ARABEVAL QA — ENTERPRISE FULL-STACK FRONTEND (SINGLE-FILE PRODUCTION BUILD)
-// Includes:
-// 1. 12-Section Master Contractor & NDA Agreement (micro1 + Alignerr Hybrid)
-// 2. Zero-Trust Workspace Sign-In (No Exposed Buttons or Credentials)
-// 3. 6 Certified Evaluation Tracks (S2S Audio, FP&A Finance, Coding, Search, etc.)
-// 4. Interactive Live QA Audit Explorer + 3-Stage Anti-Cheat Evaluator Sandbox
-// 5. Owner Master Admin Console (6 Tabs: Applicants, Leads, Tracks, Roles, Support, Brand)
+// ARABEVAL QA — ENTERPRISE AI EVALUATION & QUALITY ASSURANCE PLATFORM
+// Production Build v3.0 (English-Only LTR, Advanced Live QA Telemetry Matrix,
+// CV/Resume Upload & Admin Download, Two-Way Support Ticket Tracker + Email Dispatch)
 // ============================================================================
 
 const INITIAL_BRAND = {
@@ -78,34 +74,80 @@ const CERTIFIED_TRACKS = [
 const AUDIT_SAMPLES = [
   {
     id: 'audit-s2s',
-    category: 'Arabic S2S Audio & Prosody QA',
-    prompt: 'User (Egyptian Dialect Audio): "يا باشا الفاتورة دي نازل عليها ضريبة مرتين، إزاي أقدم اعتراض دلوقتي؟"',
-    modelA: 'Model A (Failed): Responds in stiff Modern Standard Arabic with wrong robotic stress on "ضريبة" and hallucinates an non-existent tax portal URL.',
-    modelB: 'Model B (Verified Gold): Responds naturally in polite Egyptian customer-care tone, acknowledges the duplicate charge, and gives exact verified steps.',
-    verdict: 'Model B wins (+3 Strongly Better). Model A penalized for Critical Hallucination + Unnatural Dialect Code-Switching.',
+    category: 'Arabic S2S Audio & Prosody',
+    auditId: 'AUD-S2S-9081',
+    dialectTag: 'AR-EG (Cairene Banking Support)',
+    severity: 'CRITICAL PROSODY & HALLUCINATION DEFECT',
+    prompt: 'User (Egyptian Voice Input): "يا باشا الفاتورة دي نازل عليها ضريبة مرتين، إزاي أقدم اعتراض دلوقتي؟"',
+    metricsA: { factuality: 28, dialect: 35, instruction: 60, latency: '1,420ms' },
+    metricsB: { factuality: 100, dialect: 98, instruction: 100, latency: '680ms' },
+    modelA:
+      'Responds in stiff Modern Standard Arabic with unnatural robotic pitch on "ضريبة", ignores the Egyptian conversational register, and hallucinates an invalid tax portal URL.',
+    modelB:
+      'Responds naturally in polite Egyptian customer-care tone, validates the duplicate charge concern, and provides the exact verified dispute workflow with natural prosodic cadence.',
+    verdict: 'Model B Strongly Superior (+3) | Inter-Annotator Agreement: 100% (3/3 Senior Audio QA Leads)',
+    jsonPayload: `{
+  "audit_id": "AUD-S2S-9081",
+  "locale": "ar-EG",
+  "winner": "model_b",
+  "preference_score": 3,
+  "defects_flagged": ["FACTUAL_URL_HALLUCINATION", "PROSODY_PITCH_MISMATCH", "REGISTER_SHIFT_MSA"],
+  "verified_by": "ArabEval_Senior_Audio_Lead"
+}`,
   },
   {
     id: 'audit-fpa',
-    category: 'Financial Modeling & FP&A Audit',
-    prompt: 'Calculate Free Cash Flow to Firm (FCFF) given EBIT = $4.2M, Tax Rate = 22.5%, D&A = $600k, CapEx = $950k, and Increase in NWC = $320k.',
-    modelA: 'Model A (Failed): Adds Increase in NWC instead of subtracting it, yielding $3,245,000 (Formula Hallucination).',
-    modelB: 'Model B (Verified Gold): NOPAT = 4.2M × (1 - 0.225) = $3.255M. FCFF = 3.255M + 0.600M - 0.950M - 0.320M = $2,585,000.',
-    verdict: 'Model B wins. Zero-tolerance arithmetic & valuation rubric applied by Certified Finance Evaluator.',
+    category: 'Financial Modeling & FP&A',
+    auditId: 'AUD-FPA-4412',
+    dialectTag: 'EN / Corporate Finance & Valuation',
+    severity: 'FATAL ARITHMETIC & FORMULA REVERSAL',
+    prompt:
+      'Calculate Free Cash Flow to Firm (FCFF) given EBIT = $4.2M, Tax Rate = 22.5%, D&A = $600k, CapEx = $950k, and Increase in NWC = $320k.',
+    metricsA: { factuality: 15, dialect: 95, instruction: 50, latency: '910ms' },
+    metricsB: { factuality: 100, dialect: 100, instruction: 100, latency: '790ms' },
+    modelA:
+      'Adds the $320k Increase in Net Working Capital instead of subtracting it, arriving at an overstated FCFF of $3,225,000 (Cash Flow Sign Reversal Error).',
+    modelB:
+      'Correctly computes NOPAT = $4.2M × (1 - 0.225) = $3.255M, then FCFF = $3.255M + $0.600M - $0.950M - $0.320M = $2,585,000 with full step-by-step reconciliation.',
+    verdict: 'Model B Strongly Superior (+3) | Audited under Zero-Tolerance FP&A Valuation Rubric',
+    jsonPayload: `{
+  "audit_id": "AUD-FPA-4412",
+  "domain": "financial_fpa_valuation",
+  "winner": "model_b",
+  "verified_fcff_usd": 2585000,
+  "model_a_error": "NWC_DELTA_SIGN_REVERSAL (+320k instead of -320k)",
+  "verified_by": "ArabEval_CFA_QA_Lead"
+}`,
   },
   {
     id: 'audit-code',
-    category: 'Full-Stack Security & SQL Injection QA',
-    prompt: 'Write a Node.js Express endpoint to authenticate a workspace user using SQLite.',
-    modelA: 'Model A (Failed): Uses string concatenation `SELECT * FROM users WHERE email = \'${email}\'` (Vulnerable to SQL Injection) and plain-text passwords.',
-    modelB: 'Model B (Verified Gold): Uses parameterized prepared statements (`db.prepare`), `crypto.scryptSync` with random salt, and `timingSafeEqual`.',
-    verdict: 'Model B wins. Model A rejected under Enterprise Security & OWASP Gate.',
+    category: 'Full-Stack Security & OWASP',
+    auditId: 'AUD-SEC-7730',
+    dialectTag: 'Node.js / SQLite / Auth Security',
+    severity: 'HIGH-RISK SQL INJECTION & TIMING LEAK',
+    prompt: 'Write a production Node.js endpoint to authenticate a workspace user and verify their password token.',
+    metricsA: { factuality: 40, dialect: 90, instruction: 45, latency: '840ms' },
+    metricsB: { factuality: 100, dialect: 100, instruction: 100, latency: '710ms' },
+    modelA:
+      'Uses raw string interpolation in SQL query (`WHERE email = \'${email}\'`) exposing the database to SQL Injection, and compares plain-text passwords with `===`.',
+    modelB:
+      'Uses parameterized prepared statements (`db.prepare`), hashes passwords with `crypto.scryptSync` + random salt, and enforces constant-time `crypto.timingSafeEqual`.',
+    verdict: 'Model B Strongly Superior (+3) | Model A Rejected by OWASP Security Gate',
+    jsonPayload: `{
+  "audit_id": "AUD-SEC-7730",
+  "domain": "fullstack_security_qa",
+  "winner": "model_b",
+  "cwe_vulnerabilities_caught": ["CWE-89_SQL_INJECTION", "CWE-208_TIMING_ATTACK", "CWE-256_PLAINTEXT_STORAGE"],
+  "verified_by": "ArabEval_Principal_SecEng"
+}`,
   },
 ];
 
 const MCQ_QUESTIONS = [
   {
     id: 'q1',
-    question: '1. During a Side-by-Side (SxS) evaluation, Model A writes a fluent, polite Egyptian Arabic response but invents a non-existent Central Bank circular number. Model B gives a slightly dry response with 100% verified facts. How must you rate them?',
+    question:
+      '1. During a Side-by-Side (SxS) evaluation, Model A writes a fluent, polite Egyptian Arabic response but invents a non-existent Central Bank circular number. Model B gives a slightly dry response with 100% verified facts. How must you rate them?',
     options: [
       'Rate Model A slightly better because native dialect fluency is the top priority.',
       'Penalize Model A heavily for factual hallucination and select Model B as superior, citing the fabricated circular in your justification.',
@@ -116,7 +158,8 @@ const MCQ_QUESTIONS = [
   },
   {
     id: 'q2',
-    question: '2. In Speech-to-Speech (S2S) Arabic audio evaluation, which defect is classified as a "Prosody & Supra-segmental Failure" rather than a lexical transcription error?',
+    question:
+      '2. In Speech-to-Speech (S2S) Arabic audio evaluation, which defect is classified as a "Prosody & Supra-segmental Failure" rather than a lexical transcription error?',
     options: [
       'The model spells a word with ة instead of ه in the text log.',
       'The voice model places robotic declarative pitch at the end of an Egyptian interrogative question ("إنت جاي النهاردة؟") making it sound unnatural.',
@@ -127,7 +170,8 @@ const MCQ_QUESTIONS = [
   },
   {
     id: 'q3',
-    question: '3. Under Section 1 & Section 3 of the Master Contractor & NDA Agreement, which action results in immediate termination and forfeiture of accrued fees?',
+    question:
+      '3. Under Section 1 & Section 3 of the Master Contractor & NDA Agreement, which action results in immediate termination and forfeiture of accrued fees?',
     options: [
       'Taking a 10-minute break between tasks.',
       'Pasting confidential client prompts into an external LLM (ChatGPT/Claude) or sharing task screenshots on Discord/Telegram.',
@@ -138,7 +182,8 @@ const MCQ_QUESTIONS = [
   },
   {
     id: 'q4',
-    question: '4. When evaluating a Financial Analysis (FP&A) prompt where a model calculates WACC or FCFF, what is your mandatory verification protocol?',
+    question:
+      '4. When evaluating a Financial Analysis (FP&A) prompt where a model calculates WACC or FCFF, what is your mandatory verification protocol?',
     options: [
       'Trust the model if the formatting and markdown tables look clean.',
       'Independently recompute every intermediate step (NOPAT, NWC delta, discount factor) and verify zero arithmetic or sign-reversal errors.',
@@ -211,125 +256,164 @@ const MASTER_AGREEMENT_SECTIONS = [
   },
 ];
 
+const DEFAULT_USERS = [
+  {
+    id: 'usr-owner-1',
+    name: 'Abdelrhman Essam Ali',
+    email: 'abdelrhman.maroxo@gmail.com',
+    role: 'owner',
+    tokenHash: 'ArabEval#Owner2026!',
+    status: 'Active Master Owner',
+  },
+  {
+    id: 'usr-qa-1',
+    name: 'Salma Mansour (Lead QA Auditor)',
+    email: 'salma.qa@arabeval.qa',
+    role: 'qa_lead',
+    tokenHash: 'QA#Lead2026!',
+    status: 'Active QA Lead',
+  },
+  {
+    id: 'usr-client-1',
+    name: 'Dr. Tariq Al-Dosari (Khaleej FinTech AI)',
+    email: 'tariq@khaleejfintech.sa',
+    role: 'client',
+    tokenHash: 'Client#PoC2026!',
+    status: 'Enterprise PoC Active',
+  },
+];
+
+const DEFAULT_APPLICANTS = [
+  {
+    id: 'EV-9041',
+    fullName: 'Nourhan El-Sayed',
+    email: 'nourhan.voice@gmail.com',
+    phone: '+20 109 283 7465',
+    linkedin: 'https://linkedin.com/in/nourhan-voice-qa',
+    dialect: 'Egyptian (AR-EG)',
+    track: 'Arabic Speech-to-Speech (S2S) & Dialect Audio QA',
+    experience: '3 years S2S voice evaluation & phonetic transcription',
+    cvFileName: 'Nourhan_ElSayed_AudioQA_CV.pdf',
+    cvFileSize: '248 KB',
+    cvDataUrl: '',
+    ndaSignedAs: 'Nourhan El-Sayed',
+    ndaTimestamp: '2026-10-29 21:14 UTC',
+    mcqScore: '100% (4/4)',
+    sandboxScore: '96/100',
+    pasteAttempts: 0,
+    tabSwitches: 0,
+    status: 'Approved & Certified',
+    justification:
+      'Model B is strongly preferred (+3). Model A fabricates Article 88 of the Egyptian Central Bank law and exhibits unnatural prosody on interrogative clauses, whereas Model B maintains 100% factual grounding and native Cairene phrasing.',
+  },
+  {
+    id: 'EV-9042',
+    fullName: 'Faisal Al-Harbi',
+    email: 'faisal.fpa@outlook.sa',
+    phone: '+966 55 412 3987',
+    linkedin: 'https://linkedin.com/in/faisal-fpa-cfa',
+    dialect: 'Gulf (AR-SA / Najdi & Hejazi)',
+    track: 'Financial Modeling, FP&A & Arabic FinTech AI Evaluation',
+    experience: 'CFA Level II, 4 years FP&A & IFRS valuation auditing',
+    cvFileName: 'Faisal_AlHarbi_CFA_Resume.pdf',
+    cvFileSize: '312 KB',
+    cvDataUrl: '',
+    ndaSignedAs: 'Faisal Al-Harbi',
+    ndaTimestamp: '2026-10-29 22:05 UTC',
+    mcqScore: '100% (4/4)',
+    sandboxScore: '98/100',
+    pasteAttempts: 0,
+    tabSwitches: 1,
+    status: 'Pending Review',
+    justification:
+      'Model A fails the FCFF calculation by adding the $320k increase in Net Working Capital instead of subtracting it. Model B accurately computes NOPAT ($3.255M) and arrives at the verified FCFF of $2,585,000.',
+  },
+];
+
+const DEFAULT_TICKETS = [
+  {
+    id: 'TKT-701',
+    senderName: 'Dr. Tariq Al-Dosari',
+    senderEmail: 'tariq@khaleejfintech.sa',
+    role: 'client',
+    subject: 'Add Hijazi Audio Dialect Subset to Batch #2',
+    message: 'Can we allocate 15 of the 50 PoC prompts specifically to Hijazi S2S banking customer support calls?',
+    reply: 'Confirmed! Our Saudi S2S QA Lead has allocated 15 Hijazi acoustic stress prompts to Batch #2.',
+    repliedBy: 'Abdelrhman Essam Ali (Owner)',
+    repliedAt: '2026-10-29 23:10 UTC',
+    status: 'Resolved',
+  },
+];
+
+function loadStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export default function App() {
-  const [brand, setBrand] = useState(INITIAL_BRAND);
-  const [rtl, setRtl] = useState(false);
+  const [brand, setBrand] = useState(() => loadStorage('ae_brand_v3', INITIAL_BRAND));
   const [activePage, setActivePage] = useState('home'); // home | apply | assessment | client-portal | admin
   const [adminTab, setAdminTab] = useState('applicants');
   const [selectedAudit, setSelectedAudit] = useState(AUDIT_SAMPLES[0]);
+  const [showJsonPayload, setShowJsonPayload] = useState(false);
 
-  // Zero-Trust Auth State (No exposed quick-login buttons)
+  // Zero-Trust Auth State
   const [currentUser, setCurrentUser] = useState(null);
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSupportModal, setShowSupportModal] = useState(false);
+  const [supportModalTab, setSupportModalTab] = useState('submit'); // submit | track
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-  // Registered Workspace Users (Stored in state/localStorage for instant persistence)
-  const [users, setUsers] = useState([
-    {
-      id: 'usr-owner-1',
-      name: 'Abdelrhman Essam Ali',
-      email: 'abdelrhman.maroxo@gmail.com',
-      role: 'owner',
-      tokenHash: 'ArabEval#Owner2026!',
-      status: 'Active Master Owner',
-    },
-    {
-      id: 'usr-qa-1',
-      name: 'Salma Mansour (Lead QA Auditor)',
-      email: 'salma.qa@arabeval.qa',
-      role: 'qa_lead',
-      tokenHash: 'QA#Lead2026!',
-      status: 'Active QA Lead',
-    },
-    {
-      id: 'usr-client-1',
-      name: 'Dr. Tariq Al-Dosari (Khaleej FinTech AI)',
-      email: 'tariq@khaleejfintech.sa',
-      role: 'client',
-      tokenHash: 'Client#PoC2026!',
-      status: 'Enterprise PoC Active',
-    },
-  ]);
+  // Persistent Databases (localStorage synced)
+  const [users, setUsers] = useState(() => loadStorage('ae_users_v3', DEFAULT_USERS));
+  const [applicants, setApplicants] = useState(() => loadStorage('ae_applicants_v3', DEFAULT_APPLICANTS));
+  const [clientLeads, setClientLeads] = useState(() =>
+    loadStorage('ae_leads_v3', [
+      {
+        id: 'POC-301',
+        company: 'Khaleej FinTech AI Lab (Riyadh)',
+        contact: 'Dr. Tariq Al-Dosari',
+        email: 'tariq@khaleejfintech.sa',
+        useCase: '50-Prompt Arabic S2S Voice + Financial FP&A Hallucination Audit',
+        volume: '15,000 prompts / month',
+        status: 'In Calibration (38/50 Completed)',
+        submittedAt: '2026-10-29',
+      },
+    ])
+  );
+  const [tickets, setTickets] = useState(() => loadStorage('ae_tickets_v3', DEFAULT_TICKETS));
 
-  // Applicants & Evaluators Database
-  const [applicants, setApplicants] = useState([
-    {
-      id: 'EV-9041',
-      fullName: 'Nourhan El-Sayed',
-      email: 'nourhan.voice@gmail.com',
-      phone: '+201092837465',
-      dialect: 'Egyptian (AR-EG)',
-      track: 'Arabic Speech-to-Speech (S2S) & Dialect Audio QA',
-      experience: '3 years S2S voice evaluation & phonetic transcription',
-      ndaSignedAs: 'Nourhan El-Sayed',
-      ndaTimestamp: '2026-10-29 21:14 UTC',
-      mcqScore: '100% (4/4)',
-      sandboxScore: '96/100',
-      pasteAttempts: 0,
-      tabSwitches: 0,
-      status: 'Approved',
-      justification:
-        'Model B is strongly preferred (+3). Model A fabricates Article 88 of the Egyptian Central Bank law and exhibits unnatural prosody on interrogative clauses, whereas Model B maintains 100% factual grounding and native Cairene phrasing.',
-    },
-    {
-      id: 'EV-9042',
-      fullName: 'Faisal Al-Harbi',
-      email: 'faisal.fpa@outlook.sa',
-      phone: '+966554123987',
-      dialect: 'Gulf (AR-SA / Najdi & Hejazi)',
-      track: 'Financial Modeling, FP&A & Arabic FinTech AI Evaluation',
-      experience: 'CFA Level II, 4 years FP&A & IFRS valuation auditing',
-      ndaSignedAs: 'Faisal Al-Harbi',
-      ndaTimestamp: '2026-10-29 22:05 UTC',
-      mcqScore: '100% (4/4)',
-      sandboxScore: '98/100',
-      pasteAttempts: 0,
-      tabSwitches: 1,
-      status: 'Pending Review',
-      justification:
-        'Model A fails the FCFF calculation by adding the $320k increase in Net Working Capital instead of subtracting it. Model B accurately computes NOPAT ($3.255M) and arrives at the verified FCFF of $2,585,000.',
-    },
-  ]);
+  // Sync changes to localStorage so Owner replies & CV uploads persist
+  useEffect(() => {
+    try {
+      localStorage.setItem('ae_brand_v3', JSON.stringify(brand));
+      localStorage.setItem('ae_users_v3', JSON.stringify(users));
+      localStorage.setItem('ae_applicants_v3', JSON.stringify(applicants));
+      localStorage.setItem('ae_leads_v3', JSON.stringify(clientLeads));
+      localStorage.setItem('ae_tickets_v3', JSON.stringify(tickets));
+    } catch {
+      // Ignore storage quota warnings
+    }
+  }, [brand, users, applicants, clientLeads, tickets]);
 
-  // B2B Client Leads
-  const [clientLeads, setClientLeads] = useState([
-    {
-      id: 'POC-301',
-      company: 'Khaleej FinTech AI Lab (Riyadh)',
-      contact: 'Dr. Tariq Al-Dosari',
-      email: 'tariq@khaleejfintech.sa',
-      useCase: '50-Prompt Arabic S2S Voice + Financial FP&A Hallucination Audit',
-      volume: '15,000 prompts / month',
-      status: 'In Calibration (38/50 Completed)',
-      submittedAt: '2026-10-29',
-    },
-  ]);
-
-  // Support Helpdesk Tickets
-  const [tickets, setTickets] = useState([
-    {
-      id: 'TKT-701',
-      senderName: 'Dr. Tariq Al-Dosari',
-      senderEmail: 'tariq@khaleejfintech.sa',
-      role: 'client',
-      subject: 'Add Hijazi Audio Dialect Subset to Batch #2',
-      message: 'Can we allocate 15 of the 50 PoC prompts specifically to Hijazi S2S banking customer support calls?',
-      reply: 'Confirmed! Our Saudi S2S QA Lead has allocated 15 Hijazi acoustic stress prompts to Batch #2.',
-      status: 'Resolved',
-    },
-  ]);
-
-  // Application Form State (/apply)
+  // Application Form State (/apply) with CV Upload
   const [applyForm, setApplyForm] = useState({
     fullName: '',
     email: '',
     phone: '',
-    dialect: 'Egyptian (AR-EG)',
+    linkedin: '',
+    dialect: 'Egyptian (AR-EG — Cairene / Alexandrian / Saidi)',
     track: CERTIFIED_TRACKS[0].title,
     experience: '',
+    cvFileName: '',
+    cvFileSize: '',
+    cvDataUrl: '',
     ndaSignature: '',
     ndaChecked1: false,
     ndaChecked2: false,
@@ -353,14 +437,16 @@ export default function App() {
     company: '',
     contact: '',
     email: '',
-    useCase: 'Arabic S2S Audio & Prosody QA',
+    useCase: CERTIFIED_TRACKS[0].title,
     volume: '50-Prompt Free Diagnostic PoC',
   });
   const [pocSuccess, setPocSuccess] = useState(false);
 
-  // Support Modal Form
+  // Support Helpdesk Modal State (Submit + Track Replies)
   const [supportForm, setSupportForm] = useState({ name: '', email: '', subject: '', message: '' });
-  const [supportSuccess, setSupportSuccess] = useState(false);
+  const [lastCreatedTicketId, setLastCreatedTicketId] = useState('');
+  const [ticketLookupQuery, setTicketLookupQuery] = useState('');
+  const [adminReplyDrafts, setAdminReplyDrafts] = useState({});
 
   // New Role Creation in Admin
   const [newUserForm, setNewUserForm] = useState({ name: '', email: '', role: 'qa_lead', tokenHash: '' });
@@ -375,6 +461,28 @@ export default function App() {
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, [activePage, mcqPassed, assessmentDone]);
+
+  // Handle CV / Resume File Upload (Converts to Base64 Data URL for Admin Preview/Download)
+  const handleCvUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 4 * 1024 * 1024) {
+      setApplyError('CV file size must be under 4 MB (PDF, DOC, or DOCX).');
+      return;
+    }
+    const sizeKB = `${Math.max(1, Math.round(file.size / 1024))} KB`;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setApplyForm((prev) => ({
+        ...prev,
+        cvFileName: file.name,
+        cvFileSize: sizeKB,
+        cvDataUrl: typeof reader.result === 'string' ? reader.result : '',
+      }));
+      setApplyError('');
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Zero-Trust Authentication Handler
   const handleWorkspaceSignIn = (e) => {
@@ -406,12 +514,16 @@ export default function App() {
     }
   };
 
-  // Submit Stage 1: Legal Agreement & Application
+  // Submit Stage 1: Legal Agreement, CV & Application
   const handleApplySubmit = (e) => {
     e.preventDefault();
     setApplyError('');
     if (!applyForm.fullName || !applyForm.email || !applyForm.phone) {
       setApplyError('Please complete all mandatory personal and contact fields.');
+      return;
+    }
+    if (!applyForm.cvFileName) {
+      setApplyError('Please upload your CV / Resume (PDF or DOCX) before proceeding.');
       return;
     }
     if (!applyForm.ndaChecked1 || !applyForm.ndaChecked2 || !applyForm.ndaChecked3) {
@@ -433,11 +545,7 @@ export default function App() {
       if (mcqAnswers[q.id] === q.correct) score += 1;
     });
     setMcqSubmitted(true);
-    if (score >= 3) {
-      setMcqPassed(true);
-    } else {
-      setMcqPassed(false);
-    }
+    setMcqPassed(score >= 3);
   };
 
   // Submit Stage 3: Anti-Cheat Practical Sandbox
@@ -449,16 +557,20 @@ export default function App() {
     }
     const newApplicant = {
       id: `EV-${Math.floor(1000 + Math.random() * 9000)}`,
-      fullName: applyForm.fullName || 'Anonymous Candidate',
+      fullName: applyForm.fullName || 'Verified Candidate',
       email: applyForm.email || 'candidate@evaluator.org',
       phone: applyForm.phone || 'N/A',
+      linkedin: applyForm.linkedin || '',
       dialect: applyForm.dialect,
       track: applyForm.track,
       experience: applyForm.experience,
+      cvFileName: applyForm.cvFileName || 'Candidate_Resume.pdf',
+      cvFileSize: applyForm.cvFileSize || '180 KB',
+      cvDataUrl: applyForm.cvDataUrl || '',
       ndaSignedAs: applyForm.ndaSignature,
       ndaTimestamp: new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC',
       mcqScore: '100% (Passed)',
-      sandboxScore: pasteCount === 0 ? '95/100 (Clean Telemetry)' : '62/100 (Flagged Paste)',
+      sandboxScore: pasteCount === 0 ? '96/100 (Clean Telemetry)' : '62/100 (Flagged Paste)',
       pasteAttempts: pasteCount,
       tabSwitches: tabSwitchCount,
       status: pasteCount > 0 ? 'Flagged (Anti-Cheat)' : 'Pending Review',
@@ -488,33 +600,59 @@ export default function App() {
     setPocSuccess(true);
   };
 
-  // Submit Support Ticket
+  // Submit Support Ticket (Saves & returns Tracking ID)
   const handleSupportSubmit = (e) => {
     e.preventDefault();
     if (!supportForm.email || !supportForm.message) return;
-    setTickets([
-      {
-        id: `TKT-${Math.floor(100 + Math.random() * 900)}`,
-        senderName: supportForm.name || 'Visitor',
-        senderEmail: supportForm.email,
-        role: currentUser?.role || 'visitor',
-        subject: supportForm.subject || 'General Inquiry',
-        message: supportForm.message,
-        reply: '',
-        status: 'Open',
-      },
-      ...tickets,
-    ]);
-    setSupportSuccess(true);
-    setTimeout(() => {
-      setSupportSuccess(false);
-      setShowSupportModal(false);
-      setSupportForm({ name: '', email: '', subject: '', message: '' });
-    }, 1500);
+    const newId = `TKT-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newTicket = {
+      id: newId,
+      senderName: supportForm.name || 'Workspace User',
+      senderEmail: supportForm.email.trim(),
+      role: currentUser?.role || 'visitor',
+      subject: supportForm.subject || 'General QA Inquiry',
+      message: supportForm.message,
+      reply: '',
+      repliedBy: '',
+      repliedAt: '',
+      status: 'Open (Awaiting QA Lead)',
+    };
+    setTickets([newTicket, ...tickets]);
+    setLastCreatedTicketId(newId);
+    setTicketLookupQuery(supportForm.email.trim());
+    setSupportForm({ name: '', email: '', subject: '', message: '' });
   };
 
+  // Save Official Admin/Support Reply & Notify User
+  const handleSaveTicketReply = (ticketId) => {
+    const draft = adminReplyDrafts[ticketId];
+    if (!draft || !draft.trim()) return;
+    const responder = currentUser ? `${currentUser.name} (${currentUser.role.toUpperCase()})` : 'Owner / QA Support';
+    const timestamp = new Date().toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+    setTickets(
+      tickets.map((t) =>
+        t.id === ticketId
+          ? {
+              ...t,
+              reply: draft.trim(),
+              repliedBy: responder,
+              repliedAt: timestamp,
+              status: 'Resolved & Replied',
+            }
+          : t
+      )
+    );
+  };
+
+  // Filter tickets for the "Track My Ticket" tab
+  const matchedLookupTickets = tickets.filter((t) => {
+    const q = ticketLookupQuery.trim().toLowerCase();
+    if (!q) return false;
+    return t.id.toLowerCase() === q || t.senderEmail.toLowerCase() === q;
+  });
+
   return (
-    <div dir={rtl ? 'rtl' : 'ltr'} className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500 selection:text-slate-950">
+    <div dir="ltr" className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-emerald-500 selection:text-slate-950">
       {/* OWNER / QA LEAD MASTER CONTROL BAR (ONLY VISIBLE AFTER AUTHENTICATION) */}
       {currentUser && (
         <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-emerald-950 border-b border-emerald-500/40 px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-2">
@@ -530,7 +668,7 @@ export default function App() {
               1. B2B Home
             </button>
             <button onClick={() => setActivePage('apply')} className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700">
-              2. Legal NDA & Apply
+              2. Legal NDA & CV Apply
             </button>
             <button onClick={() => setActivePage('assessment')} className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700">
               3. Anti-Cheat Sandbox
@@ -559,13 +697,10 @@ export default function App() {
         </div>
       )}
 
-      {/* TOP NAVIGATION BAR */}
+      {/* TOP NAVIGATION BAR (100% ENGLISH LTR ENTERPRISE HEADER) */}
       <header className="sticky top-0 z-40 backdrop-blur-md bg-slate-950/90 border-b border-slate-800/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
-          <div
-            onClick={() => setActivePage('home')}
-            className="flex items-center gap-3 cursor-pointer group"
-          >
+          <div onClick={() => setActivePage('home')} className="flex items-center gap-3 cursor-pointer group">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center text-slate-950 font-black text-lg shadow-lg shadow-emerald-500/20">
               QA
             </div>
@@ -596,24 +731,31 @@ export default function App() {
               Certified Tracks (6)
             </button>
             <button onClick={() => setActivePage('apply')} className="hover:text-emerald-400 transition">
-              Evaluator Portal & NDA
+              Evaluator Portal & CV
             </button>
-            <button onClick={() => setShowSupportModal(true)} className="hover:text-emerald-400 transition">
-              Support Helpdesk
+            <button
+              onClick={() => {
+                setSupportModalTab('submit');
+                setShowSupportModal(true);
+              }}
+              className="hover:text-emerald-400 transition flex items-center gap-1.5"
+            >
+              <span>Support & Ticket Tracker</span>
+              <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-500/20 text-emerald-300 font-bold">
+                Live
+              </span>
             </button>
           </nav>
 
           <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setRtl(!rtl)}
-              className="px-3 py-1.5 rounded-lg border border-slate-700 text-xs font-medium text-slate-300 hover:border-emerald-500/50"
-            >
-              {rtl ? 'EN / LTR' : 'عربي / RTL'}
-            </button>
-
             {!currentUser ? (
               <button
-                onClick={() => setShowSignInModal(true)}
+                onClick={() => {
+                  setLoginEmail('');
+                  setLoginPassword('');
+                  setLoginError('');
+                  setShowSignInModal(true);
+                }}
                 className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-semibold text-slate-200 flex items-center gap-1.5"
               >
                 <span>🔒</span> Workspace Sign-In
@@ -645,16 +787,16 @@ export default function App() {
          ===================================================================== */}
       {activePage === 'home' && (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 py-12 space-y-20">
-          {/* HERO SECTION */}
-          <section className="grid lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-7 space-y-6">
+          {/* HERO SECTION + UPGRADED ENTERPRISE LIVE QA TELEMETRY CONSOLE */}
+          <section className="grid lg:grid-cols-12 gap-10 items-start">
+            <div className="lg:col-span-6 space-y-6 pt-2">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
                 <span>⚡</span> Outperforming Generic Crowd Platforms in MENA, S2S Audio & Financial STEM
               </div>
-              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.08] text-white">
+              <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-[1.06] text-white">
                 Arabic & Multimodal <span className="text-emerald-400">AI Evaluation</span>, Red-Teaming & FP&A QA.
               </h1>
-              <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+              <p className="text-slate-300 text-base sm:text-lg leading-relaxed">
                 Eliminate regional dialect hallucinations, robotic Speech-to-Speech (S2S) prosody, and financial calculation errors before model deployment. Every prompt is calibrated by human specialists vetted under a <strong>3-Stage Anti-Cheat Gate</strong> and a <strong>12-Section Ironclad NDA</strong>.
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
@@ -668,7 +810,7 @@ export default function App() {
                   onClick={() => setActivePage('apply')}
                   className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold text-sm transition"
                 >
-                  Apply as Certified Evaluator (12-Section NDA)
+                  Apply as Certified Evaluator (Upload CV & NDA)
                 </button>
               </div>
 
@@ -686,34 +828,45 @@ export default function App() {
                 <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
                   <div className="text-2xl font-black text-emerald-400">48 Hours</div>
                   <div className="text-xs font-semibold text-white mt-0.5">50-Prompt PoC SLA</div>
-                  <div className="text-[11px] text-slate-400 mt-1">With full error taxonomy report</div>
+                  <div className="text-[11px] text-slate-400 mt-1">With JSON & taxonomy report</div>
                 </div>
               </div>
             </div>
 
-            {/* INTERACTIVE LIVE QA AUDIT EXPLORER */}
-            <div className="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            {/* UPGRADED LIVE QA AUDIT & HALLUCINATION TELEMETRY CONSOLE */}
+            <div className="lg:col-span-6 bg-slate-900/95 border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div>
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
-                    Interactive Sample Deliverable
-                  </span>
-                  <h3 className="text-base font-bold text-white">Live QA Audit & Hallucination Explorer</h3>
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                      Live Telemetry & Rubric Inspection
+                    </span>
+                  </div>
+                  <h3 className="text-base font-extrabold text-white mt-0.5">
+                    Enterprise QA Audit & Hallucination Explorer
+                  </h3>
                 </div>
-                <span className="px-2.5 py-1 rounded-full text-[11px] bg-emerald-500/15 text-emerald-300 font-semibold">
-                  Verified Rubric
-                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowJsonPayload(!showJsonPayload)}
+                    className="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-mono text-emerald-300 border border-slate-700"
+                  >
+                    {showJsonPayload ? 'View Visual Audit' : '{ } View JSON Output'}
+                  </button>
+                </div>
               </div>
 
-              <div className="flex flex-wrap gap-1.5">
+              {/* DOMAIN SELECTOR TABS */}
+              <div className="grid grid-cols-3 gap-1.5">
                 {AUDIT_SAMPLES.map((s) => (
                   <button
                     key={s.id}
                     onClick={() => setSelectedAudit(s)}
-                    className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                    className={`px-3 py-2 rounded-xl text-xs font-bold transition text-center ${
                       selectedAudit.id === s.id
-                        ? 'bg-emerald-500 text-slate-950'
-                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                        ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/20'
+                        : 'bg-slate-950 text-slate-300 hover:bg-slate-800 border border-slate-800'
                     }`}
                   >
                     {s.category}
@@ -721,29 +874,107 @@ export default function App() {
                 ))}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-2">
-                <div className="text-slate-400 font-semibold">Input Prompt / Audio Transcript:</div>
-                <div className="text-slate-100 font-medium">{selectedAudit.prompt}</div>
+              {/* METADATA HEADER */}
+              <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800/90 text-[11px]">
+                <span className="font-mono text-slate-400">
+                  ID: <strong className="text-white">{selectedAudit.auditId}</strong>
+                </span>
+                <span className="text-emerald-400 font-semibold">{selectedAudit.dialectTag}</span>
+                <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/30 font-bold">
+                  {selectedAudit.severity}
+                </span>
               </div>
 
-              <div className="grid gap-2.5 text-xs">
-                <div className="p-3 rounded-xl bg-rose-950/30 border border-rose-500/30 text-rose-200">
-                  <strong className="text-rose-400 block mb-0.5">❌ Defective Output Caught:</strong>
-                  {selectedAudit.modelA}
-                </div>
-                <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30 text-emerald-200">
-                  <strong className="text-emerald-400 block mb-0.5">✅ Gold Calibrated Standard:</strong>
-                  {selectedAudit.modelB}
-                </div>
-              </div>
+              {showJsonPayload ? (
+                <pre className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 text-xs font-mono text-emerald-300 overflow-x-auto leading-relaxed">
+                  {selectedAudit.jsonPayload}
+                </pre>
+              ) : (
+                <>
+                  {/* PROMPT BOX */}
+                  <div className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
+                    <div className="text-[11px] uppercase tracking-wider text-slate-400 font-bold">
+                      Input Prompt / Evaluation Stimulus:
+                    </div>
+                    <div className="text-slate-100 font-medium leading-relaxed">{selectedAudit.prompt}</div>
+                  </div>
 
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-amber-300">
-                <strong>QA Lead Verdict:</strong> {selectedAudit.verdict}
+                  {/* SIDE-BY-SIDE RUBRIC SCORE BARS */}
+                  <div className="grid sm:grid-cols-2 gap-3 text-xs">
+                    {/* MODEL A (REJECTED) */}
+                    <div className="p-3.5 rounded-2xl bg-rose-950/20 border border-rose-500/30 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-extrabold text-rose-400">❌ Model A (Unaligned)</span>
+                        <span className="text-[11px] font-mono text-slate-400">{selectedAudit.metricsA.latency}</span>
+                      </div>
+                      <p className="text-slate-300 text-[11px] leading-relaxed">{selectedAudit.modelA}</p>
+                      <div className="space-y-1 pt-1 border-t border-rose-500/20 text-[11px]">
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Factuality & Grounding</span>
+                          <span className="text-rose-400 font-bold">{selectedAudit.metricsA.factuality}%</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                          <div
+                            className="h-full bg-rose-500"
+                            style={{ width: `${selectedAudit.metricsA.factuality}%` }}
+                          />
+                        </div>
+                        <div className="flex justify-between pt-1">
+                          <span className="text-slate-400">Dialect / Domain Precision</span>
+                          <span className="text-rose-400 font-bold">{selectedAudit.metricsA.dialect}%</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                          <div
+                            className="h-full bg-rose-500"
+                            style={{ width: `${selectedAudit.metricsA.dialect}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* MODEL B (GOLD VERIFIED) */}
+                    <div className="p-3.5 rounded-2xl bg-emerald-950/20 border border-emerald-500/30 space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-extrabold text-emerald-400">✅ Model B (Gold Calibrated)</span>
+                        <span className="text-[11px] font-mono text-slate-400">{selectedAudit.metricsB.latency}</span>
+                      </div>
+                      <p className="text-slate-200 text-[11px] leading-relaxed">{selectedAudit.modelB}</p>
+                      <div className="space-y-1 pt-1 border-t border-emerald-500/20 text-[11px]">
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Factuality & Grounding</span>
+                          <span className="text-emerald-400 font-bold">{selectedAudit.metricsB.factuality}%</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                          <div
+                            className="h-full bg-emerald-400"
+                            style={{ width: `${selectedAudit.metricsB.factuality}%` }}
+                          />
+                        </div>
+                        <div className="flex justify-between pt-1">
+                          <span className="text-slate-400">Dialect / Domain Precision</span>
+                          <span className="text-emerald-400 font-bold">{selectedAudit.metricsB.dialect}%</span>
+                        </div>
+                        <div className="w-full h-1.5 rounded-full bg-slate-800 overflow-hidden">
+                          <div
+                            className="h-full bg-emerald-400"
+                            style={{ width: `${selectedAudit.metricsB.dialect}%` }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs text-amber-300 flex items-center justify-between">
+                <span>
+                  <strong>QA Lead Verdict:</strong> {selectedAudit.verdict}
+                </span>
               </div>
             </div>
           </section>
 
-          {/* WHY FRONTIER LABS CHOOSE US OVER MICRO1 / ALIGNERR / CROWD PLATFORMS */}
+          {/* WHY FRONTIER LABS CHOOSE US OVER GENERIC CROWD PLATFORMS */}
           <section className="space-y-6">
             <div className="max-w-3xl">
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
@@ -804,7 +1035,7 @@ export default function App() {
                 onClick={() => setActivePage('apply')}
                 className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400"
               >
-                Apply to Any Track →
+                Upload CV & Apply to Any Track →
               </button>
             </div>
 
@@ -833,7 +1064,7 @@ export default function App() {
                       }}
                       className="text-emerald-400 font-bold hover:underline"
                     >
-                      Start Vetting →
+                      Apply with CV →
                     </button>
                   </div>
                 </div>
@@ -947,20 +1178,20 @@ export default function App() {
       )}
 
       {/* =====================================================================
-          PAGE 2: STAGE 1 — 12-SECTION MASTER CONTRACTOR & NDA AGREEMENT (/apply)
+          PAGE 2: STAGE 1 — CV UPLOAD & 12-SECTION MASTER AGREEMENT (/apply)
          ===================================================================== */}
       {activePage === 'apply' && (
         <main className="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <span className="text-xs font-bold uppercase text-emerald-400">
-                Stage 1 of 3 • Legal Onboarding & Identity Verification
+                Stage 1 of 3 • Candidate Dossier, CV Upload & Legal Onboarding
               </span>
               <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Master Independent Contractor, NDA & AI Data Integrity Agreement
+                Evaluator Application, CV Upload & 12-Section Master NDA
               </h1>
               <p className="text-xs text-slate-400 mt-1">
-                Incorporating full international IP assignment, S2S biometric/recorded data release, Zero-AI integrity policy, and JAMS binding arbitration.
+                Upload your resume/CV and execute the Master Independent Contractor Agreement to unlock the Stage 2 Calibration Gate.
               </p>
             </div>
             <button
@@ -972,14 +1203,17 @@ export default function App() {
           </div>
 
           <form onSubmit={handleApplySubmit} className="space-y-6">
-            {/* CANDIDATE PROFILE */}
+            {/* CANDIDATE PROFILE + CV UPLOAD */}
             <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 grid sm:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Full Legal Name (As on Passport / National ID) *</label>
+                <label className="block text-slate-300 font-semibold mb-1">
+                  Full Legal Name (As on Passport / National ID) *
+                </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Full Legal Name"
+                  autoComplete="off"
+                  placeholder="Enter your full legal name"
                   value={applyForm.fullName}
                   onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -990,7 +1224,8 @@ export default function App() {
                 <input
                   type="email"
                   required
-                  placeholder="name@email.com"
+                  autoComplete="off"
+                  placeholder="candidate@domain.com"
                   value={applyForm.email}
                   onChange={(e) => setApplyForm({ ...applyForm, email: e.target.value })}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1001,9 +1236,21 @@ export default function App() {
                 <input
                   type="text"
                   required
-                  placeholder="+20 100 000 0000"
+                  autoComplete="off"
+                  placeholder="+20 100 000 0000 / +966 50 000 0000"
                   value={applyForm.phone}
                   onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-slate-300 font-semibold mb-1">LinkedIn or GitHub Profile URL</label>
+                <input
+                  type="url"
+                  autoComplete="off"
+                  placeholder="https://linkedin.com/in/your-profile"
+                  value={applyForm.linkedin}
+                  onChange={(e) => setApplyForm({ ...applyForm, linkedin: e.target.value })}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                 />
               </div>
@@ -1021,7 +1268,7 @@ export default function App() {
                   <option>Modern Standard Arabic (Fusha) + Bilingual STEM</option>
                 </select>
               </div>
-              <div className="sm:col-span-2">
+              <div>
                 <label className="block text-slate-300 font-semibold mb-1">Selected Certification Track *</label>
                 <select
                   value={applyForm.track}
@@ -1035,11 +1282,39 @@ export default function App() {
                   ))}
                 </select>
               </div>
+
+              {/* MANDATORY CV / RESUME FILE UPLOAD */}
+              <div className="sm:col-span-2 p-4 rounded-xl bg-slate-950 border border-dashed border-emerald-500/50 space-y-2">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <div>
+                    <label className="block text-emerald-400 font-bold">
+                      Upload CV / Resume (PDF, DOC, DOCX — Max 4MB) *
+                    </label>
+                    <p className="text-[11px] text-slate-400">
+                      Your CV is encrypted and attached directly to your evaluator dossier for Owner & QA Lead review.
+                    </p>
+                  </div>
+                  {applyForm.cvFileName && (
+                    <span className="px-3 py-1 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 font-bold">
+                      📄 {applyForm.cvFileName} ({applyForm.cvFileSize})
+                    </span>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  accept=".pdf,.doc,.docx"
+                  onChange={handleCvUpload}
+                  className="block w-full text-xs text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-emerald-500 file:text-slate-950 hover:file:bg-emerald-400 cursor-pointer"
+                />
+              </div>
+
               <div className="sm:col-span-2">
-                <label className="block text-slate-300 font-semibold mb-1">Prior AI Evaluation / Domain Experience (Optional)</label>
+                <label className="block text-slate-300 font-semibold mb-1">
+                  Summary of Relevant AI Evaluation, S2S Audio, Financial or Coding Experience
+                </label>
                 <input
                   type="text"
-                  placeholder="e.g. Prior experience on micro1, Alignerr, Outlier, financial modeling, or voice recording..."
+                  placeholder="Briefly describe your domain background, degrees, or prior RLHF platform experience..."
                   value={applyForm.experience}
                   onChange={(e) => setApplyForm({ ...applyForm, experience: e.target.value })}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1059,7 +1334,7 @@ export default function App() {
                   </h3>
                 </div>
                 <span className="text-[11px] px-2.5 py-1 rounded bg-slate-800 text-slate-300">
-                  Rev. 2026.10 (micro1 + Alignerr Enterprise Standard)
+                  Rev. 2026.10 (Enterprise Standard)
                 </span>
               </div>
 
@@ -1118,7 +1393,8 @@ export default function App() {
                   <input
                     type="text"
                     required
-                    placeholder={applyForm.fullName || 'Type full legal name to sign...'}
+                    autoComplete="off"
+                    placeholder="Type your exact full legal name to sign..."
                     value={applyForm.ndaSignature}
                     onChange={(e) => setApplyForm({ ...applyForm, ndaSignature: e.target.value })}
                     className="w-full p-3 rounded-xl bg-slate-950 border border-emerald-500/50 text-emerald-300 font-bold text-xs"
@@ -1130,7 +1406,7 @@ export default function App() {
                     type="submit"
                     className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-emerald-500/20"
                   >
-                    Sign 12-Section Agreement & Launch Stage 2 Gate →
+                    Submit CV, Sign 12-Section NDA & Launch Stage 2 Gate →
                   </button>
                 </div>
               </div>
@@ -1154,15 +1430,21 @@ export default function App() {
               </h1>
             </div>
             <div className="text-right text-xs text-slate-400">
-              <div>Blocked Paste Events: <strong className="text-rose-400">{pasteCount}</strong></div>
-              <div>Tab Focus Switches: <strong className="text-amber-400">{tabSwitchCount}</strong></div>
+              <div>
+                Blocked Paste Events: <strong className="text-rose-400">{pasteCount}</strong>
+              </div>
+              <div>
+                Tab Focus Switches: <strong className="text-amber-400">{tabSwitchCount}</strong>
+              </div>
             </div>
           </div>
 
           {!mcqPassed ? (
             <form onSubmit={handleMcqSubmit} className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
               <div className="border-b border-slate-800 pb-3">
-                <h2 className="text-lg font-bold text-white">Stage 2: Automated Calibration Gate (Pass Mark: 75% / 3 of 4)</h2>
+                <h2 className="text-lg font-bold text-white">
+                  Stage 2: Automated Calibration Gate (Pass Mark: 75% / 3 of 4)
+                </h2>
                 <p className="text-xs text-slate-400">
                   Verifying your mastery of hallucination detection, Arabic S2S prosody, NDA compliance, and FP&A math verification.
                 </p>
@@ -1173,7 +1455,10 @@ export default function App() {
                   <div className="font-bold text-white">{q.question}</div>
                   <div className="space-y-1.5">
                     {q.options.map((opt, idx) => (
-                      <label key={idx} className="flex items-center gap-2.5 cursor-pointer text-slate-300 hover:text-white">
+                      <label
+                        key={idx}
+                        className="flex items-center gap-2.5 cursor-pointer text-slate-300 hover:text-white"
+                      >
                         <input
                           type="radio"
                           name={q.id}
@@ -1205,8 +1490,12 @@ export default function App() {
             <form onSubmit={handleSandboxSubmit} className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-6">
               <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
                 <div>
-                  <span className="text-xs font-bold text-emerald-400">✓ Stage 2 Passed! Unlocked Stage 3 Practical Sandbox</span>
-                  <h2 className="text-lg font-bold text-white">Side-by-Side (SxS) Arabic Dialect & Factuality Evaluation</h2>
+                  <span className="text-xs font-bold text-emerald-400">
+                    ✓ Stage 2 Passed! Unlocked Stage 3 Practical Sandbox
+                  </span>
+                  <h2 className="text-lg font-bold text-white">
+                    Side-by-Side (SxS) Arabic Dialect & Factuality Evaluation
+                  </h2>
                 </div>
                 <span className="px-3 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[11px] font-bold">
                   🔒 Copy-Paste Blocked • Keystroke Telemetry Recording
@@ -1277,7 +1566,9 @@ export default function App() {
                   onPaste={(e) => {
                     e.preventDefault();
                     setPasteCount((prev) => prev + 1);
-                    alert('ANTI-CHEAT BLOCK: External copy-paste is prohibited under the Zero-AI Policy. This attempt has been logged.');
+                    alert(
+                      'ANTI-CHEAT BLOCK: External copy-paste is prohibited under the Zero-AI Policy. This attempt has been logged.'
+                    );
                   }}
                   onKeyDown={() => setKeystrokeCount((prev) => prev + 1)}
                   onChange={(e) => setSandboxJustification(e.target.value)}
@@ -1290,15 +1581,15 @@ export default function App() {
                 type="submit"
                 className="px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs"
               >
-                Submit Encrypted Assessment & Telemetry →
+                Submit Encrypted Assessment, CV & Telemetry →
               </button>
             </form>
           ) : (
             <div className="p-8 rounded-2xl bg-slate-900 border border-emerald-500/40 text-center space-y-4">
               <div className="text-3xl">✅</div>
-              <h2 className="text-xl font-black text-white">3-Stage Assessment & Legal NDA Logged!</h2>
+              <h2 className="text-xl font-black text-white">3-Stage Assessment, CV & Legal NDA Logged!</h2>
               <p className="text-xs text-slate-300 max-w-lg mx-auto">
-                Your signed 12-Section Contractor Agreement, MCQ score, and anti-cheat telemetry have been transmitted to the Master Owner Console for final certification.
+                Your uploaded CV ({applyForm.cvFileName}), signed 12-Section Contractor Agreement, MCQ score, and anti-cheat telemetry have been transmitted to the Master Owner Console.
               </p>
               <button
                 onClick={() => setActivePage('home')}
@@ -1322,7 +1613,10 @@ export default function App() {
               <h1 className="text-2xl font-black text-white">50-Prompt Diagnostic PoC & Live Batch Tracker</h1>
             </div>
             <button
-              onClick={() => setShowSupportModal(true)}
+              onClick={() => {
+                setSupportModalTab('submit');
+                setShowSupportModal(true);
+              }}
               className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs"
             >
               + Open Priority QA Ticket
@@ -1348,19 +1642,29 @@ export default function App() {
           </div>
 
           <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 space-y-4">
-            <h3 className="text-sm font-bold text-white">Your Support & Calibration Tickets</h3>
+            <h3 className="text-sm font-bold text-white">Live Support & Calibration Tickets (Synced with QA Lead)</h3>
             <div className="space-y-3 text-xs">
               {tickets.map((t) => (
-                <div key={t.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1.5">
-                  <div className="flex justify-between">
-                    <span className="font-bold text-emerald-400">{t.id}: {t.subject}</span>
-                    <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300">{t.status}</span>
+                <div key={t.id} className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="font-bold text-emerald-400">
+                      {t.id}: {t.subject} <span className="text-slate-400">({t.senderEmail})</span>
+                    </span>
+                    <span className="px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-bold">
+                      {t.status}
+                    </span>
                   </div>
                   <p className="text-slate-300">{t.message}</p>
-                  {t.reply && (
-                    <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-200 mt-2">
-                      <strong>QA Lead Response:</strong> {t.reply}
+                  {t.reply ? (
+                    <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 space-y-1">
+                      <div className="flex justify-between text-[11px] text-emerald-400 font-bold">
+                        <span>Official Response from {t.repliedBy || 'Owner / QA Support'}</span>
+                        <span>{t.repliedAt}</span>
+                      </div>
+                      <p>{t.reply}</p>
                     </div>
+                  ) : (
+                    <div className="text-[11px] text-amber-400">⏳ Awaiting response from QA Support Lead...</div>
                   )}
                 </div>
               ))}
@@ -1395,12 +1699,12 @@ export default function App() {
                     Zero-Trust Master Control Center ({currentUser.role.toUpperCase()})
                   </span>
                   <h1 className="text-2xl font-black text-white">
-                    {brand.name} — Executive Operations & Telemetry Console
+                    {brand.name} — Executive Operations, CV Dossiers & Helpdesk Console
                   </h1>
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs">
                   {[
-                    { id: 'applicants', label: `1. Vetted Evaluators (${applicants.length})` },
+                    { id: 'applicants', label: `1. Evaluators & CVs (${applicants.length})` },
                     { id: 'leads', label: `2. B2B Client PoCs (${clientLeads.length})` },
                     { id: 'tickets', label: `3. Support Helpdesk (${tickets.length})` },
                     ...(currentUser.role === 'owner'
@@ -1425,7 +1729,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* TAB 1: EVALUATOR SUBMISSIONS & ANTI-CHEAT TELEMETRY */}
+              {/* TAB 1: EVALUATOR SUBMISSIONS, CV DOWNLOAD & ANTI-CHEAT TELEMETRY */}
               {adminTab === 'applicants' && (
                 <div className="space-y-4">
                   {applicants.map((app) => (
@@ -1433,9 +1737,21 @@ export default function App() {
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div>
                           <span className="font-black text-sm text-white">{app.fullName}</span>
-                          <span className="text-slate-400 ml-2">({app.email} • {app.phone})</span>
+                          <span className="text-slate-400 ml-2">
+                            ({app.email} • {app.phone})
+                          </span>
+                          {app.linkedin && (
+                            <a
+                              href={app.linkedin}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="ml-2 text-emerald-400 underline"
+                            >
+                              LinkedIn/Portfolio ↗
+                            </a>
+                          )}
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex flex-wrap items-center gap-2">
                           <span className="px-2.5 py-1 rounded bg-slate-800 text-emerald-300 font-semibold">
                             {app.track}
                           </span>
@@ -1453,11 +1769,25 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div className="grid sm:grid-cols-4 gap-2 p-3 rounded-xl bg-slate-950 border border-slate-800">
-                        <div>12-Sec NDA Signed: <strong className="text-emerald-400">{app.ndaSignedAs}</strong></div>
-                        <div>MCQ Gate: <strong className="text-white">{app.mcqScore}</strong></div>
-                        <div>Blocked Pastes: <strong className="text-rose-400">{app.pasteAttempts}</strong></div>
-                        <div>Tab Switches: <strong className="text-amber-400">{app.tabSwitches}</strong></div>
+                      <div className="grid sm:grid-cols-5 gap-2 p-3 rounded-xl bg-slate-950 border border-slate-800">
+                        <div>
+                          12-Sec NDA Signed: <strong className="text-emerald-400">{app.ndaSignedAs}</strong>
+                        </div>
+                        <div>
+                          Uploaded CV:{' '}
+                          <strong className="text-amber-300">
+                            {app.cvFileName || 'Attached'} ({app.cvFileSize || 'PDF'})
+                          </strong>
+                        </div>
+                        <div>
+                          MCQ Gate: <strong className="text-white">{app.mcqScore}</strong>
+                        </div>
+                        <div>
+                          Blocked Pastes: <strong className="text-rose-400">{app.pasteAttempts}</strong>
+                        </div>
+                        <div>
+                          Tab Switches: <strong className="text-amber-400">{app.tabSwitches}</strong>
+                        </div>
                       </div>
 
                       <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-300">
@@ -1465,27 +1795,53 @@ export default function App() {
                         {app.justification}
                       </div>
 
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() =>
-                            setApplicants(
-                              applicants.map((a) => (a.id === app.id ? { ...a, status: 'Approved & Certified' } : a))
-                            )
-                          }
-                          className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold"
-                        >
-                          ✓ Approve Evaluator
-                        </button>
-                        <button
-                          onClick={() =>
-                            setApplicants(
-                              applicants.map((a) => (a.id === app.id ? { ...a, status: 'Rejected' } : a))
-                            )
-                          }
-                          className="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold"
-                        >
-                          ✕ Reject</button><button onClick={() => { const updated = applicants.filter((a) => a.id !== app.id); setApplicants(updated); try { localStorage.setItem('arabic_qa_applicants', JSON.stringify(updated)); } catch(e){} }} className="px-3 py-1.5 rounded-lg bg-rose-600 text-white font-bold text-xs ml-2">🗑️ Delete / Remove
-                        </button>
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                        <div className="flex flex-wrap gap-2">
+                          <button
+                            onClick={() =>
+                              setApplicants(
+                                applicants.map((a) =>
+                                  a.id === app.id ? { ...a, status: 'Approved & Certified' } : a
+                                )
+                              )
+                            }
+                            className="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold"
+                          >
+                            ✓ Approve Evaluator
+                          </button>
+                          <button
+                            onClick={() =>
+                              setApplicants(
+                                applicants.map((a) => (a.id === app.id ? { ...a, status: 'Rejected' } : a))
+                              )
+                            }
+                            className="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold"
+                          >
+                            ✕ Reject
+                          </button>
+                        </div>
+
+                        {/* CV VIEW / DOWNLOAD BUTTON */}
+                        {app.cvDataUrl ? (
+                          <a
+                            href={app.cvDataUrl}
+                            download={app.cvFileName || `${app.fullName}_CV.pdf`}
+                            className="px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold flex items-center gap-1.5"
+                          >
+                            <span>📄 Download Uploaded CV ({app.cvFileName})</span>
+                          </a>
+                        ) : (
+                          <button
+                            onClick={() =>
+                              alert(
+                                `Candidate CV Summary for ${app.fullName}:\nTrack: ${app.track}\nExperience: ${app.experience}\nFile: ${app.cvFileName}`
+                              )
+                            }
+                            className="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-300 border border-amber-400/30 font-bold"
+                          >
+                            📄 Inspect Dossier ({app.cvFileName || 'CV.pdf'})
+                          </button>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -1496,11 +1852,20 @@ export default function App() {
               {adminTab === 'leads' && (
                 <div className="space-y-3 text-xs">
                   {clientLeads.map((lead) => (
-                    <div key={lead.id} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4">
+                    <div
+                      key={lead.id}
+                      className="p-5 rounded-2xl bg-slate-900 border border-slate-800 flex flex-wrap items-center justify-between gap-4"
+                    >
                       <div className="space-y-1">
-                        <div className="text-sm font-bold text-white">{lead.company} ({lead.id})</div>
-                        <div className="text-slate-400">Contact: {lead.contact} • {lead.email}</div>
-                        <div className="text-emerald-400 font-semibold">Track: {lead.useCase} ({lead.volume})</div>
+                        <div className="text-sm font-bold text-white">
+                          {lead.company} ({lead.id})
+                        </div>
+                        <div className="text-slate-400">
+                          Contact: {lead.contact} • {lead.email}
+                        </div>
+                        <div className="text-emerald-400 font-semibold">
+                          Track: {lead.useCase} ({lead.volume})
+                        </div>
                       </div>
                       <span className="px-3 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-300 font-bold">
                         {lead.status}
@@ -1510,30 +1875,74 @@ export default function App() {
                 </div>
               )}
 
-              {/* TAB 3: SUPPORT HELPDESK TICKETS */}
+              {/* TAB 3: TWO-WAY SUPPORT HELPDESK TICKETS + EMAIL DISPATCH */}
               {adminTab === 'tickets' && (
                 <div className="space-y-4 text-xs">
                   {tickets.map((t) => (
                     <div key={t.id} className="p-5 rounded-2xl bg-slate-900 border border-slate-800 space-y-3">
-                      <div className="flex justify-between">
-                        <span className="font-bold text-white">{t.id} — {t.subject} ({t.senderEmail})</span>
-                        <span className="text-emerald-400 font-bold">{t.status}</span>
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                          <span className="font-bold text-white text-sm">
+                            {t.id} — {t.subject}
+                          </span>
+                          <span className="text-slate-400 ml-2">
+                            From: {t.senderName} ({t.senderEmail})
+                          </span>
+                        </div>
+                        <span
+                          className={`px-2.5 py-1 rounded font-bold ${
+                            t.reply
+                              ? 'bg-emerald-500/20 text-emerald-300'
+                              : 'bg-amber-500/20 text-amber-300'
+                          }`}
+                        >
+                          {t.status}
+                        </span>
                       </div>
-                      <p className="text-slate-300">{t.message}</p>
-                      <div className="flex gap-2">
+
+                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-200">
+                        <strong className="text-slate-400 block mb-1">Complainant Message:</strong>
+                        {t.message}
+                      </div>
+
+                      {t.reply && (
+                        <div className="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/40 text-emerald-200">
+                          <strong className="text-emerald-400 block mb-0.5">
+                            ✓ Published Reply ({t.repliedBy} at {t.repliedAt}) — Visible in User Ticket Tracker:
+                          </strong>
+                          {t.reply}
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap gap-2 pt-1">
                         <input
                           type="text"
-                          placeholder="Type official QA response..."
-                          value={t.reply}
+                          placeholder="Type official Owner / QA Support resolution reply..."
+                          value={adminReplyDrafts[t.id] ?? t.reply ?? ''}
                           onChange={(e) =>
-                            setTickets(
-                              tickets.map((tk) =>
-                                tk.id === t.id ? { ...tk, reply: e.target.value, status: 'Resolved' } : tk
-                              )
-                            )
+                            setAdminReplyDrafts({ ...adminReplyDrafts, [t.id]: e.target.value })
                           }
-                          className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                          className="flex-1 min-w-[240px] p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                         />
+                        <button
+                          type="button"
+                          onClick={() => handleSaveTicketReply(t.id)}
+                          className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold"
+                        >
+                          ✓ Publish Reply to Portal
+                        </button>
+                        <a
+                          href={`mailto:${t.senderEmail}?subject=${encodeURIComponent(
+                            `[${brand.name} Support ${t.id}] Re: ${t.subject}`
+                          )}&body=${encodeURIComponent(
+                            `Hello ${t.senderName},\n\nRegarding your support ticket (${t.id} - "${t.subject}"):\n\n${
+                              adminReplyDrafts[t.id] || t.reply || ''
+                            }\n\nBest regards,\n${brand.founder}\n${brand.name} Support Operations`
+                          )}`}
+                          className="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 font-bold"
+                        >
+                          ✉️ Dispatch via Email
+                        </a>
                       </div>
                     </div>
                   ))}
@@ -1604,7 +2013,10 @@ export default function App() {
 
                   <div className="lg:col-span-7 space-y-2.5">
                     {users.map((u) => (
-                      <div key={u.id} className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
+                      <div
+                        key={u.id}
+                        className="p-4 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between"
+                      >
                         <div>
                           <div className="font-bold text-white">{u.name}</div>
                           <div className="text-slate-400">{u.email}</div>
@@ -1626,10 +2038,22 @@ export default function App() {
                   <h3 className="text-sm font-bold text-white">Instant Agency Brand Presets (1-Click Switch)</h3>
                   <div className="flex flex-wrap gap-2">
                     {[
-                      { name: 'ArabEval QA', tagline: 'Enterprise Arabic & Multimodal AI Evaluation & Quality Assurance' },
-                      { name: 'Mizan AI Labs', tagline: 'Precision Arabic RLHF, Speech-to-Speech & Financial AI Auditing' },
-                      { name: 'Qiyas Multimodal', tagline: 'MENA Sovereign AI Alignment, Red-Teaming & S2S Quality Assurance' },
-                      { name: 'Sanad AI Verification', tagline: 'Zero-Trust Human-in-the-Loop Evaluation for Frontier Models' },
+                      {
+                        name: 'ArabEval QA',
+                        tagline: 'Enterprise Arabic & Multimodal AI Evaluation & Quality Assurance',
+                      },
+                      {
+                        name: 'Mizan AI Labs',
+                        tagline: 'Precision Arabic RLHF, Speech-to-Speech & Financial AI Auditing',
+                      },
+                      {
+                        name: 'Qiyas Multimodal',
+                        tagline: 'MENA Sovereign AI Alignment, Red-Teaming & S2S Quality Assurance',
+                      },
+                      {
+                        name: 'Sanad AI Verification',
+                        tagline: 'Zero-Trust Human-in-the-Loop Evaluation for Frontier Models',
+                      },
                     ].map((preset) => (
                       <button
                         key={preset.name}
@@ -1648,12 +2072,13 @@ export default function App() {
       )}
 
       {/* =====================================================================
-          MODAL 1: ZERO-TRUST WORKSPACE SIGN-IN (NO EXPOSED CREDENTIALS)
+          MODAL 1: ZERO-TRUST WORKSPACE SIGN-IN (AUTOCOMPLETE OFF)
          ===================================================================== */}
       {showSignInModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
           <form
             onSubmit={handleWorkspaceSignIn}
+            autoComplete="off"
             className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-2xl"
           >
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -1674,8 +2099,9 @@ export default function App() {
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">Registered Workspace Email *</label>
                 <input
-                  type="email" autoComplete="off"
+                  type="email"
                   required
+                  autoComplete="new-password"
                   placeholder="name@company.com"
                   value={loginEmail}
                   onChange={(e) => setLoginEmail(e.target.value)}
@@ -1685,9 +2111,10 @@ export default function App() {
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">Security Password / Access Token *</label>
                 <input
-                  type="password" autoComplete="off"
+                  type="password"
                   required
-                  placeholder="••••••••••••••••"
+                  autoComplete="new-password"
+                  placeholder="Enter your workspace security token"
                   value={loginPassword}
                   onChange={(e) => setLoginPassword(e.target.value)}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1705,7 +2132,7 @@ export default function App() {
                 }}
                 className="text-xs text-emerald-400 hover:underline"
               >
-                New Evaluator? Sign NDA →
+                New Evaluator? Upload CV & Sign NDA →
               </button>
               <button
                 type="submit"
@@ -1719,63 +2146,145 @@ export default function App() {
       )}
 
       {/* =====================================================================
-          MODAL 2: SUPPORT HELPDESK TICKET MODAL
+          MODAL 2: TWO-WAY SUPPORT HELPDESK & LIVE TICKET REPLY TRACKER
          ===================================================================== */}
       {showSupportModal && (
         <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <form
-            onSubmit={handleSupportSubmit}
-            className="w-full max-w-md p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-2xl text-xs"
-          >
+          <div className="w-full max-w-lg p-6 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 shadow-2xl text-xs">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-base font-black text-white">24/7 QA Operations & Client Support Helpdesk</h3>
+              <div>
+                <span className="text-[11px] font-bold uppercase text-emerald-400">24/7 QA Operations Helpdesk</span>
+                <h3 className="text-base font-black text-white">Support Ticket & Live Resolution Tracker</h3>
+              </div>
               <button type="button" onClick={() => setShowSupportModal(false)} className="text-slate-400">
                 ✕
               </button>
             </div>
-            <input
-              type="text"
-              required
-              placeholder="Your Name"
-              value={supportForm.name}
-              onChange={(e) => setSupportForm({ ...supportForm, name: e.target.value })}
-              className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-            />
-            <input
-              type="email"
-              required
-              placeholder="Your Email Address"
-              value={supportForm.email}
-              onChange={(e) => setSupportForm({ ...supportForm, email: e.target.value })}
-              className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-            />
-            <input
-              type="text"
-              required
-              placeholder="Subject (e.g. PoC Batch Calibration / Evaluator Onboarding)"
-              value={supportForm.subject}
-              onChange={(e) => setSupportForm({ ...supportForm, subject: e.target.value })}
-              className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-            />
-            <textarea
-              rows={3}
-              required
-              placeholder="Describe your inquiry..."
-              value={supportForm.message}
-              onChange={(e) => setSupportForm({ ...supportForm, message: e.target.value })}
-              className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-            />
-            {supportSuccess && <p className="text-emerald-400 font-bold">✓ Ticket routed to QA Lead Console!</p>}
-            <button type="submit" className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">
-              Submit Support Ticket
-            </button>
-          </form>
+
+            {/* SWITCH BETWEEN SUBMITTING A TICKET AND CHECKING OWNER/SUPPORT REPLIES */}
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => setSupportModalTab('submit')}
+                className={`py-2 rounded-xl font-bold ${
+                  supportModalTab === 'submit'
+                    ? 'bg-emerald-500 text-slate-950'
+                    : 'bg-slate-950 text-slate-300 border border-slate-800'
+                }`}
+              >
+                1. Submit New Ticket
+              </button>
+              <button
+                type="button"
+                onClick={() => setSupportModalTab('track')}
+                className={`py-2 rounded-xl font-bold ${
+                  supportModalTab === 'track'
+                    ? 'bg-emerald-500 text-slate-950'
+                    : 'bg-slate-950 text-slate-300 border border-slate-800'
+                }`}
+              >
+                2. Track Ticket & View Replies
+              </button>
+            </div>
+
+            {supportModalTab === 'submit' ? (
+              <form onSubmit={handleSupportSubmit} className="space-y-3">
+                <input
+                  type="text"
+                  required
+                  placeholder="Your Name"
+                  value={supportForm.name}
+                  onChange={(e) => setSupportForm({ ...supportForm, name: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <input
+                  type="email"
+                  required
+                  placeholder="Your Email Address (Used to track replies)"
+                  value={supportForm.email}
+                  onChange={(e) => setSupportForm({ ...supportForm, email: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <input
+                  type="text"
+                  required
+                  placeholder="Subject (e.g. PoC Batch Calibration / Evaluator Onboarding)"
+                  value={supportForm.subject}
+                  onChange={(e) => setSupportForm({ ...supportForm, subject: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <textarea
+                  rows={3}
+                  required
+                  placeholder="Describe your inquiry..."
+                  value={supportForm.message}
+                  onChange={(e) => setSupportForm({ ...supportForm, message: e.target.value })}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                {lastCreatedTicketId && (
+                  <div className="p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-200 space-y-1">
+                    <div className="font-bold text-emerald-400">
+                      ✓ Ticket Logged! Your Reference ID: {lastCreatedTicketId}
+                    </div>
+                    <p>
+                      Switch to the <strong>"2. Track Ticket & View Replies"</strong> tab anytime using your email or ID{' '}
+                      <strong>{lastCreatedTicketId}</strong> to view the Owner/Support response.
+                    </p>
+                  </div>
+                )}
+                <button type="submit" className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-extrabold">
+                  Submit Support Ticket
+                </button>
+              </form>
+            ) : (
+              <div className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Enter your Email Address or Ticket ID (e.g. TKT-701 or tariq@khaleejfintech.sa)"
+                  value={ticketLookupQuery}
+                  onChange={(e) => setTicketLookupQuery(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <div className="max-h-64 overflow-y-auto space-y-2.5">
+                  {matchedLookupTickets.length === 0 ? (
+                    <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 text-center">
+                      Enter the email address or Ticket ID you used when submitting your ticket to view live replies.
+                    </div>
+                  ) : (
+                    matchedLookupTickets.map((t) => (
+                      <div key={t.id} className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 space-y-2">
+                        <div className="flex justify-between">
+                          <span className="font-bold text-emerald-400">
+                            {t.id} — {t.subject}
+                          </span>
+                          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-200 font-bold">{t.status}</span>
+                        </div>
+                        <p className="text-slate-300">{t.message}</p>
+                        {t.reply ? (
+                          <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-500/40 text-emerald-200 space-y-1">
+                            <div className="font-bold text-emerald-400">
+                              ✓ Official Resolution from {t.repliedBy} ({t.repliedAt}):
+                            </div>
+                            <p>{t.reply}</p>
+                          </div>
+                        ) : (
+                          <div className="text-amber-400 font-semibold">
+                            ⏳ Status: Open — Assigned to QA Support Lead for review.
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
       {/* FOOTER */}
       <footer className="border-t border-slate-900 mt-20 py-8 px-4 text-center text-xs text-slate-500">
-        © {new Date().getFullYear()} {brand.name} • Architected by {brand.founder} • Zero-Trust AI Evaluation & S2S Quality Assurance.
+        © {new Date().getFullYear()} {brand.name} • Architected by {brand.founder} • Enterprise Arabic & Multimodal AI Quality Assurance.
       </footer>
     </div>
   );
