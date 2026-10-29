@@ -40,8 +40,8 @@ const SECURITY_QUESTIONS = [
     if (saved) return JSON.parse(saved);
     return [
       {
-        email: 'abdelrhman.maroxo@gmail.com',
-        pass: 'ArabEval#Owner2026!',
+        email: 'owner@stealth-workspace.internal',
+        pass: '7e4bb8dbece82f72d1ec1418ff24b887fb8a75f56f07b7d1aa593cbd5fd8e1cb',
         role: 'owner',
         name: 'Abdelrhman Maroxo',
         certifiedForProjects: true,
@@ -480,7 +480,7 @@ const SECURITY_QUESTIONS = [
   };
 
   const handleDeleteUser = (email) => {
-    if (email === 'abdelrhman.maroxo@gmail.com') {
+    if (email === 'owner@stealth-workspace.internal') {
       alert('Cannot delete founding owner account.');
       return;
     }
@@ -865,7 +865,7 @@ const SECURITY_QUESTIONS = [
                   0 Tasks Assigned
                 </div>
                 <p className="text-xs text-slate-300 leading-relaxed max-w-md mx-auto">
-                  Your account or session is awaiting manual verification by the Founding Owner (<span className="text-cyan-400 font-mono">abdelrhman.maroxo@gmail.com</span>). Once your onboarding NDA is approved and email is certified, live task workbenches will unlock automatically.
+                  Your account or session is awaiting manual verification by the Founding Owner (<span className="text-cyan-400 font-mono">owner@stealth-workspace.internal</span>). Once your onboarding NDA is approved and email is certified, live task workbenches will unlock automatically.
                 </p>
                 <div className="pt-2 flex flex-wrap justify-center gap-3">
                   <button
@@ -1028,7 +1028,7 @@ const SECURITY_QUESTIONS = [
     setPocDone(true);
   };
 
-  const isOwner = currentUser?.role === 'owner' || currentUser?.email === 'abdelrhman.maroxo@gmail.com';
+  const isOwner = currentUser?.role === 'owner' || currentUser?.email === 'owner@stealth-workspace.internal';
   const isCertified = isOwner || currentUser?.certifiedForProjects || currentUser?.role === 'support';
   useState('signin');
   const [forgotSubTab, setForgotSubTab] = useState('question');
