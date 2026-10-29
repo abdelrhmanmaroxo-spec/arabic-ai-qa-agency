@@ -979,7 +979,7 @@ export default function App() {
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Abdelrhman Essam Ali"
+                  placeholder="e.g. Full Legal Name"
                   value={applyForm.fullName}
                   onChange={(e) => setApplyForm({ ...applyForm, fullName: e.target.value })}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1001,7 +1001,7 @@ export default function App() {
                 <input
                   type="text"
                   required
-                  placeholder="+20 128 014 8598"
+                  placeholder="+20 100 000 0000"
                   value={applyForm.phone}
                   onChange={(e) => setApplyForm({ ...applyForm, phone: e.target.value })}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1484,7 +1484,7 @@ export default function App() {
                           }
                           className="px-3 py-1.5 rounded-lg bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold"
                         >
-                          ✕ Reject
+                          ✕ Reject</button><button onClick={() => { const updated = applicants.filter((a) => a.id !== app.id); setApplicants(updated); try { localStorage.setItem('arabic_qa_applicants', JSON.stringify(updated)); } catch(e){} }} className="px-3 py-1.5 rounded-lg bg-rose-600 text-white font-bold text-xs ml-2">🗑️ Delete / Remove
                         </button>
                       </div>
                     </div>
@@ -1674,7 +1674,7 @@ export default function App() {
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">Registered Workspace Email *</label>
                 <input
-                  type="email"
+                  type="email" autoComplete="off"
                   required
                   placeholder="name@company.com"
                   value={loginEmail}
@@ -1685,7 +1685,7 @@ export default function App() {
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">Security Password / Access Token *</label>
                 <input
-                  type="password"
+                  type="password" autoComplete="off"
                   required
                   placeholder="••••••••••••••••"
                   value={loginPassword}
