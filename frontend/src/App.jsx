@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Shield, CheckCircle, Lock, Cpu, Server, FileText, AlertTriangle, Users,
   Send, RefreshCw, Eye, EyeOff, Key, HelpCircle, Terminal, Check, X,
@@ -15,12 +15,16 @@ import {
 } from './securityVault';
 
 // ============================================================================
-// STEALTH AI QA — ENTERPRISE PLATFORM v9.0
-// - Full Dark (Black) / Light (White) Theme Engine
-// - Dedicated Settings & 12-Article NDA Compliance Center
-// - Strict Owner Sign-In Isolation (Zero Auto-Admin on Onboarding/Register)
-// - Built-in Cloud Backend Sync Connector (Supabase / REST API Ready)
+// STEALTH AI QA — CLOUD ENTERPRISE PLATFORM v10.0
+// - Pre-Configured Supabase Cloud Sync (wsomhieprlspugqotued.supabase.co)
+// - No-Code Pricing, Projects, Hero Copy & Theme Studio for Owner & Sales
+// - Full Black (Dark) / White (Light) Mode + Dynamic Accent Palettes
+// - Dedicated Settings & 12-Article Master NDA Compliance Center
 // ============================================================================
+
+const DEFAULT_SUPABASE_URL = 'https://wsomhieprlspugqotued.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indzb21oaWVwcmxzcHVncW90dWVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMzMTA3OTUsImV4cCI6MjEwODg4Njc5NX0.2wLt7qvCm9Ko-z-3Z3-FRY1MQKpC26rowRkkytZh9Mc';
 
 const INITIAL_PLATFORM_CONFIG = {
   brandName: 'STEALTH AI QA',
@@ -29,8 +33,21 @@ const INITIAL_PLATFORM_CONFIG = {
   regionBadge: 'AR-EG • AR-SA/AE • Levantine • S2S Voice • Financial FP&A',
   leadArchitect: 'Abdelrhman Essam Ali',
   leadTitle: 'Founder & Principal AI Systems Architect',
-  cloudUrl: '',
-  cloudKey: ''
+  heroBadge: 'Sovereign Human-in-the-Loop AI Data Infrastructure',
+  heroTitleLine1: 'Eliminate Dialect Hallucinations with',
+  heroTitleHighlight: 'Zero-Trust Human QA.',
+  heroSubtitle:
+    'We power frontier AI labs, sovereign telecoms, and financial institutions with surgical-grade Arabic Speech-to-Speech (S2S) calibration, verbatim call-center transcription, multimodal OCR annotation, and 3-statement FP&A verification—enforced by hard anti-cheat telemetry.',
+  stat1Value: '99.4%',
+  stat1Label: 'Inter-Annotator Agreement',
+  stat2Value: '100% Human',
+  stat2Label: 'Zero-AI Policy Enforced',
+  stat3Value: '48 Hours',
+  stat3Label: 'Diagnostic PoC SLA',
+  accentColor: 'emerald', // emerald | cyan | violet | amber
+  defaultTheme: 'dark',
+  cloudUrl: DEFAULT_SUPABASE_URL,
+  cloudKey: DEFAULT_SUPABASE_ANON_KEY
 };
 
 // Zero-Plaintext XOR Obfuscated Vault Vectors for Master Owner
@@ -133,7 +150,7 @@ const LIVE_STUDIO_DEMOS = [
   }
 ];
 
-const PLATFORM_PROJECTS = [
+const INITIAL_PLATFORM_PROJECTS = [
   {
     id: 'PRJ-TRN-101',
     name: 'Audio Transcription & Speaker Diarization',
@@ -197,10 +214,9 @@ const MASTER_CONTRACT_ARTICLES = [
 ];
 
 export default function App() {
-  // Theme State: 'dark' (Black Stealth) or 'light' (White Daylight)
   const [themeMode, setThemeMode] = useState(() => {
     try {
-      return localStorage.getItem('stealth_theme_v9') || 'dark';
+      return localStorage.getItem('stealth_theme_v10') || 'dark';
     } catch {
       return 'dark';
     }
@@ -210,10 +226,19 @@ export default function App() {
 
   const [brand, setBrand] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_brand_v9');
-      return saved ? JSON.parse(saved) : INITIAL_PLATFORM_CONFIG;
+      const saved = localStorage.getItem('stealth_brand_v10');
+      return saved ? { ...INITIAL_PLATFORM_CONFIG, ...JSON.parse(saved) } : INITIAL_PLATFORM_CONFIG;
     } catch {
       return INITIAL_PLATFORM_CONFIG;
+    }
+  });
+
+  const [projects, setProjects] = useState(() => {
+    try {
+      const saved = localStorage.getItem('stealth_projects_v10');
+      return saved ? JSON.parse(saved) : INITIAL_PLATFORM_PROJECTS;
+    } catch {
+      return INITIAL_PLATFORM_PROJECTS;
     }
   });
 
@@ -223,7 +248,7 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_session_v9');
+      const saved = localStorage.getItem('stealth_session_v10');
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
@@ -232,7 +257,7 @@ export default function App() {
 
   const [users, setUsers] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_registry_v9');
+      const saved = localStorage.getItem('stealth_registry_v10');
       return saved ? JSON.parse(saved) : INITIAL_ACCOUNTS_REGISTRY;
     } catch {
       return INITIAL_ACCOUNTS_REGISTRY;
@@ -241,7 +266,7 @@ export default function App() {
 
   const [securityVault, setSecurityVault] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_vault_v9');
+      const saved = localStorage.getItem('stealth_vault_v10');
       return saved ? JSON.parse(saved) : INITIAL_SECURITY_VAULT;
     } catch {
       return INITIAL_SECURITY_VAULT;
@@ -250,7 +275,7 @@ export default function App() {
 
   const [applicants, setApplicants] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_applicants_v9');
+      const saved = localStorage.getItem('stealth_applicants_v10');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -285,7 +310,7 @@ export default function App() {
 
   const [tickets, setTickets] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_tickets_v9');
+      const saved = localStorage.getItem('stealth_tickets_v10');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -311,7 +336,7 @@ export default function App() {
 
   const [pocs, setPocs] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_pocs_v9');
+      const saved = localStorage.getItem('stealth_pocs_v10');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -329,30 +354,141 @@ export default function App() {
 
   const [resets, setResets] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_resets_v9');
+      const saved = localStorage.getItem('stealth_resets_v10');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
     }
   });
 
+  // ==========================================================================
+  // REAL-TIME SUPABASE CLOUD BACKEND SYNC ENGINE
+  // ==========================================================================
+  const [cloudStatus, setCloudStatus] = useState('Connecting...');
+  const isHydratingRef = useRef(true);
+
+  const pullFromSupabaseCloud = async () => {
+    const url = (brand.cloudUrl || DEFAULT_SUPABASE_URL).trim();
+    const key = (brand.cloudKey || DEFAULT_SUPABASE_ANON_KEY).trim();
+    if (!url || !key) {
+      setCloudStatus('Local Mode');
+      isHydratingRef.current = false;
+      return;
+    }
+    try {
+      const res = await fetch(`${url}/rest/v1/stealth_cloud_state?id=eq.GLOBAL_MAIN&select=*`, {
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`
+        }
+      });
+      if (!res.ok) {
+        setCloudStatus('Local + Cloud Ready');
+        isHydratingRef.current = false;
+        return;
+      }
+      const rows = await res.json();
+      if (Array.isArray(rows) && rows.length > 0) {
+        const row = rows[0];
+        if (Array.isArray(row.users_registry) && row.users_registry.length > 0) setUsers(row.users_registry);
+        if (row.security_vault && Object.keys(row.security_vault).length > 0) setSecurityVault(row.security_vault);
+        if (Array.isArray(row.applicants) && row.applicants.length > 0) setApplicants(row.applicants);
+        if (Array.isArray(row.tickets) && row.tickets.length > 0) setTickets(row.tickets);
+        if (Array.isArray(row.pocs) && row.pocs.length > 0) setPocs(row.pocs);
+        if (Array.isArray(row.resets)) setResets(row.resets);
+        if (row.brand && Object.keys(row.brand).length > 0) {
+          if (Array.isArray(row.brand.customProjects) && row.brand.customProjects.length > 0) {
+            setProjects(row.brand.customProjects);
+          }
+          setBrand(prev => ({
+            ...prev,
+            ...row.brand,
+            cloudUrl: url,
+            cloudKey: key
+          }));
+        }
+        setCloudStatus('☁️ Cloud Synced');
+      } else {
+        setCloudStatus('☁️ Cloud Connected');
+      }
+    } catch {
+      setCloudStatus('Offline Cache');
+    } finally {
+      isHydratingRef.current = false;
+    }
+  };
+
+  const pushToSupabaseCloud = async (overrideBrand, overrideProjects) => {
+    const activeBrand = overrideBrand || brand;
+    const activeProjects = overrideProjects || projects;
+    const url = (activeBrand.cloudUrl || DEFAULT_SUPABASE_URL).trim();
+    const key = (activeBrand.cloudKey || DEFAULT_SUPABASE_ANON_KEY).trim();
+    if (!url || !key) return;
+
+    try {
+      setCloudStatus('Syncing...');
+      const payload = {
+        id: 'GLOBAL_MAIN',
+        users_registry: users,
+        security_vault: securityVault,
+        applicants,
+        tickets,
+        pocs,
+        resets,
+        brand: { ...activeBrand, customProjects: activeProjects },
+        updated_at: new Date().toISOString()
+      };
+
+      const res = await fetch(`${url}/rest/v1/stealth_cloud_state`, {
+        method: 'POST',
+        headers: {
+          apikey: key,
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/json',
+          Prefer: 'resolution=merge-duplicates'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        setCloudStatus('☁️ Cloud Synced');
+      } else {
+        setCloudStatus('Sync Pending');
+      }
+    } catch {
+      setCloudStatus('Local Saved');
+    }
+  };
+
+  useEffect(() => {
+    pullFromSupabaseCloud();
+  }, []);
+
   useEffect(() => {
     try {
-      localStorage.setItem('stealth_theme_v9', themeMode);
-      localStorage.setItem('stealth_brand_v9', JSON.stringify(brand));
+      localStorage.setItem('stealth_theme_v10', themeMode);
+      localStorage.setItem('stealth_brand_v10', JSON.stringify(brand));
+      localStorage.setItem('stealth_projects_v10', JSON.stringify(projects));
       if (currentUser) {
-        localStorage.setItem('stealth_session_v9', JSON.stringify(currentUser));
+        localStorage.setItem('stealth_session_v10', JSON.stringify(currentUser));
       } else {
-        localStorage.removeItem('stealth_session_v9');
+        localStorage.removeItem('stealth_session_v10');
       }
-      localStorage.setItem('stealth_registry_v9', JSON.stringify(users));
-      localStorage.setItem('stealth_vault_v9', JSON.stringify(securityVault));
-      localStorage.setItem('stealth_applicants_v9', JSON.stringify(applicants));
-      localStorage.setItem('stealth_tickets_v9', JSON.stringify(tickets));
-      localStorage.setItem('stealth_pocs_v9', JSON.stringify(pocs));
-      localStorage.setItem('stealth_resets_v9', JSON.stringify(resets));
+      localStorage.setItem('stealth_registry_v10', JSON.stringify(users));
+      localStorage.setItem('stealth_vault_v10', JSON.stringify(securityVault));
+      localStorage.setItem('stealth_applicants_v10', JSON.stringify(applicants));
+      localStorage.setItem('stealth_tickets_v10', JSON.stringify(tickets));
+      localStorage.setItem('stealth_pocs_v10', JSON.stringify(pocs));
+      localStorage.setItem('stealth_resets_v10', JSON.stringify(resets));
     } catch {}
-  }, [themeMode, brand, currentUser, users, securityVault, applicants, tickets, pocs, resets]);
+
+    if (!isHydratingRef.current) {
+      const timer = setTimeout(() => {
+        pushToSupabaseCloud();
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [themeMode, brand, projects, currentUser, users, securityVault, applicants, tickets, pocs, resets]);
 
   // Real-time Ban Enforcement
   useEffect(() => {
@@ -385,7 +521,7 @@ export default function App() {
     name: '',
     email: '',
     dialect: 'Egyptian (AR-EG • Cairene / Alexandrian / Saidi)',
-    track: PLATFORM_PROJECTS[0].name,
+    track: INITIAL_PLATFORM_PROJECTS[0].name,
     pass: '',
     secQuestion: SECURITY_QUESTIONS[0],
     secAnswer: '',
@@ -417,24 +553,41 @@ export default function App() {
 
   const [provEmail, setProvEmail] = useState('');
   const [provPass, setProvPass] = useState('TempPass2026!');
-  const [provRole, setProvRole] = useState('support');
+  const [provRole, setProvRole] = useState('sales');
   const [provCertified, setProvCertified] = useState(true);
   const [provMsg, setProvMsg] = useState('');
 
   const [editBrand, setEditBrand] = useState({ ...brand });
+  useEffect(() => {
+    setEditBrand({ ...brand });
+  }, [brand]);
+
+  // No-Code New Project Form for Owner & Sales
+  const [newPrjForm, setNewPrjForm] = useState({
+    id: '',
+    name: '',
+    domain: 'Custom AI Evaluation',
+    payRate: '$30 – $55 / Hr',
+    totalTasks: 500,
+    desc: '',
+    samplePrompt: ''
+  });
+
   const [selectedProjectId, setSelectedProjectId] = useState('PRJ-TRN-101');
   const [workbenchTaskIndex, setWorkbenchTaskIndex] = useState(0);
   const [workbenchText, setWorkbenchText] = useState('');
   const [workbenchSavedMsg, setWorkbenchSavedMsg] = useState('');
 
-  // Settings Tab State (Password & Security Question Update + NDA Copy Download)
   const [settingsNewPass, setSettingsNewPass] = useState('');
   const [settingsSecQ, setSettingsSecQ] = useState(SECURITY_QUESTIONS[0]);
   const [settingsSecA, setSettingsSecA] = useState('');
   const [settingsSavedMsg, setSettingsSavedMsg] = useState('');
 
   const isOwner = currentUser?.role === 'owner' || currentUser?.keyId === 'KEY-MASTER-OWNER';
-  const isCertified = isOwner || currentUser?.certifiedForProjects || currentUser?.role === 'support';
+  const isSales = currentUser?.role === 'sales';
+  const isSupport = currentUser?.role === 'support';
+  const isExecutive = isOwner || isSales || isSupport;
+  const isCertified = isExecutive || currentUser?.certifiedForProjects;
 
   useEffect(() => {
     if (activeNav === 'helpdesk' && currentUser?.email) {
@@ -475,16 +628,12 @@ export default function App() {
     return false;
   };
 
-  // ==========================================================================
-  // SIGN IN HANDLER (THE ONLY GATEWAY FOR OWNER / ADMIN ACCESS)
-  // ==========================================================================
   const handleSignIn = async (e) => {
     e.preventDefault();
     setAuthMsg('');
     const emailClean = authEmail.trim().toLowerCase();
     const passClean = authPass.trim();
 
-    // 1. Verify Master Owner
     const ownerMatched = await verifyIsMasterOwner(emailClean, passClean);
     if (ownerMatched) {
       setUsers(prev => prev.filter(u => u.email.toLowerCase() !== emailClean));
@@ -505,7 +654,6 @@ export default function App() {
       return;
     }
 
-    // 2. Verify Registered Accounts
     const found = users.find(u => u.email.toLowerCase() === emailClean);
     if (!found) {
       setAuthMsg('Invalid email or password. Click the eye icon to verify your typed password.');
@@ -532,15 +680,12 @@ export default function App() {
       setShowAuthModal(false);
       setAuthEmail('');
       setAuthPass('');
-      if (found.role === 'support') setActiveNav('admin');
+      if (found.role === 'support' || found.role === 'sales') setActiveNav('admin');
     } else {
       setAuthMsg('Invalid email or password. Click the eye icon to verify your typed password.');
     }
   };
 
-  // ==========================================================================
-  // REGISTER HANDLER (NEVER GRANTS ADMIN ACCESS; BLOCKS OWNER EMAIL)
-  // ==========================================================================
   const handleSignUp = async (e) => {
     e.preventDefault();
     setAuthMsg('');
@@ -660,7 +805,7 @@ export default function App() {
     };
     setTickets(prev => [newT, ...prev]);
     setInboxTicket(newT);
-    setTicketSubmitMsg(`✓ Ticket ${tckId} created! Live thread opened on the right panel.`);
+    setTicketSubmitMsg(`✓ Ticket ${tckId} created & synced to Cloud! Live thread opened on the right panel.`);
     setNewTicketSubject('');
     setNewTicketMsg('');
   };
@@ -774,8 +919,12 @@ export default function App() {
     };
     setSecurityVault(prev => ({ ...prev, [newKeyId]: digest }));
     setUsers(prev => [...prev, newU]);
-    setProvMsg(`✓ ${cleanEmail} encrypted into SHA-256 Vault (${provRole})!`);
+    setProvMsg(`✓ ${cleanEmail} encrypted into SHA-256 Vault as ${provRole.toUpperCase()}!`);
     setProvEmail('');
+  };
+
+  const handleChangeUserRole = (email, nextRole) => {
+    setUsers(prev => prev.map(u => u.email.toLowerCase() === email.toLowerCase() ? { ...u, role: nextRole } : u));
   };
 
   const handleToggleProjectAccess = (email) => {
@@ -795,6 +944,53 @@ export default function App() {
       }
       return u;
     }));
+  };
+
+  // ==========================================================================
+  // NO-CODE PRICING & PROJECTS CMS HANDLERS (FOR OWNER & SALES)
+  // ==========================================================================
+  const handleProjectFieldChange = (id, field, value) => {
+    setProjects(prev =>
+      prev.map(p => (p.id === id ? { ...p, [field]: field === 'totalTasks' ? Number(value) || 0 : value } : p))
+    );
+  };
+
+  const handleAddNewProject = (e) => {
+    e.preventDefault();
+    if (!newPrjForm.name || !newPrjForm.payRate) return;
+    const customId = newPrjForm.id.trim() || `PRJ-CSM-${Math.floor(100 + Math.random() * 900)}`;
+    const newItem = {
+      id: customId,
+      name: newPrjForm.name.trim(),
+      domain: newPrjForm.domain.trim() || 'Custom AI Evaluation',
+      payRate: newPrjForm.payRate.trim(),
+      totalTasks: Number(newPrjForm.totalTasks) || 250,
+      desc: newPrjForm.desc.trim() || 'Enterprise human-in-the-loop evaluation and quality verification pipeline.',
+      samplePrompt: newPrjForm.samplePrompt.trim() || 'Evaluate the following model output according to project rubric guidelines.'
+    };
+    const updated = [...projects, newItem];
+    setProjects(updated);
+    pushToSupabaseCloud(brand, updated);
+    setNewPrjForm({
+      id: '',
+      name: '',
+      domain: 'Custom AI Evaluation',
+      payRate: '$30 – $55 / Hr',
+      totalTasks: 500,
+      desc: '',
+      samplePrompt: ''
+    });
+    alert(`✓ Project "${newItem.name}" added and synced to Cloud!`);
+  };
+
+  const handleDeleteProject = (id) => {
+    if (projects.length <= 1) {
+      alert('At least one active project must remain in the workbench.');
+      return;
+    }
+    const updated = projects.filter(p => p.id !== id);
+    setProjects(updated);
+    pushToSupabaseCloud(brand, updated);
   };
 
   const handleExportVaultFiles = () => {
@@ -864,12 +1060,13 @@ Timestamp: ${new Date().toUTCString()}
   const handleSaveBrandConfig = (e) => {
     e.preventDefault();
     setBrand(editBrand);
-    alert('✓ Brand & Cloud Backend Configuration saved across the platform!');
+    if (editBrand.defaultTheme) {
+      setThemeMode(editBrand.defaultTheme);
+    }
+    pushToSupabaseCloud(editBrand, projects);
+    alert('✓ Brand, Layout, Pricing & Cloud Configuration saved and synced across all devices!');
   };
 
-  // ==========================================================================
-  // ONBOARDING SUBMIT (STRICTLY EVALUATOR ONLY — NEVER OPENS ADMIN PANEL)
-  // ==========================================================================
   const handleOnboardingSubmit = async (e) => {
     e.preventDefault();
     if (!appForm.name || !appForm.email || !appForm.secAnswer || !appForm.agreedNDA) {
@@ -879,7 +1076,6 @@ Timestamp: ${new Date().toUTCString()}
     const cleanEmail = appForm.email.trim().toLowerCase();
     const rawPass = appForm.pass || 'EvalPass2026!';
 
-    // Prevent Master Owner email from being submitted in Evaluator Onboarding
     const expectedOwnerEmail = _decodeVector(_OV_E);
     if (cleanEmail === expectedOwnerEmail) {
       alert('Notice: Chrome auto-filled your Master Owner email. To test new Evaluator Onboarding, please enter a different email address (e.g. specialist@domain.com).');
@@ -922,7 +1118,6 @@ Timestamp: ${new Date().toUTCString()}
       setSecurityVault(prev => ({ ...prev, [newKeyId]: digest }));
       setUsers(prev => [...prev, newEvalUser]);
     }
-    // Log them in strictly as an UNCERTIFIED EVALUATOR (never admin)
     setCurrentUser(newEvalUser);
     setAppSubmitted(true);
   };
@@ -945,7 +1140,7 @@ Timestamp: ${new Date().toUTCString()}
     }
     setSettingsNewPass('');
     setSettingsSecA('');
-    setSettingsSavedMsg('✓ Security credentials & preferences encrypted into SHA-256 Vault!');
+    setSettingsSavedMsg('✓ Security credentials & preferences encrypted and synced to Cloud!');
   };
 
   const handlePocSubmit = (e) => {
@@ -964,16 +1159,23 @@ Timestamp: ${new Date().toUTCString()}
     setPocDone(true);
   };
 
-  const currentProjectObj = PLATFORM_PROJECTS.find(p => p.id === selectedProjectId) || PLATFORM_PROJECTS[0];
+  const currentProjectObj = projects.find(p => p.id === selectedProjectId) || projects[0];
 
-  // Dynamic Theme Classes (Black Stealth Mode vs White Daylight Mode)
+  // Dynamic Accent Gradient Helper (Editable by Owner & Sales)
+  const accentGradMap = {
+    emerald: 'from-emerald-500 to-teal-400',
+    cyan: 'from-cyan-500 to-blue-500',
+    violet: 'from-violet-500 to-fuchsia-500',
+    amber: 'from-amber-400 to-orange-500'
+  };
+  const activeAccentGrad = accentGradMap[brand.accentColor] || accentGradMap.emerald;
+
   const rootThemeClass = isDark
     ? 'bg-[#050811] text-slate-100'
     : 'bg-slate-50 text-slate-900 [&_div.bg-\\[#0b1020\\]]:bg-white [&_div.bg-\\[#0b1020\\]]:border-slate-300 [&_div.bg-\\[#0b1020\\]]:shadow-slate-200/70 [&_form.bg-\\[#0b1020\\]]:bg-white [&_form.bg-\\[#0b1020\\]]:border-slate-300 [&_div.bg-slate-950]:bg-slate-100 [&_div.bg-slate-950]:border-slate-300 [&_div.bg-slate-900\\/80]:bg-white [&_div.bg-slate-900]:bg-white [&_input]:bg-white [&_input]:text-slate-900 [&_input]:border-slate-300 [&_select]:bg-white [&_select]:text-slate-900 [&_select]:border-slate-300 [&_textarea]:bg-white [&_textarea]:text-slate-900 [&_textarea]:border-slate-300 [&_h1]:text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_h4]:text-slate-900 [&_p.text-slate-300]:text-slate-600 [&_p.text-slate-400]:text-slate-600 [&_span.text-slate-300]:text-slate-700 [&_span.text-white]:text-slate-900 [&_strong.text-white]:text-slate-900';
 
   return (
     <div className={`min-h-screen font-sans flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative overflow-x-hidden transition-colors duration-300 ${rootThemeClass}`}>
-      {/* AMBIENT ENTERPRISE GLOW BACKDROP */}
       {isDark && (
         <>
           <div className="pointer-events-none fixed top-0 left-1/4 w-[600px] h-[350px] bg-emerald-500/10 rounded-full blur-[130px] -z-10" />
@@ -984,7 +1186,7 @@ Timestamp: ${new Date().toUTCString()}
       {/* TOP NAVIGATION HEADER */}
       <header className={`border-b backdrop-blur-xl sticky top-0 z-40 px-4 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4 transition-colors ${isDark ? 'border-slate-800/80 bg-[#070b16]/90' : 'border-slate-200 bg-white/90 shadow-sm'}`}>
         <div className="flex items-center gap-3.5 cursor-pointer group" onClick={() => setActiveNav('home')}>
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 flex items-center justify-center font-black text-slate-950 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
+          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${activeAccentGrad} flex items-center justify-center font-black text-slate-950 shadow-lg group-hover:scale-105 transition`}>
             <Shield className="w-5 h-5 text-slate-950" />
           </div>
           <div>
@@ -994,6 +1196,9 @@ Timestamp: ${new Date().toUTCString()}
               </span>
               <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold">
                 {brand.brandStatus}
+              </span>
+              <span className="hidden xl:inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                {cloudStatus}
               </span>
             </div>
             <p className="text-[11px] text-slate-400 hidden sm:block">{brand.regionBadge}</p>
@@ -1015,7 +1220,7 @@ Timestamp: ${new Date().toUTCString()}
               onClick={() => setActiveNav(tab.id)}
               className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
                 activeNav === tab.id
-                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-extrabold shadow-md shadow-emerald-500/20'
+                  ? `bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-extrabold shadow-md`
                   : isDark
                   ? 'text-slate-400 hover:text-white hover:bg-slate-800/60'
                   : 'text-slate-600 hover:text-slate-950 hover:bg-white'
@@ -1028,7 +1233,6 @@ Timestamp: ${new Date().toUTCString()}
         </nav>
 
         <div className="flex items-center gap-2">
-          {/* QUICK THEME TOGGLE BUTTON (BLACK / WHITE) */}
           <button
             onClick={() => setThemeMode(isDark ? 'light' : 'dark')}
             className={`px-3 py-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition ${
@@ -1036,7 +1240,6 @@ Timestamp: ${new Date().toUTCString()}
                 ? 'bg-slate-900 border-slate-700 text-amber-300 hover:bg-slate-800'
                 : 'bg-slate-100 border-slate-300 text-slate-800 hover:bg-slate-200'
             }`}
-            title="Switch between Black (Dark) and White (Light) Mode"
           >
             <span>{isDark ? '☀️ White Mode' : '🌙 Black Mode'}</span>
           </button>
@@ -1071,20 +1274,20 @@ Timestamp: ${new Date().toUTCString()}
                 setAuthPass('');
                 setAuthMsg('');
               }}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition"
+              className={`px-4 py-2 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition`}
             >
               <Key className="w-3.5 h-3.5" />
               Workspace Sign-In
             </button>
           )}
 
-          {(isOwner || currentUser?.role === 'support') && (
+          {isExecutive && (
             <button
               onClick={() => setActiveNav('admin')}
-              className="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-lg shadow-amber-500/20"
+              className="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-lg"
             >
               <Settings className="w-4 h-4" />
-              <span>Master Admin</span>
+              <span>{isSales ? 'Sales & Pricing CMS' : 'Master Admin'}</span>
             </button>
           )}
         </div>
@@ -1101,28 +1304,24 @@ Timestamp: ${new Date().toUTCString()}
               <div className="lg:col-span-6 space-y-6 pt-2">
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-xs font-bold">
                   <ShieldCheck className="w-4 h-4" />
-                  <span>Sovereign Human-in-the-Loop AI Data Infrastructure</span>
+                  <span>{brand.heroBadge || 'Sovereign Human-in-the-Loop AI Data Infrastructure'}</span>
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.08] text-white">
-                  Eliminate Dialect Hallucinations with{' '}
-                  <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
-                    Zero-Trust Human QA.
+                  {brand.heroTitleLine1 || 'Eliminate Dialect Hallucinations with'}{' '}
+                  <span className={`bg-gradient-to-r ${activeAccentGrad} bg-clip-text text-transparent`}>
+                    {brand.heroTitleHighlight || 'Zero-Trust Human QA.'}
                   </span>
                 </h1>
 
                 <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                  We power frontier AI labs, sovereign telecoms, and financial institutions with surgical-grade{' '}
-                  <strong className="text-white">Arabic Speech-to-Speech (S2S) calibration</strong>,{' '}
-                  <strong className="text-white">verbatim call-center transcription</strong>,{' '}
-                  <strong className="text-white">multimodal OCR annotation</strong>, and{' '}
-                  <strong className="text-white">3-statement FP&A verification</strong>—enforced by hard anti-cheat telemetry.
+                  {brand.heroSubtitle}
                 </p>
 
                 <div className="flex flex-wrap gap-3.5 pt-2">
                   <button
                     onClick={() => setActiveNav('projects')}
-                    className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-xl shadow-emerald-500/20 transition"
+                    className={`px-6 py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-xl transition`}
                   >
                     <span>Explore Projects Workbench</span>
                     <ChevronRight className="w-4 h-4" />
@@ -1141,18 +1340,18 @@ Timestamp: ${new Date().toUTCString()}
 
                 <div className="grid grid-cols-3 gap-3.5 pt-4">
                   <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-emerald-500">99.4%</div>
-                    <div className="text-xs font-bold text-white mt-0.5">Inter-Annotator Agreement</div>
+                    <div className="text-2xl font-black text-emerald-500">{brand.stat1Value || '99.4%'}</div>
+                    <div className="text-xs font-bold text-white mt-0.5">{brand.stat1Label || 'Inter-Annotator Agreement'}</div>
                     <div className="text-[11px] text-slate-400 mt-0.5">Multi-tier L1/L2 QA calibration</div>
                   </div>
                   <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-cyan-500">100% Human</div>
-                    <div className="text-xs font-bold text-white mt-0.5">Zero-AI Policy Enforced</div>
+                    <div className="text-2xl font-black text-cyan-500">{brand.stat2Value || '100% Human'}</div>
+                    <div className="text-xs font-bold text-white mt-0.5">{brand.stat2Label || 'Zero-AI Policy Enforced'}</div>
                     <div className="text-[11px] text-slate-400 mt-0.5">Clipboard & cadence telemetry</div>
                   </div>
                   <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-amber-500">48 Hours</div>
-                    <div className="text-xs font-bold text-white mt-0.5">Diagnostic PoC SLA</div>
+                    <div className="text-2xl font-black text-amber-500">{brand.stat3Value || '48 Hours'}</div>
+                    <div className="text-xs font-bold text-white mt-0.5">{brand.stat3Label || 'Diagnostic PoC SLA'}</div>
                     <div className="text-[11px] text-slate-400 mt-0.5">50-sample golden benchmark</div>
                   </div>
                 </div>
@@ -1187,7 +1386,7 @@ Timestamp: ${new Date().toUTCString()}
                       }}
                       className={`py-2 px-2.5 rounded-xl text-[11px] font-extrabold transition ${
                         activeDemo.id === demo.id
-                          ? 'bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow'
+                          ? `bg-gradient-to-r ${activeAccentGrad} text-slate-950 shadow`
                           : 'text-slate-400 hover:text-emerald-500'
                       }`}
                     >
@@ -1266,12 +1465,12 @@ Timestamp: ${new Date().toUTCString()}
               </div>
             </section>
 
-            {/* BENTO GRID */}
+            {/* BENTO GRID OF DYNAMIC PROJECTS & PRICING */}
             <section className="space-y-6">
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
                   <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-500">
-                    Production Pipelines & Data Operations
+                    Production Pipelines & Live Rate Cards
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
                     Built for Sovereign LLMs, Voice AI & Quantitative Finance
@@ -1281,13 +1480,13 @@ Timestamp: ${new Date().toUTCString()}
                   onClick={() => setActiveNav('projects')}
                   className="text-xs font-bold text-cyan-500 hover:underline flex items-center gap-1"
                 >
-                  <span>View All 5 Production Queues</span>
+                  <span>View All {projects.length} Production Queues</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
 
               <div className="grid md:grid-cols-3 gap-5">
-                {PLATFORM_PROJECTS.slice(0, 3).map(p => (
+                {projects.slice(0, 6).map(p => (
                   <div
                     key={p.id}
                     onClick={() => {
@@ -1337,7 +1536,7 @@ Timestamp: ${new Date().toUTCString()}
                 {pocDone ? (
                   <div className="bg-emerald-500/10 border border-emerald-500/40 rounded-2xl p-6 text-center space-y-3">
                     <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto" />
-                    <h3 className="text-lg font-bold text-white">Diagnostic PoC Logged in Client Portal</h3>
+                    <h3 className="text-lg font-bold text-white">Diagnostic PoC Synced to Cloud Portal</h3>
                     <button
                       onClick={() => setPocDone(false)}
                       className="px-4 py-2 bg-emerald-500 text-slate-950 rounded-xl text-xs font-bold"
@@ -1368,10 +1567,11 @@ Timestamp: ${new Date().toUTCString()}
                       onChange={e => setPocForm({ ...pocForm, scope: e.target.value })}
                       className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                     >
-                      <option>Speech & Audio (S2S / Diarization)</option>
-                      <option>FinTech RAG & FP&A Table Alignment</option>
-                      <option>Safety Jailbreak & Red-Teaming</option>
-                      <option>Multimodal OCR & Document Annotation</option>
+                      {projects.map(p => (
+                        <option key={p.id} value={p.name}>
+                          {p.name}
+                        </option>
+                      ))}
                     </select>
                     <input
                       type="text"
@@ -1382,7 +1582,7 @@ Timestamp: ${new Date().toUTCString()}
                     />
                     <button
                       type="submit"
-                      className="sm:col-span-2 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black rounded-xl shadow-lg"
+                      className={`sm:col-span-2 py-3.5 bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black rounded-xl shadow-lg`}
                     >
                       Launch 50-Sample Diagnostic PoC →
                     </button>
@@ -1495,13 +1695,13 @@ Timestamp: ${new Date().toUTCString()}
                   0 Active Tasks Assigned to Current Session
                 </div>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl mx-auto">
-                  Live production queues (<strong>Audio Transcription</strong>, <strong>Data Annotation</strong>, <strong>S2S Voice</strong>, and <strong>Financial FP&A</strong>) remain empty until you complete the 12-Article NDA Onboarding and your email is certified by the Master Owner.
+                  Live production queues remain empty until you complete the 12-Article NDA Onboarding and your email is certified by the Master Owner.
                 </p>
 
                 <div className="pt-3 flex flex-wrap justify-center gap-3">
                   <button
                     onClick={() => setActiveNav('apply')}
-                    className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-black rounded-xl"
+                    className={`px-5 py-2.5 bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-black rounded-xl`}
                   >
                     Complete Evaluator Onboarding & NDA →
                   </button>
@@ -1520,9 +1720,9 @@ Timestamp: ${new Date().toUTCString()}
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
                 <div className="lg:col-span-5 space-y-3">
                   <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
-                    Select Active Production Pipeline ({PLATFORM_PROJECTS.length})
+                    Select Active Production Pipeline ({projects.length})
                   </h3>
-                  {PLATFORM_PROJECTS.map(prj => (
+                  {projects.map(prj => (
                     <div
                       key={prj.id}
                       onClick={() => {
@@ -1621,7 +1821,7 @@ Timestamp: ${new Date().toUTCString()}
                           setWorkbenchText('');
                           setWorkbenchTaskIndex(prev => prev + 1);
                         }}
-                        className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 text-xs font-black"
+                        className={`px-6 py-2.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-black`}
                       >
                         Submit Verified Task →
                       </button>
@@ -1634,7 +1834,7 @@ Timestamp: ${new Date().toUTCString()}
         )}
 
         {/* ===================================================================
-            TAB 4: EVALUATOR ONBOARDING & CV UPLOAD (STRICTLY EVALUATOR ONLY)
+            TAB 4: EVALUATOR ONBOARDING & CV UPLOAD
            =================================================================== */}
         {activeNav === 'apply' && (
           <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl mx-auto shadow-2xl">
@@ -1651,7 +1851,7 @@ Timestamp: ${new Date().toUTCString()}
               <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-center space-y-4">
                 <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
                 <h3 className="text-xl font-black text-white">
-                  Evaluator Dossier Logged — Pending Owner Certification!
+                  Evaluator Dossier Synced to Cloud — Pending Owner Certification!
                 </h3>
                 <p className="text-xs text-slate-300 max-w-md mx-auto">
                   You are now signed in as an <strong>Uncertified Evaluator</strong>. Your Projects Workbench is locked until the Master Owner certifies your account.
@@ -1706,7 +1906,7 @@ Timestamp: ${new Date().toUTCString()}
                     onChange={e => setAppForm({ ...appForm, track: e.target.value })}
                     className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
                   >
-                    {PLATFORM_PROJECTS.map(p => (
+                    {projects.map(p => (
                       <option key={p.id} value={p.name}>
                         {p.name} ({p.payRate})
                       </option>
@@ -1788,7 +1988,7 @@ Timestamp: ${new Date().toUTCString()}
 
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black text-xs sm:text-sm shadow-lg"
+                  className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-xs sm:text-sm shadow-lg`}
                 >
                   Execute NDA & Submit Dossier for Owner Certification →
                 </button>
@@ -1863,9 +2063,9 @@ Timestamp: ${new Date().toUTCString()}
               {ticketSubmitMsg && <p className="text-emerald-500 font-bold">{ticketSubmitMsg}</p>}
               <button
                 type="submit"
-                className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black"
+                className={`w-full py-3 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black`}
               >
-                Submit Ticket to Helpdesk
+                Submit Ticket to Cloud Helpdesk
               </button>
             </form>
 
@@ -1971,7 +2171,6 @@ Timestamp: ${new Date().toUTCString()}
             </div>
 
             <div className="grid lg:grid-cols-12 gap-6">
-              {/* LEFT COLUMN: APPEARANCE SWITCHER (BLACK VS WHITE) & SECURITY */}
               <div className="lg:col-span-5 space-y-6">
                 <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
                   <h2 className="text-base font-black text-white flex items-center gap-2">
@@ -1979,7 +2178,7 @@ Timestamp: ${new Date().toUTCString()}
                     <span>1. Interface Appearance (Black / White)</span>
                   </h2>
                   <p className="text-slate-400 leading-relaxed">
-                    Choose between our signature <strong>Stealth Black Mode</strong> (optimized for low-glare long evaluation sessions) or <strong>Daylight White Mode</strong>.
+                    Switch between <strong>Stealth Black Mode</strong> and <strong>Daylight White Mode</strong>.
                   </p>
 
                   <div className="grid grid-cols-2 gap-3 pt-2">
@@ -2021,7 +2220,6 @@ Timestamp: ${new Date().toUTCString()}
                   </div>
                 </div>
 
-                {/* ACCOUNT SECURITY & RECOVERY CREDENTIALS */}
                 <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
                   <h2 className="text-base font-black text-white flex items-center gap-2">
                     <Key className="w-5 h-5 text-cyan-500" />
@@ -2087,7 +2285,6 @@ Timestamp: ${new Date().toUTCString()}
                 </div>
               </div>
 
-              {/* RIGHT COLUMN: PERMANENT 12-ARTICLE MASTER NDA & ZERO-AI POLICY */}
               <div className="lg:col-span-7 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
                   <div>
@@ -2131,14 +2328,14 @@ Timestamp: ${new Date().toUTCString()}
         )}
 
         {/* ===================================================================
-            TAB 8: MASTER OWNER & SUPPORT ADMIN CONSOLE
+            TAB 8: MASTER OWNER, SALES & SUPPORT ADMIN CONSOLE (NO-CODE CMS)
            =================================================================== */}
         {activeNav === 'admin' && (
           <div className="space-y-6 text-xs">
-            {!isOwner && currentUser?.role !== 'support' ? (
+            {!isExecutive ? (
               <div className="p-10 rounded-3xl bg-[#0b1020] border border-rose-500/40 text-center space-y-4">
                 <Lock className="w-10 h-10 text-rose-500 mx-auto" />
-                <h2 className="text-xl font-black text-white">Restricted Master Control Center</h2>
+                <h2 className="text-xl font-black text-white">Restricted Executive & Sales Control Center</h2>
                 <button
                   onClick={() => {
                     setShowAuthModal(true);
@@ -2155,17 +2352,17 @@ Timestamp: ${new Date().toUTCString()}
                   <div className="flex flex-wrap gap-2">
                     <button
                       onClick={() => setAdminTab('1')}
-                      className={`px-4 py-2.5 rounded-xl font-extrabold ${
+                      className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
                         adminTab === '1'
                           ? 'bg-emerald-500 text-slate-950'
                           : 'bg-slate-900 text-slate-300 border border-slate-800'
                       }`}
                     >
-                      1. Certify Evaluators & CVs ({applicants.length})
+                      1. Evaluators & CVs ({applicants.length})
                     </button>
                     <button
                       onClick={() => setAdminTab('2')}
-                      className={`px-4 py-2.5 rounded-xl font-extrabold ${
+                      className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
                         adminTab === '2'
                           ? 'bg-emerald-500 text-slate-950'
                           : 'bg-slate-900 text-slate-300 border border-slate-800'
@@ -2173,41 +2370,65 @@ Timestamp: ${new Date().toUTCString()}
                     >
                       2. Helpdesk Tickets ({tickets.length})
                     </button>
-                    <button
-                      onClick={() => setAdminTab('3')}
-                      className={`px-4 py-2.5 rounded-xl font-extrabold ${
-                        adminTab === '3'
-                          ? 'bg-emerald-500 text-slate-950'
-                          : 'bg-slate-900 text-slate-300 border border-slate-800'
-                      }`}
-                    >
-                      3. Split-Vault Accounts, Ban & Resets ({users.length})
-                    </button>
-                    {isOwner && (
+                    {(isOwner || isSupport) && (
                       <button
-                        onClick={() => setAdminTab('5')}
-                        className={`px-4 py-2.5 rounded-xl font-extrabold ${
-                          adminTab === '5'
+                        onClick={() => setAdminTab('3')}
+                        className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
+                          adminTab === '3'
                             ? 'bg-emerald-500 text-slate-950'
                             : 'bg-slate-900 text-slate-300 border border-slate-800'
                         }`}
                       >
-                        4. Cloud Backend & Stealth Brand
+                        3. Accounts, Roles & Ban ({users.length})
+                      </button>
+                    )}
+                    {(isOwner || isSales) && (
+                      <button
+                        onClick={() => setAdminTab('4')}
+                        className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
+                          adminTab === '4'
+                            ? 'bg-amber-400 text-slate-950'
+                            : 'bg-slate-900 text-amber-400 border border-amber-500/40'
+                        }`}
+                      >
+                        4. 💰 No-Code Pricing & Projects CMS ({projects.length})
+                      </button>
+                    )}
+                    {(isOwner || isSales) && (
+                      <button
+                        onClick={() => setAdminTab('5')}
+                        className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
+                          adminTab === '5'
+                            ? 'bg-cyan-400 text-slate-950'
+                            : 'bg-slate-900 text-cyan-400 border border-cyan-500/40'
+                        }`}
+                      >
+                        5. 🎨 Visual Layout, Theme & Cloud Studio
                       </button>
                     )}
                   </div>
 
-                  {isOwner && (
+                  <div className="flex items-center gap-2">
                     <button
-                      onClick={handleExportVaultFiles}
-                      className="px-4 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black flex items-center gap-1.5"
+                      onClick={() => pushToSupabaseCloud()}
+                      className="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black flex items-center gap-1.5"
                     >
-                      <Download className="w-4 h-4" />
-                      <span>Export Vault Files (JS)</span>
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Sync Cloud Now</span>
                     </button>
-                  )}
+                    {isOwner && (
+                      <button
+                        onClick={handleExportVaultFiles}
+                        className="px-3.5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black flex items-center gap-1.5"
+                      >
+                        <Download className="w-4 h-4" />
+                        <span>Export Vault</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
 
+                {/* ADMIN TAB 1: EVALUATORS & CVS */}
                 {adminTab === '1' && (
                   <div className="space-y-3">
                     {applicants.map(app => (
@@ -2253,6 +2474,7 @@ Timestamp: ${new Date().toUTCString()}
                   </div>
                 )}
 
+                {/* ADMIN TAB 2: HELPDESK TICKETS */}
                 {adminTab === '2' && (
                   <div className="space-y-4">
                     {tickets.map(t => (
@@ -2279,412 +2501,4 @@ Timestamp: ${new Date().toUTCString()}
                         <div className="space-y-1.5 pl-3 border-l-2 border-emerald-500/40">
                           {t.thread.map((m, idx) => (
                             <div key={idx} className="text-slate-300">
-                              <strong className={m.sender === 'support' ? 'text-emerald-500' : 'text-cyan-500'}>
-                                {m.sender.toUpperCase()}:
-                              </strong>{' '}
-                              {m.text}
-                            </div>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            placeholder={`Write official reply to ${t.senderEmail}...`}
-                            value={replyDrafts[t.id] || ''}
-                            onChange={e => setReplyDrafts({ ...replyDrafts, [t.id]: e.target.value })}
-                            className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                          />
-                          <button
-                            onClick={() => handleAdminReplyTicket(t.id)}
-                            className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                          >
-                            ✓ Send Reply to Sender Inbox
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {adminTab === '3' && (
-                  <div className="grid lg:grid-cols-3 gap-6">
-                    <form
-                      onSubmit={handleProvisionUser}
-                      className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
-                    >
-                      <h3 className="font-extrabold text-white text-sm">
-                        Activate New Support / Evaluator Email (SHA-256)
-                      </h3>
-                      <input
-                        type="email"
-                        required
-                        placeholder="Email Address"
-                        value={provEmail}
-                        onChange={e => setProvEmail(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
-                      <input
-                        type="text"
-                        required
-                        placeholder="Initial Password"
-                        value={provPass}
-                        onChange={e => setProvPass(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
-                      <select
-                        value={provRole}
-                        onChange={e => setProvRole(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
-                      >
-                        <option value="support">Technical Support / Helpdesk (support)</option>
-                        <option value="evaluator">Certified Evaluator (evaluator)</option>
-                        <option value="client">Enterprise Client (client)</option>
-                      </select>
-                      {provMsg && <p className="text-emerald-500 font-bold">{provMsg}</p>}
-                      <button
-                        type="submit"
-                        className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                      >
-                        + Encrypt & Activate Email
-                      </button>
-                    </form>
-
-                    <div className="lg:col-span-2 space-y-3">
-                      {users.map(u => (
-                        <div
-                          key={u.keyId || u.email}
-                          className={`p-4 rounded-2xl border space-y-2 ${
-                            u.isBanned
-                              ? 'bg-rose-950/30 border-rose-600'
-                              : 'bg-[#0b1020] border-slate-800'
-                          }`}
-                        >
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <span className="font-bold text-white text-sm">{u.name}</span>
-                              <span className="text-slate-400 ml-2">({u.email})</span>
-                            </div>
-                            <span className="px-2.5 py-0.5 rounded bg-slate-950 text-emerald-500 font-mono font-bold uppercase">
-                              {u.role}
-                            </span>
-                          </div>
-                          <div className="text-[11px] font-mono text-slate-500 truncate">
-                            Vault Key: {u.keyId} → SHA-256 Digest: {securityVault[u.keyId]?.slice(0, 32)}...
-                          </div>
-                          <div className="flex flex-wrap gap-2 pt-1">
-                            <button
-                              onClick={() => handleToggleProjectAccess(u.email)}
-                              className="px-3 py-1.5 rounded-lg bg-slate-800 text-emerald-400 font-bold"
-                            >
-                              {u.certifiedForProjects ? '✓ Projects Unlocked' : '🔒 Projects Locked'}
-                            </button>
-                            <button
-                              onClick={() => handleAdminDispatchResetLink(u)}
-                              className="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-extrabold"
-                            >
-                              🔑 Dispatch Password Reset Link
-                            </button>
-                            {isOwner && (
-                              <button
-                                onClick={() => handleToggleBanUser(u.email)}
-                                className={`px-3.5 py-1.5 rounded-lg font-black ${
-                                  u.isBanned
-                                    ? 'bg-emerald-500 text-slate-950'
-                                    : 'bg-rose-600 text-white hover:bg-rose-500'
-                                }`}
-                              >
-                                {u.isBanned ? '✓ Unban User' : '🚫 Ban User'}
-                              </button>
-                            )}
-                            {isOwner && (
-                              <button
-                                onClick={() => handleDeleteUser(u.email)}
-                                className="px-3 py-1.5 rounded-lg bg-slate-800 text-rose-400 font-bold"
-                              >
-                                Remove
-                              </button>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {adminTab === '5' && isOwner && (
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <form
-                      onSubmit={handleSaveBrandConfig}
-                      className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4"
-                    >
-                      <h3 className="font-black text-white text-sm">
-                        1. Stealth Brand Reveal Configuration
-                      </h3>
-                      <div>
-                        <label className="block text-slate-400 mb-1">Platform Brand Name</label>
-                        <input
-                          type="text"
-                          value={editBrand.brandName}
-                          onChange={e => setEditBrand({ ...editBrand, brandName: e.target.value })}
-                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-400 mb-1">Operational Status Badge</label>
-                        <input
-                          type="text"
-                          value={editBrand.brandStatus}
-                          onChange={e => setEditBrand({ ...editBrand, brandStatus: e.target.value })}
-                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                      >
-                        Save Brand Config
-                      </button>
-                    </form>
-
-                    <form
-                      onSubmit={handleSaveBrandConfig}
-                      className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4"
-                    >
-                      <h3 className="font-black text-white text-sm flex items-center gap-2">
-                        <Database className="w-4 h-4 text-cyan-500" />
-                        <span>2. Cloud Backend Connector (Supabase / REST API)</span>
-                      </h3>
-                      <p className="text-slate-400 text-[11px] leading-relaxed">
-                        Connect a free Supabase PostgreSQL project to sync evaluators, CVs, and tickets across all devices worldwide in real time.
-                      </p>
-                      <input
-                        type="url"
-                        placeholder="Supabase Project URL (https://xyz.supabase.co)"
-                        value={editBrand.cloudUrl || ''}
-                        onChange={e => setEditBrand({ ...editBrand, cloudUrl: e.target.value })}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
-                      <input
-                        type="password"
-                        placeholder="Supabase Anon / Service Key"
-                        value={editBrand.cloudKey || ''}
-                        onChange={e => setEditBrand({ ...editBrand, cloudKey: e.target.value })}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
-                      <button
-                        type="submit"
-                        className="px-6 py-3 rounded-xl bg-cyan-500 text-slate-950 font-black"
-                      >
-                        Save & Connect Cloud Backend
-                      </button>
-                    </form>
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-        )}
-      </main>
-
-      {/* AUTH MODAL */}
-      {showAuthModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="w-full max-w-md bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 text-xs shadow-2xl">
-            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <div>
-                <span className="text-[10px] font-extrabold uppercase text-emerald-500 block">
-                  Cryptographic Split-Vault Access
-                </span>
-                <h3 className="font-black text-white text-base">Zero-Trust Workspace Sign-In</h3>
-              </div>
-              <button onClick={() => setShowAuthModal(false)} className="text-slate-400 hover:text-white text-sm">
-                ✕
-              </button>
-            </div>
-
-            <div className="grid grid-cols-3 gap-1 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
-              <button
-                onClick={() => {
-                  setAuthTab('signin');
-                  setAuthMsg('');
-                }}
-                className={`py-2 rounded-lg font-extrabold ${
-                  authTab === 'signin' ? 'bg-emerald-500 text-slate-950' : 'text-slate-400'
-                }`}
-              >
-                Sign In
-              </button>
-              <button
-                onClick={() => {
-                  setAuthTab('signup');
-                  setAuthMsg('');
-                }}
-                className={`py-2 rounded-lg font-extrabold ${
-                  authTab === 'signup' ? 'bg-emerald-500 text-slate-950' : 'text-slate-400'
-                }`}
-              >
-                Register
-              </button>
-              <button
-                onClick={() => {
-                  setAuthTab('forgot');
-                  setAuthMsg('');
-                }}
-                className={`py-2 rounded-lg font-extrabold ${
-                  authTab === 'forgot' ? 'bg-emerald-500 text-slate-950' : 'text-slate-400'
-                }`}
-              >
-                Forgot Pass
-              </button>
-            </div>
-
-            {authTab === 'signin' && (
-              <form onSubmit={handleSignIn} autoComplete="off" className="space-y-3.5">
-                <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Registered Email *</label>
-                  <input
-                    type="email"
-                    required
-                    autoComplete="off"
-                    placeholder="name@domain.com"
-                    value={authEmail}
-                    onChange={e => setAuthEmail(e.target.value)}
-                    className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Password *</label>
-                  <div className="relative">
-                    <input
-                      type={showPasswordText ? 'text' : 'password'}
-                      required
-                      autoComplete="new-password"
-                      placeholder="Enter your password"
-                      value={authPass}
-                      onChange={e => setAuthPass(e.target.value)}
-                      className="w-full p-3.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPasswordText(!showPasswordText)}
-                      className="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-500"
-                      title="Show / Hide Password"
-                    >
-                      {showPasswordText ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                    </button>
-                  </div>
-                </div>
-                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
-                <button
-                  type="submit"
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black shadow-lg"
-                >
-                  Sign In (SHA-256 Verify) →
-                </button>
-              </form>
-            )}
-
-            {authTab === 'signup' && (
-              <form onSubmit={handleSignUp} autoComplete="off" className="space-y-3">
-                <input
-                  type="email"
-                  required
-                  autoComplete="new-password"
-                  placeholder="Evaluator Email Address *"
-                  value={authEmail}
-                  onChange={e => setAuthEmail(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <input
-                  type={showPasswordText ? 'text' : 'password'}
-                  required
-                  autoComplete="new-password"
-                  placeholder="Create Password *"
-                  value={authPass}
-                  onChange={e => setAuthPass(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <select
-                  value={authSecQ}
-                  onChange={e => setAuthSecQ(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                >
-                  {SECURITY_QUESTIONS.map(q => (
-                    <option key={q} value={q}>
-                      {q}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="text"
-                  required
-                  autoComplete="off"
-                  placeholder="Security Question Answer *"
-                  value={authSecA}
-                  onChange={e => setAuthSecA(e.target.value)}
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
-                <button
-                  type="submit"
-                  className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                >
-                  Encrypt & Create Evaluator Account
-                </button>
-              </form>
-            )}
-
-            {authTab === 'forgot' && (
-              <div className="space-y-3">
-                <form onSubmit={handleInstantReset} className="space-y-2.5">
-                  <input
-                    type="email"
-                    required
-                    placeholder="Account Email *"
-                    value={resetFlowEmail}
-                    onChange={e => setResetFlowEmail(e.target.value)}
-                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                  <input
-                    type="text"
-                    required
-                    placeholder="Security Question Answer *"
-                    value={resetFlowSecA}
-                    onChange={e => setResetFlowSecA(e.target.value)}
-                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                  <input
-                    type="password"
-                    required
-                    placeholder="New Password (min 6 chars) *"
-                    value={resetFlowNewPass}
-                    onChange={e => setResetFlowNewPass(e.target.value)}
-                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                  {resetFlowMsg && <p className="text-emerald-500 font-bold">{resetFlowMsg}</p>}
-                  <button
-                    type="submit"
-                    className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                  >
-                    Verify Answer & Reset Password
-                  </button>
-                </form>
-                <button
-                  type="button"
-                  onClick={handleRequestResetLink}
-                  className="w-full py-2.5 rounded-xl bg-slate-800 text-amber-400 border border-amber-500/30 font-bold"
-                >
-                  ✉️ Request Reset Link from Helpdesk / Owner
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      <footer className="border-t border-slate-800/40 py-8 text-center text-xs text-slate-500 mt-16">
-        © {new Date().getFullYear()} {brand.brandName} ({brand.brandStatus}) • Zero-Trust Split-Vault SHA-256 Architecture
-      </footer>
-    </div>
-  );
-}
+                              <strong className={m.sender === 'support' ? 'text-emerald-500' : 'text-
