@@ -2501,4 +2501,656 @@ Timestamp: ${new Date().toUTCString()}
                         <div className="space-y-1.5 pl-3 border-l-2 border-emerald-500/40">
                           {t.thread.map((m, idx) => (
                             <div key={idx} className="text-slate-300">
-                              <strong className={m.sender === 'support' ? 'text-emerald-500' : 'text-
+                              <strong className={m.sender === 'support' ? 'text-emerald-500' : 'text-cyan-500'}>
+                                {m.sender.toUpperCase()}:
+                              </strong>{' '}
+                              {m.text}
+                            </div>
+                          ))}
+                        </div>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            placeholder={`Write official reply to ${t.senderEmail}...`}
+                            value={replyDrafts[t.id] || ''}
+                            onChange={e => setReplyDrafts({ ...replyDrafts, [t.id]: e.target.value })}
+                            className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                          />
+                          <button
+                            onClick={() => handleAdminReplyTicket(t.id)}
+                            className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                          >
+                            ✓ Send Reply to Sender Inbox
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* ADMIN TAB 3: ACCOUNTS, ROLES (INCLUDING SALES) & BAN */}
+                {adminTab === '3' && (isOwner || isSupport) && (
+                  <div className="grid lg:grid-cols-3 gap-6">
+                    <form
+                      onSubmit={handleProvisionUser}
+                      className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
+                    >
+                      <h3 className="font-extrabold text-white text-sm">
+                        Activate New Sales / Support / Evaluator Account (SHA-256)
+                      </h3>
+                      <input
+                        type="email"
+                        required
+                        placeholder="Email Address"
+                        value={provEmail}
+                        onChange={e => setProvEmail(e.target.value)}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      <input
+                        type="text"
+                        required
+                        placeholder="Initial Password"
+                        value={provPass}
+                        onChange={e => setProvPass(e.target.value)}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      <select
+                        value={provRole}
+                        onChange={e => setProvRole(e.target.value)}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
+                      >
+                        <option value="sales">Sales & Pricing Lead (sales — Can edit Prices & Layout)</option>
+                        <option value="support">Technical Support / Helpdesk (support)</option>
+                        <option value="evaluator">Certified Evaluator (evaluator)</option>
+                        <option value="client">Enterprise Client (client)</option>
+                      </select>
+                      {provMsg && <p className="text-emerald-500 font-bold">{provMsg}</p>}
+                      <button
+                        type="submit"
+                        className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                      >
+                        + Encrypt & Activate Account
+                      </button>
+                    </form>
+
+                    <div className="lg:col-span-2 space-y-3">
+                      {users.map(u => (
+                        <div
+                          key={u.keyId || u.email}
+                          className={`p-4 rounded-2xl border space-y-2 ${
+                            u.isBanned
+                              ? 'bg-rose-950/30 border-rose-600'
+                              : 'bg-[#0b1020] border-slate-800'
+                          }`}
+                        >
+                          <div className="flex flex-wrap justify-between items-center gap-2">
+                            <div>
+                              <span className="font-bold text-white text-sm">{u.name}</span>
+                              <span className="text-slate-400 ml-2">({u.email})</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {isOwner ? (
+                                <select
+                                  value={u.role}
+                                  onChange={e => handleChangeUserRole(u.email, e.target.value)}
+                                  className="px-2.5 py-1 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold uppercase text-[11px]"
+                                >
+                                  <option value="evaluator">EVALUATOR</option>
+                                  <option value="sales">SALES & PRICING</option>
+                                  <option value="support">SUPPORT</option>
+                                  <option value="client">CLIENT</option>
+                                </select>
+                              ) : (
+                                <span className="px-2.5 py-0.5 rounded bg-slate-950 text-emerald-500 font-mono font-bold uppercase">
+                                  {u.role}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="text-[11px] font-mono text-slate-500 truncate">
+                            Vault Key: {u.keyId} → SHA-256 Digest: {securityVault[u.keyId]?.slice(0, 32)}...
+                          </div>
+                          <div className="flex flex-wrap gap-2 pt-1">
+                            <button
+                              onClick={() => handleToggleProjectAccess(u.email)}
+                              className="px-3 py-1.5 rounded-lg bg-slate-800 text-emerald-400 font-bold"
+                            >
+                              {u.certifiedForProjects ? '✓ Projects Unlocked' : '🔒 Projects Locked'}
+                            </button>
+                            <button
+                              onClick={() => handleAdminDispatchResetLink(u)}
+                              className="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-extrabold"
+                            >
+                              🔑 Dispatch Password Reset Link
+                            </button>
+                            {isOwner && (
+                              <button
+                                onClick={() => handleToggleBanUser(u.email)}
+                                className={`px-3.5 py-1.5 rounded-lg font-black ${
+                                  u.isBanned
+                                    ? 'bg-emerald-500 text-slate-950'
+                                    : 'bg-rose-600 text-white hover:bg-rose-500'
+                                }`}
+                              >
+                                {u.isBanned ? '✓ Unban User' : '🚫 Ban User'}
+                              </button>
+                            )}
+                            {isOwner && (
+                              <button
+                                onClick={() => handleDeleteUser(u.email)}
+                                className="px-3 py-1.5 rounded-lg bg-slate-800 text-rose-400 font-bold"
+                              >
+                                Remove
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* ADMIN TAB 4: NO-CODE PRICING & PROJECTS CMS (FOR OWNER & SALES) */}
+                {adminTab === '4' && (isOwner || isSales) && (
+                  <div className="space-y-6">
+                    <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-4">
+                      <div>
+                        <h3 className="text-base font-black text-white">
+                          💰 No-Code Pricing, Rate Cards & Projects Studio (Owner & Sales Access)
+                        </h3>
+                        <p className="text-slate-300 mt-0.5">
+                          Edit hourly pay rates, project titles, available task counts, or add new pipelines directly below—zero code edits required!
+                        </p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          pushToSupabaseCloud(brand, projects);
+                          alert('✓ All pricing & project updates synced to Cloud!');
+                        }}
+                        className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black shadow-lg"
+                      >
+                        💾 Save & Publish Pricing to Cloud
+                      </button>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-4">
+                      {projects.map(p => (
+                        <div key={p.id} className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3">
+                          <div className="flex justify-between items-center">
+                            <span className="font-mono font-bold text-emerald-400">{p.id}</span>
+                            <button
+                              onClick={() => handleDeleteProject(p.id)}
+                              className="text-rose-400 hover:underline font-bold"
+                            >
+                              Delete Pipeline
+                            </button>
+                          </div>
+                          <div className="grid sm:grid-cols-2 gap-2.5">
+                            <div>
+                              <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
+                                Project Title
+                              </label>
+                              <input
+                                type="text"
+                                value={p.name}
+                                onChange={e => handleProjectFieldChange(p.id, 'name', e.target.value)}
+                                className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] uppercase text-amber-400 font-bold mb-1">
+                                Hourly Pay Rate / Price
+                              </label>
+                              <input
+                                type="text"
+                                value={p.payRate}
+                                onChange={e => handleProjectFieldChange(p.id, 'payRate', e.target.value)}
+                                className="w-full p-2.5 rounded-xl bg-slate-950 border border-amber-500/40 text-amber-300 font-extrabold"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
+                                Domain Category
+                              </label>
+                              <input
+                                type="text"
+                                value={p.domain}
+                                onChange={e => handleProjectFieldChange(p.id, 'domain', e.target.value)}
+                                className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-cyan-300"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
+                                Available Tasks Count
+                              </label>
+                              <input
+                                type="number"
+                                value={p.totalTasks}
+                                onChange={e => handleProjectFieldChange(p.id, 'totalTasks', e.target.value)}
+                                className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
+                              Project Description
+                            </label>
+                            <textarea
+                              rows={2}
+                              value={p.desc}
+                              onChange={e => handleProjectFieldChange(p.id, 'desc', e.target.value)}
+                              className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300"
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* ADD NEW PROJECT PIPELINE WITHOUT CODE */}
+                    <form
+                      onSubmit={handleAddNewProject}
+                      className="p-6 rounded-2xl bg-[#0b1020] border border-dashed border-emerald-500/50 space-y-4"
+                    >
+                      <h4 className="text-sm font-black text-emerald-400">
+                        + Add New Evaluation Project & Rate Card (No-Code)
+                      </h4>
+                      <div className="grid sm:grid-cols-4 gap-3">
+                        <input
+                          type="text"
+                          required
+                          placeholder="Project Title (e.g. Medical Arabic QA) *"
+                          value={newPrjForm.name}
+                          onChange={e => setNewPrjForm({ ...newPrjForm, name: e.target.value })}
+                          className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white sm:col-span-2"
+                        />
+                        <input
+                          type="text"
+                          required
+                          placeholder="Pay Rate (e.g. $40 – $75 / Hr) *"
+                          value={newPrjForm.payRate}
+                          onChange={e => setNewPrjForm({ ...newPrjForm, payRate: e.target.value })}
+                          className="p-3 rounded-xl bg-slate-950 border border-amber-500/40 text-amber-300 font-bold"
+                        />
+                        <input
+                          type="number"
+                          placeholder="Total Tasks (e.g. 500)"
+                          value={newPrjForm.totalTasks}
+                          onChange={e => setNewPrjForm({ ...newPrjForm, totalTasks: e.target.value })}
+                          className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        placeholder="Short Project Description..."
+                        value={newPrjForm.desc}
+                        onChange={e => setNewPrjForm({ ...newPrjForm, desc: e.target.value })}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      <button
+                        type="submit"
+                        className="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                      >
+                        + Create & Publish New Project Pipeline
+                      </button>
+                    </form>
+                  </div>
+                )}
+
+                {/* ADMIN TAB 5: VISUAL LAYOUT, THEME, HERO COPY & CLOUD STUDIO */}
+                {adminTab === '5' && (isOwner || isSales) && (
+                  <form onSubmit={handleSaveBrandConfig} className="grid lg:grid-cols-2 gap-6">
+                    <div className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4">
+                      <h3 className="font-black text-white text-sm">
+                        1. Visual Brand, Hero Headlines & Accent Theme Studio (No-Code)
+                      </h3>
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-slate-400 mb-1">Platform Brand Name</label>
+                          <input
+                            type="text"
+                            value={editBrand.brandName}
+                            onChange={e => setEditBrand({ ...editBrand, brandName: e.target.value })}
+                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-slate-400 mb-1">Status Badge</label>
+                          <input
+                            type="text"
+                            value={editBrand.brandStatus}
+                            onChange={e => setEditBrand({ ...editBrand, brandStatus: e.target.value })}
+                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-slate-400 mb-1">Primary Accent Color Palette</label>
+                          <select
+                            value={editBrand.accentColor || 'emerald'}
+                            onChange={e => setEditBrand({ ...editBrand, accentColor: e.target.value })}
+                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                          >
+                            <option value="emerald">Emerald & Teal (Default)</option>
+                            <option value="cyan">Cyber Cyan & Royal Blue</option>
+                            <option value="violet">Executive Violet & Fuchsia</option>
+                            <option value="amber">Sovereign Gold & Amber</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-slate-400 mb-1">Default Interface Mode</label>
+                          <select
+                            value={editBrand.defaultTheme || themeMode}
+                            onChange={e => setEditBrand({ ...editBrand, defaultTheme: e.target.value })}
+                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                          >
+                            <option value="dark">🌙 Stealth Black Mode</option>
+                            <option value="light">☀️ Daylight White Mode</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-400 mb-1">Hero Main Headline (Line 1)</label>
+                        <input
+                          type="text"
+                          value={editBrand.heroTitleLine1 || ''}
+                          onChange={e => setEditBrand({ ...editBrand, heroTitleLine1: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 mb-1">Hero Highlighted Gradient Phrase</label>
+                        <input
+                          type="text"
+                          value={editBrand.heroTitleHighlight || ''}
+                          onChange={e => setEditBrand({ ...editBrand, heroTitleHighlight: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 mb-1">Hero Marketing Paragraph</label>
+                        <textarea
+                          rows={3}
+                          value={editBrand.heroSubtitle || ''}
+                          onChange={e => setEditBrand({ ...editBrand, heroSubtitle: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4">
+                        <h3 className="font-black text-white text-sm">
+                          2. Live Hero KPI Metrics (Editable by Owner & Sales)
+                        </h3>
+                        <div className="grid grid-cols-3 gap-2.5">
+                          <div>
+                            <label className="block text-[10px] text-slate-400 mb-1">Metric 1 Value</label>
+                            <input
+                              type="text"
+                              value={editBrand.stat1Value || ''}
+                              onChange={e => setEditBrand({ ...editBrand, stat1Value: e.target.value })}
+                              className="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] text-slate-400 mb-1">Metric 2 Value</label>
+                            <input
+                              type="text"
+                              value={editBrand.stat2Value || ''}
+                              onChange={e => setEditBrand({ ...editBrand, stat2Value: e.target.value })}
+                              className="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-cyan-400 font-bold"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-[10px] text-slate-400 mb-1">Metric 3 Value</label>
+                            <input
+                              type="text"
+                              value={editBrand.stat3Value || ''}
+                              onChange={e => setEditBrand({ ...editBrand, stat3Value: e.target.value })}
+                              className="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-amber-400 font-bold"
+                            />
+                          </div>
+                        </div>
+                      </div>
+
+                      {isOwner && (
+                        <div className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3">
+                          <h3 className="font-black text-white text-sm flex items-center gap-2">
+                            <Database className="w-4 h-4 text-cyan-500" />
+                            <span>3. Pre-Connected Supabase Cloud Backend ({cloudStatus})</span>
+                          </h3>
+                          <input
+                            type="url"
+                            value={editBrand.cloudUrl || DEFAULT_SUPABASE_URL}
+                            onChange={e => setEditBrand({ ...editBrand, cloudUrl: e.target.value })}
+                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-cyan-400 font-mono"
+                          />
+                          <input
+                            type="password"
+                            value={editBrand.cloudKey || DEFAULT_SUPABASE_ANON_KEY}
+                            onChange={e => setEditBrand({ ...editBrand, cloudKey: e.target.value })}
+                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono"
+                          />
+                        </div>
+                      )}
+
+                      <button
+                        type="submit"
+                        className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-sm shadow-xl`}
+                      >
+                        💾 Save All Visual, Brand & Cloud Settings
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </>
+            )}
+          </div>
+        )}
+      </main>
+
+      {/* AUTH MODAL */}
+      {showAuthModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 text-xs shadow-2xl">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <div>
+                <span className="text-[10px] font-extrabold uppercase text-emerald-500 block">
+                  Cryptographic Split-Vault Access
+                </span>
+                <h3 className="font-black text-white text-base">Zero-Trust Workspace Sign-In</h3>
+              </div>
+              <button onClick={() => setShowAuthModal(false)} className="text-slate-400 hover:text-white text-sm">
+                ✕
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-1 bg-slate-950 p-1.5 rounded-xl border border-slate-800">
+              <button
+                onClick={() => {
+                  setAuthTab('signin');
+                  setAuthMsg('');
+                }}
+                className={`py-2 rounded-lg font-extrabold ${
+                  authTab === 'signin' ? 'bg-emerald-500 text-slate-950' : 'text-slate-400'
+                }`}
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => {
+                  setAuthTab('signup');
+                  setAuthMsg('');
+                }}
+                className={`py-2 rounded-lg font-extrabold ${
+                  authTab === 'signup' ? 'bg-emerald-500 text-slate-950' : 'text-slate-400'
+                }`}
+              >
+                Register
+              </button>
+              <button
+                onClick={() => {
+                  setAuthTab('forgot');
+                  setAuthMsg('');
+                }}
+                className={`py-2 rounded-lg font-extrabold ${
+                  authTab === 'forgot' ? 'bg-emerald-500 text-slate-950' : 'text-slate-400'
+                }`}
+              >
+                Forgot Pass
+              </button>
+            </div>
+
+            {authTab === 'signin' && (
+              <form onSubmit={handleSignIn} autoComplete="off" className="space-y-3.5">
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Registered Email *</label>
+                  <input
+                    type="email"
+                    required
+                    autoComplete="off"
+                    placeholder="name@domain.com"
+                    value={authEmail}
+                    onChange={e => setAuthEmail(e.target.value)}
+                    className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  />
+                </div>
+                <div>
+                  <label className="block text-slate-400 font-semibold mb-1">Password *</label>
+                  <div className="relative">
+                    <input
+                      type={showPasswordText ? 'text' : 'password'}
+                      required
+                      autoComplete="new-password"
+                      placeholder="Enter your password"
+                      value={authPass}
+                      onChange={e => setAuthPass(e.target.value)}
+                      className="w-full p-3.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPasswordText(!showPasswordText)}
+                      className="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-500"
+                      title="Show / Hide Password"
+                    >
+                      {showPasswordText ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
+                <button
+                  type="submit"
+                  className={`w-full py-3 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black shadow-lg`}
+                >
+                  Sign In (SHA-256 Verify) →
+                </button>
+              </form>
+            )}
+
+            {authTab === 'signup' && (
+              <form onSubmit={handleSignUp} autoComplete="off" className="space-y-3">
+                <input
+                  type="email"
+                  required
+                  autoComplete="new-password"
+                  placeholder="Evaluator Email Address *"
+                  value={authEmail}
+                  onChange={e => setAuthEmail(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <input
+                  type={showPasswordText ? 'text' : 'password'}
+                  required
+                  autoComplete="new-password"
+                  placeholder="Create Password *"
+                  value={authPass}
+                  onChange={e => setAuthPass(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <select
+                  value={authSecQ}
+                  onChange={e => setAuthSecQ(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                >
+                  {SECURITY_QUESTIONS.map(q => (
+                    <option key={q} value={q}>
+                      {q}
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="text"
+                  required
+                  autoComplete="off"
+                  placeholder="Security Question Answer *"
+                  value={authSecA}
+                  onChange={e => setAuthSecA(e.target.value)}
+                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                >
+                  Encrypt & Create Evaluator Account
+                </button>
+              </form>
+            )}
+
+            {authTab === 'forgot' && (
+              <div className="space-y-3">
+                <form onSubmit={handleInstantReset} className="space-y-2.5">
+                  <input
+                    type="email"
+                    required
+                    placeholder="Account Email *"
+                    value={resetFlowEmail}
+                    onChange={e => setResetFlowEmail(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  />
+                  <input
+                    type="text"
+                    required
+                    placeholder="Security Question Answer *"
+                    value={resetFlowSecA}
+                    onChange={e => setResetFlowSecA(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  />
+                  <input
+                    type="password"
+                    required
+                    placeholder="New Password (min 6 chars) *"
+                    value={resetFlowNewPass}
+                    onChange={e => setResetFlowNewPass(e.target.value)}
+                    className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  />
+                  {resetFlowMsg && <p className="text-emerald-500 font-bold">{resetFlowMsg}</p>}
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                  >
+                    Verify Answer & Reset Password
+                  </button>
+                </form>
+                <button
+                  type="button"
+                  onClick={handleRequestResetLink}
+                  className="w-full py-2.5 rounded-xl bg-slate-800 text-amber-400 border border-amber-500/30 font-bold"
+                >
+                  ✉️ Request Reset Link from Helpdesk / Owner
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <footer className="border-t border-slate-800/40 py-8 text-center text-xs text-slate-500 mt-16">
+        © {new Date().getFullYear()} {brand.brandName} ({brand.brandStatus}) • Zero-Trust Split-Vault SHA-256 & Cloud Sync Architecture
+      </footer>
+    </div>
+  );
+}
