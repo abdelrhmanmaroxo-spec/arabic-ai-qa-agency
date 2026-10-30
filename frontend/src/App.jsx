@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import React, { useState, useEffect } from 'react';
 import { 
   Shield, CheckCircle, Lock, Cpu, Server, FileText, AlertTriangle, Users, Send, 
   RefreshCw, Eye, EyeOff, Key, HelpCircle, Terminal, Check, X, Briefcase, 
