@@ -15,8 +15,11 @@ import {
 } from './securityVault';
 
 // ============================================================================
-// TIER-1 SILICON VALLEY ENTERPRISE UI — STEALTH AI QA PLATFORM (v8.5)
-// Self-Verifying Zero-Plaintext Bitwise Cipher + Split-Vault SHA-256
+// STEALTH AI QA — ENTERPRISE PLATFORM v9.0
+// - Full Dark (Black) / Light (White) Theme Engine
+// - Dedicated Settings & 12-Article NDA Compliance Center
+// - Strict Owner Sign-In Isolation (Zero Auto-Admin on Onboarding/Register)
+// - Built-in Cloud Backend Sync Connector (Supabase / REST API Ready)
 // ============================================================================
 
 const INITIAL_PLATFORM_CONFIG = {
@@ -25,11 +28,12 @@ const INITIAL_PLATFORM_CONFIG = {
   tagline: 'Sovereign Arabic & Multimodal AI Data Foundry',
   regionBadge: 'AR-EG • AR-SA/AE • Levantine • S2S Voice • Financial FP&A',
   leadArchitect: 'Abdelrhman Essam Ali',
-  leadTitle: 'Founder & Principal AI Systems Architect'
+  leadTitle: 'Founder & Principal AI Systems Architect',
+  cloudUrl: '',
+  cloudKey: ''
 };
 
-// Zero-Plaintext XOR Obfuscated Vault Vectors (No plaintext email or password in code)
-// Key = 73; Decodes in-memory only during cryptographic verification
+// Zero-Plaintext XOR Obfuscated Vault Vectors for Master Owner
 const _OV_E = [40, 43, 45, 44, 37, 59, 33, 36, 40, 39, 103, 36, 40, 59, 38, 49, 38, 9, 46, 36, 40, 32, 37, 103, 42, 38, 36];
 const _OV_P1 = [121, 120, 123, 121, 127, 122, 112, 124, 126, 125, 123, 9, 36, 4];
 const _OV_P2 = [8, 59, 40, 43, 12, 63, 40, 37, 106, 6, 62, 39, 44, 59, 123, 121, 123, 127, 104];
@@ -50,14 +54,12 @@ const LIVE_STUDIO_DEMOS = [
       name: 'Baseline Voice LLM (Rejected)',
       latency: '1,420 ms',
       factuality: 32,
-      naturalness: 41,
       response: 'Responds in rigid Modern Standard Arabic with robotic pitch flattening on "ضريبة", ignores caller urgency, and hallucinates a non-existent banking dispute portal.'
     },
     modelB: {
       name: 'Human-Calibrated S2S Gold (+3)',
       latency: '640 ms',
       factuality: 100,
-      naturalness: 99,
       response: 'Matches authentic Cairene customer-care cadence, validates the duplicate charge empathetically, and walks the caller through the verified 3-step dispute escalation.'
     },
     verdict: '100% Inter-Annotator Consensus (3 Senior Acoustic Leads) • Zero-AI Verbatim Verified',
@@ -83,14 +85,12 @@ const LIVE_STUDIO_DEMOS = [
       name: 'Unverified Frontier LLM (Rejected)',
       latency: '910 ms',
       factuality: 18,
-      naturalness: 90,
       response: 'Computes NOPAT = $3.255M, but erroneously ADDS the $0.32M Increase in NWC instead of subtracting cash outflow, overstating enterprise FCFF at $3,225,000.'
     },
     modelB: {
       name: 'FP&A Audited Gold Output (+3)',
       latency: '780 ms',
       factuality: 100,
-      naturalness: 100,
       response: 'Independently derives NOPAT = $4.20M × (1 - 0.225) = $3.255M, then FCFF = $3.255M + $0.60M - $0.95M - $0.32M = $2,585,000 with full line-item reconciliation.'
     },
     verdict: 'Audited by Senior Quantitative Finance Lead • Spreadsheet Formula Cross-Checked',
@@ -114,14 +114,12 @@ const LIVE_STUDIO_DEMOS = [
       name: 'Unaligned Code Generator (Rejected)',
       latency: '840 ms',
       factuality: 40,
-      naturalness: 88,
       response: 'Interpolates raw user input directly into SQL query string and leaks system instructions when subjected to multi-turn Arabic/English jailbreak framing.'
     },
     modelB: {
       name: 'Hardened Zero-Trust Patch (+3)',
       latency: '710 ms',
       factuality: 100,
-      naturalness: 100,
       response: 'Enforces parameterized prepared statements, salted SHA-256 split-vault key derivation, and deterministic policy refusal against adversarial jailbreaks.'
     },
     verdict: 'Verified under OWASP Top-10 & Sovereign Red-Team Protocol',
@@ -143,7 +141,6 @@ const PLATFORM_PROJECTS = [
     domain: 'Speech & Audio Operations',
     totalTasks: 1250,
     payRate: '$25 – $45 / Audio Hr',
-    badgeColor: 'from-cyan-500/20 to-blue-500/20 text-cyan-300 border-cyan-500/30',
     samplePrompt: 'Audio Clip #A-409 (Alexandrian / Cairene Banking Call): Transcribe verbatim with exact speaker turns [SPK_1], [SPK_2] and mark any acoustic hesitation: "لو سمحت أنا حولت مبلغ عن طريق إنستاباي من نص ساعة ولسه مسمعش في حساب المستفيد."'
   },
   {
@@ -153,7 +150,6 @@ const PLATFORM_PROJECTS = [
     domain: 'Multimodal Computer Vision',
     totalTasks: 840,
     payRate: '$22 – $40 / Hr',
-    badgeColor: 'from-emerald-500/20 to-teal-500/20 text-emerald-300 border-emerald-500/30',
     samplePrompt: 'Document Frame #D-812 (Bilingual Commercial Invoice): Verify RTL OCR bounding polygons, extract Tax Registration ID, VAT 14% line item, and flag any character ligature corruption.'
   },
   {
@@ -163,7 +159,6 @@ const PLATFORM_PROJECTS = [
     domain: 'Duplex Voice AI',
     totalTasks: 600,
     payRate: '$35 – $65 / Hr',
-    badgeColor: 'from-purple-500/20 to-indigo-500/20 text-purple-300 border-purple-500/30',
     samplePrompt: 'S2S Duplex Turn #V-190: Compare Voice Model A vs Voice Model B on interruption recovery latency and dialectal stress when the user switches mid-sentence from MSA to Gulf Arabic.'
   },
   {
@@ -173,7 +168,6 @@ const PLATFORM_PROJECTS = [
     domain: 'Quantitative Finance QA',
     totalTasks: 450,
     payRate: '$55 – $95 / Hr',
-    badgeColor: 'from-amber-500/20 to-orange-500/20 text-amber-300 border-amber-500/30',
     samplePrompt: 'Financial Audit #F-302: Recompute EBITDA-to-FCFF bridge and verify whether the model properly accounts for deferred tax liabilities and working capital outflows.'
   },
   {
@@ -183,13 +177,12 @@ const PLATFORM_PROJECTS = [
     domain: 'Foundation Model RLHF',
     totalTasks: 920,
     payRate: '$30 – $60 / Hr',
-    badgeColor: 'from-rose-500/20 to-pink-500/20 text-rose-300 border-rose-500/30',
     samplePrompt: 'SxS Rubric Task #R-615: Evaluate both candidate completions for factual grounding, dialectal register, and adherence to negative constraints. Provide an evidence-backed justification.'
   }
 ];
 
 const MASTER_CONTRACT_ARTICLES = [
-  { id: '1.1', title: 'Confidentiality & Non-Disclosure Scope', content: 'All datasets, audio files, rubrics, client identities, and evaluation prompts are strictly confidential and proprietary.' },
+  { id: '1.1', title: 'Confidentiality & Non-Disclosure Scope (NDA)', content: 'All datasets, audio files, rubrics, client identities, and evaluation prompts remain strictly confidential and proprietary.' },
   { id: '1.2', title: 'Strict Zero-AI Policy & 100% Human Cognition Mandate', content: 'Evaluators MUST NOT use external generative AI (ChatGPT, Claude, Gemini, Copilot), automated ASR transcription bots, or auto-typers. 100% human execution is mandatory; violations trigger immediate termination and fee forfeiture.' },
   { id: '1.3', title: 'Data Handling & Zero-Leakage Restrictions', content: 'No downloading, screen recording, screenshots, or local caching of task data outside the encrypted sandbox environment.' },
   { id: '1.4', title: 'Work-Made-for-Hire & IP Assignment', content: 'All annotations, transcriptions, datasets, and evaluation outputs are Work Made for Hire and the exclusive worldwide property of the platform and its enterprise clients.' },
@@ -204,9 +197,20 @@ const MASTER_CONTRACT_ARTICLES = [
 ];
 
 export default function App() {
+  // Theme State: 'dark' (Black Stealth) or 'light' (White Daylight)
+  const [themeMode, setThemeMode] = useState(() => {
+    try {
+      return localStorage.getItem('stealth_theme_v9') || 'dark';
+    } catch {
+      return 'dark';
+    }
+  });
+
+  const isDark = themeMode === 'dark';
+
   const [brand, setBrand] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_brand_v8');
+      const saved = localStorage.getItem('stealth_brand_v9');
       return saved ? JSON.parse(saved) : INITIAL_PLATFORM_CONFIG;
     } catch {
       return INITIAL_PLATFORM_CONFIG;
@@ -219,7 +223,7 @@ export default function App() {
 
   const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_session_v8');
+      const saved = localStorage.getItem('stealth_session_v9');
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
@@ -228,7 +232,7 @@ export default function App() {
 
   const [users, setUsers] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_registry_v8');
+      const saved = localStorage.getItem('stealth_registry_v9');
       return saved ? JSON.parse(saved) : INITIAL_ACCOUNTS_REGISTRY;
     } catch {
       return INITIAL_ACCOUNTS_REGISTRY;
@@ -237,7 +241,7 @@ export default function App() {
 
   const [securityVault, setSecurityVault] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_vault_v8');
+      const saved = localStorage.getItem('stealth_vault_v9');
       return saved ? JSON.parse(saved) : INITIAL_SECURITY_VAULT;
     } catch {
       return INITIAL_SECURITY_VAULT;
@@ -246,7 +250,7 @@ export default function App() {
 
   const [applicants, setApplicants] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_applicants_v8');
+      const saved = localStorage.getItem('stealth_applicants_v9');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -281,7 +285,7 @@ export default function App() {
 
   const [tickets, setTickets] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_tickets_v8');
+      const saved = localStorage.getItem('stealth_tickets_v9');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -307,7 +311,7 @@ export default function App() {
 
   const [pocs, setPocs] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_pocs_v8');
+      const saved = localStorage.getItem('stealth_pocs_v9');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -325,7 +329,7 @@ export default function App() {
 
   const [resets, setResets] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_resets_v8');
+      const saved = localStorage.getItem('stealth_resets_v9');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -334,21 +338,23 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('stealth_brand_v8', JSON.stringify(brand));
+      localStorage.setItem('stealth_theme_v9', themeMode);
+      localStorage.setItem('stealth_brand_v9', JSON.stringify(brand));
       if (currentUser) {
-        localStorage.setItem('stealth_session_v8', JSON.stringify(currentUser));
+        localStorage.setItem('stealth_session_v9', JSON.stringify(currentUser));
       } else {
-        localStorage.removeItem('stealth_session_v8');
+        localStorage.removeItem('stealth_session_v9');
       }
-      localStorage.setItem('stealth_registry_v8', JSON.stringify(users));
-      localStorage.setItem('stealth_vault_v8', JSON.stringify(securityVault));
-      localStorage.setItem('stealth_applicants_v8', JSON.stringify(applicants));
-      localStorage.setItem('stealth_tickets_v8', JSON.stringify(tickets));
-      localStorage.setItem('stealth_pocs_v8', JSON.stringify(pocs));
-      localStorage.setItem('stealth_resets_v8', JSON.stringify(resets));
+      localStorage.setItem('stealth_registry_v9', JSON.stringify(users));
+      localStorage.setItem('stealth_vault_v9', JSON.stringify(securityVault));
+      localStorage.setItem('stealth_applicants_v9', JSON.stringify(applicants));
+      localStorage.setItem('stealth_tickets_v9', JSON.stringify(tickets));
+      localStorage.setItem('stealth_pocs_v9', JSON.stringify(pocs));
+      localStorage.setItem('stealth_resets_v9', JSON.stringify(resets));
     } catch {}
-  }, [brand, currentUser, users, securityVault, applicants, tickets, pocs, resets]);
+  }, [themeMode, brand, currentUser, users, securityVault, applicants, tickets, pocs, resets]);
 
+  // Real-time Ban Enforcement
   useEffect(() => {
     if (currentUser && currentUser.role !== 'owner') {
       const reg = users.find(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
@@ -421,6 +427,12 @@ export default function App() {
   const [workbenchText, setWorkbenchText] = useState('');
   const [workbenchSavedMsg, setWorkbenchSavedMsg] = useState('');
 
+  // Settings Tab State (Password & Security Question Update + NDA Copy Download)
+  const [settingsNewPass, setSettingsNewPass] = useState('');
+  const [settingsSecQ, setSettingsSecQ] = useState(SECURITY_QUESTIONS[0]);
+  const [settingsSecA, setSettingsSecA] = useState('');
+  const [settingsSavedMsg, setSettingsSavedMsg] = useState('');
+
   const isOwner = currentUser?.role === 'owner' || currentUser?.keyId === 'KEY-MASTER-OWNER';
   const isCertified = isOwner || currentUser?.certifiedForProjects || currentUser?.role === 'support';
 
@@ -433,7 +445,7 @@ export default function App() {
   }, [activeNav, currentUser, tickets]);
 
   // ==========================================================================
-  // SELF-VERIFYING ZERO-PLAINTEXT OWNER CHECK (100% BROWSER-INDEPENDENT)
+  // STRICT MASTER OWNER CHECK (ONLY ALLOWED INSIDE SIGN-IN MODAL)
   // ==========================================================================
   const verifyIsMasterOwner = async (emailInput, passInput) => {
     const eClean = (emailInput || '').trim().toLowerCase();
@@ -443,12 +455,10 @@ export default function App() {
     const expectedP1 = _decodeVector(_OV_P1);
     const expectedP2 = _decodeVector(_OV_P2);
 
-    // 1. Direct Bitwise Vector Match (Accepts both your new password & previous token)
     if (eClean === expectedE && (pClean === expectedP1 || pClean === expectedP2)) {
       return true;
     }
 
-    // 2. Dynamic Self-Computed SHA-256 Match
     try {
       const enteredSha = await computeVaultDigest(eClean, pClean);
       const targetSha1 = await computeVaultDigest(expectedE, expectedP1);
@@ -465,13 +475,16 @@ export default function App() {
     return false;
   };
 
+  // ==========================================================================
+  // SIGN IN HANDLER (THE ONLY GATEWAY FOR OWNER / ADMIN ACCESS)
+  // ==========================================================================
   const handleSignIn = async (e) => {
     e.preventDefault();
     setAuthMsg('');
     const emailClean = authEmail.trim().toLowerCase();
     const passClean = authPass.trim();
 
-    // 1. Check Master Owner First
+    // 1. Verify Master Owner
     const ownerMatched = await verifyIsMasterOwner(emailClean, passClean);
     if (ownerMatched) {
       setUsers(prev => prev.filter(u => u.email.toLowerCase() !== emailClean));
@@ -492,10 +505,10 @@ export default function App() {
       return;
     }
 
-    // 2. Check Registered Accounts
+    // 2. Verify Registered Accounts
     const found = users.find(u => u.email.toLowerCase() === emailClean);
     if (!found) {
-      setAuthMsg('Invalid email or password. Click the eye icon to check what is typed in the password box.');
+      setAuthMsg('Invalid email or password. Click the eye icon to verify your typed password.');
       return;
     }
 
@@ -525,6 +538,9 @@ export default function App() {
     }
   };
 
+  // ==========================================================================
+  // REGISTER HANDLER (NEVER GRANTS ADMIN ACCESS; BLOCKS OWNER EMAIL)
+  // ==========================================================================
   const handleSignUp = async (e) => {
     e.preventDefault();
     setAuthMsg('');
@@ -535,21 +551,9 @@ export default function App() {
     const cleanEmail = authEmail.trim().toLowerCase();
     const passClean = authPass.trim();
 
-    const ownerMatched = await verifyIsMasterOwner(cleanEmail, passClean);
-    if (ownerMatched) {
-      setUsers(prev => prev.filter(u => u.email.toLowerCase() !== cleanEmail));
-      const ownerSession = {
-        keyId: 'KEY-MASTER-OWNER',
-        email: cleanEmail,
-        role: 'owner',
-        name: brand.leadArchitect,
-        certifiedForProjects: true,
-        status: 'ACTIVE',
-        isBanned: false
-      };
-      setCurrentUser(ownerSession);
-      setShowAuthModal(false);
-      setActiveNav('admin');
+    const expectedOwnerEmail = _decodeVector(_OV_E);
+    if (cleanEmail === expectedOwnerEmail) {
+      setAuthMsg('This email is reserved for the Master Owner. Please switch to "Sign In" tab, or use a different email to test evaluator registration.');
       return;
     }
 
@@ -581,6 +585,7 @@ export default function App() {
     setAuthEmail('');
     setAuthPass('');
     setAuthSecA('');
+    setActiveNav('projects');
   };
 
   const handleInstantReset = async (e) => {
@@ -805,6 +810,24 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
+  const handleDownloadNdaDocument = () => {
+    const signer = currentUser ? `${currentUser.name} (${currentUser.email})` : 'Prospective Specialist';
+    const text = `============================================================================
+${brand.brandName} — MASTER INDEPENDENT CONTRACTOR & ZERO-AI NDA AGREEMENT
+Executed / Reviewed By: ${signer}
+Timestamp: ${new Date().toUTCString()}
+============================================================================\n\n` +
+      MASTER_CONTRACT_ARTICLES.map(a => `ARTICLE ${a.id} — ${a.title}\n${a.content}\n`).join('\n');
+
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${brand.brandName.replace(/\s+/g, '_')}_Master_NDA_12_Articles.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const handleAdminDispatchResetLink = async (user) => {
     const tempPass = 'Reset#' + Math.floor(100000 + Math.random() * 900000);
     const token = 'TOK-' + Math.random().toString(36).substring(2, 9).toUpperCase();
@@ -841,9 +864,12 @@ export default function App() {
   const handleSaveBrandConfig = (e) => {
     e.preventDefault();
     setBrand(editBrand);
-    alert('✓ Stealth Brand Configuration updated across the platform!');
+    alert('✓ Brand & Cloud Backend Configuration saved across the platform!');
   };
 
+  // ==========================================================================
+  // ONBOARDING SUBMIT (STRICTLY EVALUATOR ONLY — NEVER OPENS ADMIN PANEL)
+  // ==========================================================================
   const handleOnboardingSubmit = async (e) => {
     e.preventDefault();
     if (!appForm.name || !appForm.email || !appForm.secAnswer || !appForm.agreedNDA) {
@@ -853,19 +879,10 @@ export default function App() {
     const cleanEmail = appForm.email.trim().toLowerCase();
     const rawPass = appForm.pass || 'EvalPass2026!';
 
-    const ownerMatched = await verifyIsMasterOwner(cleanEmail, rawPass);
-    if (ownerMatched) {
-      setUsers(prev => prev.filter(u => u.email.toLowerCase() !== cleanEmail));
-      setCurrentUser({
-        keyId: 'KEY-MASTER-OWNER',
-        email: cleanEmail,
-        role: 'owner',
-        name: brand.leadArchitect,
-        certifiedForProjects: true,
-        status: 'ACTIVE',
-        isBanned: false
-      });
-      setActiveNav('admin');
+    // Prevent Master Owner email from being submitted in Evaluator Onboarding
+    const expectedOwnerEmail = _decodeVector(_OV_E);
+    if (cleanEmail === expectedOwnerEmail) {
+      alert('Notice: Chrome auto-filled your Master Owner email. To test new Evaluator Onboarding, please enter a different email address (e.g. specialist@domain.com).');
       return;
     }
 
@@ -888,22 +905,47 @@ export default function App() {
     };
     setApplicants(prev => [appObj, ...prev]);
 
+    const newEvalUser = {
+      keyId: newKeyId,
+      email: cleanEmail,
+      role: 'evaluator',
+      name: appForm.name,
+      certifiedForProjects: false,
+      secQuestion: appForm.secQuestion,
+      secAnswer: appForm.secAnswer,
+      status: 'ACTIVE',
+      isBanned: false
+    };
+
     const exists = users.find(u => u.email.toLowerCase() === cleanEmail);
     if (!exists) {
       setSecurityVault(prev => ({ ...prev, [newKeyId]: digest }));
-      setUsers(prev => [...prev, {
-        keyId: newKeyId,
-        email: cleanEmail,
-        role: 'evaluator',
-        name: appForm.name,
-        certifiedForProjects: false,
-        secQuestion: appForm.secQuestion,
-        secAnswer: appForm.secAnswer,
-        status: 'ACTIVE',
-        isBanned: false
-      }]);
+      setUsers(prev => [...prev, newEvalUser]);
     }
+    // Log them in strictly as an UNCERTIFIED EVALUATOR (never admin)
+    setCurrentUser(newEvalUser);
     setAppSubmitted(true);
+  };
+
+  const handleUpdateUserSettings = async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+    if (settingsNewPass && settingsNewPass.trim().length >= 6) {
+      const newDigest = await computeVaultDigest(currentUser.email, settingsNewPass.trim());
+      setSecurityVault(prev => ({ ...prev, [currentUser.keyId]: newDigest }));
+    }
+    if (settingsSecA.trim()) {
+      setUsers(prev =>
+        prev.map(u =>
+          u.email.toLowerCase() === currentUser.email.toLowerCase()
+            ? { ...u, secQuestion: settingsSecQ, secAnswer: settingsSecA.trim() }
+            : u
+        )
+      );
+    }
+    setSettingsNewPass('');
+    setSettingsSecA('');
+    setSettingsSavedMsg('✓ Security credentials & preferences encrypted into SHA-256 Vault!');
   };
 
   const handlePocSubmit = (e) => {
@@ -924,24 +966,33 @@ export default function App() {
 
   const currentProjectObj = PLATFORM_PROJECTS.find(p => p.id === selectedProjectId) || PLATFORM_PROJECTS[0];
 
+  // Dynamic Theme Classes (Black Stealth Mode vs White Daylight Mode)
+  const rootThemeClass = isDark
+    ? 'bg-[#050811] text-slate-100'
+    : 'bg-slate-50 text-slate-900 [&_div.bg-\\[#0b1020\\]]:bg-white [&_div.bg-\\[#0b1020\\]]:border-slate-300 [&_div.bg-\\[#0b1020\\]]:shadow-slate-200/70 [&_form.bg-\\[#0b1020\\]]:bg-white [&_form.bg-\\[#0b1020\\]]:border-slate-300 [&_div.bg-slate-950]:bg-slate-100 [&_div.bg-slate-950]:border-slate-300 [&_div.bg-slate-900\\/80]:bg-white [&_div.bg-slate-900]:bg-white [&_input]:bg-white [&_input]:text-slate-900 [&_input]:border-slate-300 [&_select]:bg-white [&_select]:text-slate-900 [&_select]:border-slate-300 [&_textarea]:bg-white [&_textarea]:text-slate-900 [&_textarea]:border-slate-300 [&_h1]:text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_h4]:text-slate-900 [&_p.text-slate-300]:text-slate-600 [&_p.text-slate-400]:text-slate-600 [&_span.text-slate-300]:text-slate-700 [&_span.text-white]:text-slate-900 [&_strong.text-white]:text-slate-900';
+
   return (
-    <div className="min-h-screen bg-[#050811] text-slate-100 font-sans flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative overflow-x-hidden">
+    <div className={`min-h-screen font-sans flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative overflow-x-hidden transition-colors duration-300 ${rootThemeClass}`}>
       {/* AMBIENT ENTERPRISE GLOW BACKDROP */}
-      <div className="pointer-events-none fixed top-0 left-1/4 w-[600px] h-[350px] bg-emerald-500/10 rounded-full blur-[130px] -z-10" />
-      <div className="pointer-events-none fixed bottom-0 right-1/4 w-[600px] h-[350px] bg-cyan-500/10 rounded-full blur-[130px] -z-10" />
+      {isDark && (
+        <>
+          <div className="pointer-events-none fixed top-0 left-1/4 w-[600px] h-[350px] bg-emerald-500/10 rounded-full blur-[130px] -z-10" />
+          <div className="pointer-events-none fixed bottom-0 right-1/4 w-[600px] h-[350px] bg-cyan-500/10 rounded-full blur-[130px] -z-10" />
+        </>
+      )}
 
       {/* TOP NAVIGATION HEADER */}
-      <header className="border-b border-slate-800/80 bg-[#070b16]/90 backdrop-blur-xl sticky top-0 z-40 px-4 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
+      <header className={`border-b backdrop-blur-xl sticky top-0 z-40 px-4 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4 transition-colors ${isDark ? 'border-slate-800/80 bg-[#070b16]/90' : 'border-slate-200 bg-white/90 shadow-sm'}`}>
         <div className="flex items-center gap-3.5 cursor-pointer group" onClick={() => setActiveNav('home')}>
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-teal-500 to-cyan-600 flex items-center justify-center font-black text-slate-950 shadow-lg shadow-emerald-500/20 group-hover:scale-105 transition">
             <Shield className="w-5 h-5 text-slate-950" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-black text-lg tracking-tight text-white group-hover:text-emerald-400 transition">
+              <span className={`font-black text-lg tracking-tight group-hover:text-emerald-500 transition ${isDark ? 'text-white' : 'text-slate-900'}`}>
                 {brand.brandName}
               </span>
-              <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
+              <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold">
                 {brand.brandStatus}
               </span>
             </div>
@@ -949,38 +1000,56 @@ export default function App() {
           </div>
         </div>
 
-        <nav className="flex items-center flex-wrap gap-1 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800/90 text-xs font-semibold">
+        <nav className={`flex items-center flex-wrap gap-1 p-1.5 rounded-xl border text-xs font-semibold ${isDark ? 'bg-slate-900/90 border-slate-800/90' : 'bg-slate-100 border-slate-200'}`}>
           {[
             { id: 'home', label: 'Enterprise Foundry' },
-            { id: 'about', label: 'About, Team & Clients' },
+            { id: 'about', label: 'About & Clients' },
             { id: 'projects', label: 'Projects Workbench', locked: !isCertified },
-            { id: 'apply', label: 'Evaluator Onboarding & NDA' },
-            { id: 'client-portal', label: 'Client PoC Portal' },
-            { id: 'helpdesk', label: 'Helpdesk & Inbox' }
+            { id: 'apply', label: 'Onboarding & CV' },
+            { id: 'client-portal', label: 'Client PoC' },
+            { id: 'helpdesk', label: 'Helpdesk Inbox' },
+            { id: 'settings', label: '⚙️ Settings & NDA' }
           ].map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveNav(tab.id)}
-              className={`px-3.5 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
                 activeNav === tab.id
                   ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-extrabold shadow-md shadow-emerald-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                  : isDark
+                  ? 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                  : 'text-slate-600 hover:text-slate-950 hover:bg-white'
               }`}
             >
               <span>{tab.label}</span>
-              {tab.locked && <Lock className="w-3 h-3 text-amber-400" />}
+              {tab.locked && <Lock className="w-3 h-3 text-amber-500" />}
             </button>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* QUICK THEME TOGGLE BUTTON (BLACK / WHITE) */}
+          <button
+            onClick={() => setThemeMode(isDark ? 'light' : 'dark')}
+            className={`px-3 py-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition ${
+              isDark
+                ? 'bg-slate-900 border-slate-700 text-amber-300 hover:bg-slate-800'
+                : 'bg-slate-100 border-slate-300 text-slate-800 hover:bg-slate-200'
+            }`}
+            title="Switch between Black (Dark) and White (Light) Mode"
+          >
+            <span>{isDark ? '☀️ White Mode' : '🌙 Black Mode'}</span>
+          </button>
+
           {currentUser ? (
-            <div className="flex items-center gap-2.5 bg-slate-900/90 border border-emerald-500/30 rounded-xl px-3.5 py-1.5 text-xs">
-              <UserCheck className="w-4 h-4 text-emerald-400" />
+            <div className={`flex items-center gap-2.5 border rounded-xl px-3.5 py-1.5 text-xs ${isDark ? 'bg-slate-900/90 border-emerald-500/30' : 'bg-white border-emerald-500/40'}`}>
+              <UserCheck className="w-4 h-4 text-emerald-500" />
               <div>
-                <span className="font-bold block text-white leading-tight">{currentUser.name || currentUser.email}</span>
-                <span className="text-[10px] text-emerald-400 font-extrabold uppercase tracking-wider">
-                  {currentUser.role} • SHA-256 VERIFIED
+                <span className={`font-bold block leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
+                  {currentUser.name || currentUser.email}
+                </span>
+                <span className="text-[10px] text-emerald-500 font-extrabold uppercase tracking-wider">
+                  {currentUser.role} • SHA-256
                 </span>
               </div>
               <button
@@ -988,7 +1057,7 @@ export default function App() {
                   setCurrentUser(null);
                   setActiveNav('home');
                 }}
-                className="ml-2 px-2 py-1 rounded bg-rose-500/15 text-rose-300 hover:bg-rose-500/30 text-[11px] font-bold"
+                className="ml-1 px-2 py-1 rounded bg-rose-500/15 text-rose-500 hover:bg-rose-500/25 text-[11px] font-bold"
               >
                 Sign Out
               </button>
@@ -1023,18 +1092,21 @@ export default function App() {
 
       {/* MAIN CONTENT CONTAINER */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+        {/* ===================================================================
+            TAB 1: HOME — SILICON VALLEY TIER-1 SPLIT HERO & INTERACTIVE STUDIO
+           =================================================================== */}
         {activeNav === 'home' && (
           <div className="space-y-20">
             <section className="grid lg:grid-cols-12 gap-10 items-start">
               <div className="lg:col-span-6 space-y-6 pt-2">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-bold">
-                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-xs font-bold">
+                  <ShieldCheck className="w-4 h-4" />
                   <span>Sovereign Human-in-the-Loop AI Data Infrastructure</span>
                 </div>
 
                 <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.08] text-white">
                   Eliminate Dialect Hallucinations with{' '}
-                  <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
                     Zero-Trust Human QA.
                   </span>
                 </h1>
@@ -1056,36 +1128,40 @@ export default function App() {
                     <ChevronRight className="w-4 h-4" />
                   </button>
                   <button
-                    onClick={() => setActiveNav('apply')}
-                    className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 font-bold text-xs sm:text-sm transition"
+                    onClick={() => setActiveNav('settings')}
+                    className={`px-6 py-3.5 rounded-xl border font-bold text-xs sm:text-sm transition ${
+                      isDark
+                        ? 'bg-slate-900 hover:bg-slate-800 text-white border-slate-700'
+                        : 'bg-white hover:bg-slate-100 text-slate-900 border-slate-300'
+                    }`}
                   >
-                    Apply as Domain Specialist →
+                    ⚙️ Appearance & 12-Article NDA
                   </button>
                 </div>
 
                 <div className="grid grid-cols-3 gap-3.5 pt-4">
                   <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-emerald-400">99.4%</div>
+                    <div className="text-2xl font-black text-emerald-500">99.4%</div>
                     <div className="text-xs font-bold text-white mt-0.5">Inter-Annotator Agreement</div>
                     <div className="text-[11px] text-slate-400 mt-0.5">Multi-tier L1/L2 QA calibration</div>
                   </div>
                   <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-cyan-400">100% Human</div>
+                    <div className="text-2xl font-black text-cyan-500">100% Human</div>
                     <div className="text-xs font-bold text-white mt-0.5">Zero-AI Policy Enforced</div>
                     <div className="text-[11px] text-slate-400 mt-0.5">Clipboard & cadence telemetry</div>
                   </div>
                   <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-amber-400">48 Hours</div>
+                    <div className="text-2xl font-black text-amber-500">48 Hours</div>
                     <div className="text-xs font-bold text-white mt-0.5">Diagnostic PoC SLA</div>
                     <div className="text-[11px] text-slate-400 mt-0.5">50-sample golden benchmark</div>
                   </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-6 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl shadow-black/60">
+              <div className="lg:col-span-6 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
                 <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
                   <div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 block">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 block">
                       LIVE INTERACTIVE BENCHMARK STUDIO
                     </span>
                     <h3 className="text-base font-extrabold text-white">
@@ -1094,7 +1170,7 @@ export default function App() {
                   </div>
                   <button
                     onClick={() => setShowDemoJson(!showDemoJson)}
-                    className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-emerald-300 border border-emerald-500/30 font-mono text-xs font-bold flex items-center gap-1.5"
+                    className="px-3 py-1.5 rounded-xl bg-slate-900 text-emerald-500 border border-emerald-500/30 font-mono text-xs font-bold flex items-center gap-1.5"
                   >
                     <Terminal className="w-3.5 h-3.5" />
                     <span>{showDemoJson ? 'Visual SxS View' : '{ } View JSON Payload'}</span>
@@ -1112,7 +1188,7 @@ export default function App() {
                       className={`py-2 px-2.5 rounded-xl text-[11px] font-extrabold transition ${
                         activeDemo.id === demo.id
                           ? 'bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 shadow'
-                          : 'text-slate-400 hover:text-white'
+                          : 'text-slate-400 hover:text-emerald-500'
                       }`}
                     >
                       {demo.tabTitle}
@@ -1121,15 +1197,15 @@ export default function App() {
                 </div>
 
                 <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800/90 text-[11px]">
-                  <span className="font-mono text-cyan-400 font-bold">{activeDemo.badge}</span>
+                  <span className="font-mono text-cyan-500 font-bold">{activeDemo.badge}</span>
                   <span className="text-slate-300 font-semibold">{activeDemo.domain}</span>
-                  <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-300 border border-rose-500/30 font-extrabold text-[10px]">
+                  <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-500 border border-rose-500/30 font-extrabold text-[10px]">
                     {activeDemo.defectTag}
                   </span>
                 </div>
 
                 {showDemoJson ? (
-                  <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 font-mono text-xs text-emerald-300 overflow-x-auto">
+                  <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 font-mono text-xs text-emerald-500 overflow-x-auto">
                     <pre>{JSON.stringify(activeDemo.jsonPayload, null, 2)}</pre>
                   </div>
                 ) : (
@@ -1138,20 +1214,20 @@ export default function App() {
                       <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
                         Evaluation Stimulus / Audio Utterance:
                       </span>
-                      <p className="text-slate-100 font-medium leading-relaxed">{activeDemo.stimulus}</p>
+                      <p className="font-medium leading-relaxed">{activeDemo.stimulus}</p>
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-3.5 text-xs">
-                      <div className="p-4 rounded-2xl bg-rose-950/20 border border-rose-500/30 space-y-2.5">
+                      <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-2.5">
                         <div className="flex items-center justify-between">
-                          <span className="font-extrabold text-rose-400">❌ {activeDemo.modelA.name}</span>
-                          <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300">
+                          <span className="font-extrabold text-rose-500">❌ {activeDemo.modelA.name}</span>
+                          <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-500">
                             {activeDemo.modelA.latency}
                           </span>
                         </div>
                         <p className="text-slate-300 text-[11px] leading-relaxed">{activeDemo.modelA.response}</p>
                         <div className="pt-1 space-y-1">
-                          <div className="flex justify-between text-[10px] text-rose-300 font-bold">
+                          <div className="flex justify-between text-[10px] text-rose-500 font-bold">
                             <span>Factual Grounding</span>
                             <span>{activeDemo.modelA.factuality}%</span>
                           </div>
@@ -1161,21 +1237,21 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div className="p-4 rounded-2xl bg-emerald-950/20 border border-emerald-500/40 space-y-2.5">
+                      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 space-y-2.5">
                         <div className="flex items-center justify-between">
-                          <span className="font-extrabold text-emerald-400">✅ {activeDemo.modelB.name}</span>
-                          <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-950 text-emerald-300">
+                          <span className="font-extrabold text-emerald-500">✅ {activeDemo.modelB.name}</span>
+                          <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500">
                             {activeDemo.modelB.latency}
                           </span>
                         </div>
-                        <p className="text-slate-100 text-[11px] leading-relaxed">{activeDemo.modelB.response}</p>
+                        <p className="text-slate-300 text-[11px] leading-relaxed">{activeDemo.modelB.response}</p>
                         <div className="pt-1 space-y-1">
-                          <div className="flex justify-between text-[10px] text-emerald-300 font-bold">
+                          <div className="flex justify-between text-[10px] text-emerald-500 font-bold">
                             <span>Factual Grounding & Dialect Fit</span>
                             <span>{activeDemo.modelB.factuality}%</span>
                           </div>
                           <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
-                            <div className="h-full bg-emerald-400" style={{ width: `${activeDemo.modelB.factuality}%` }} />
+                            <div className="h-full bg-emerald-500" style={{ width: `${activeDemo.modelB.factuality}%` }} />
                           </div>
                         </div>
                       </div>
@@ -1183,17 +1259,18 @@ export default function App() {
                   </>
                 )}
 
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-amber-300 font-semibold flex items-center justify-between">
+                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-amber-500 font-semibold flex items-center justify-between">
                   <span>⚡ {activeDemo.verdict}</span>
-                  <span className="text-emerald-400 font-mono font-bold">L2 AUDIT PASSED</span>
+                  <span className="text-emerald-500 font-mono font-bold">L2 AUDIT PASSED</span>
                 </div>
               </div>
             </section>
 
+            {/* BENTO GRID */}
             <section className="space-y-6">
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400">
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-500">
                     Production Pipelines & Data Operations
                   </span>
                   <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
@@ -1202,7 +1279,7 @@ export default function App() {
                 </div>
                 <button
                   onClick={() => setActiveNav('projects')}
-                  className="text-xs font-bold text-cyan-400 hover:text-cyan-300 flex items-center gap-1"
+                  className="text-xs font-bold text-cyan-500 hover:underline flex items-center gap-1"
                 >
                   <span>View All 5 Production Queues</span>
                   <ChevronRight className="w-4 h-4" />
@@ -1221,12 +1298,12 @@ export default function App() {
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className={`text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-gradient-to-r border ${p.badgeColor}`}>
+                        <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">
                           {p.domain}
                         </span>
-                        <span className="font-mono text-xs font-bold text-amber-300">{p.payRate}</span>
+                        <span className="font-mono text-xs font-bold text-amber-500">{p.payRate}</span>
                       </div>
-                      <h3 className="text-base font-extrabold text-white group-hover:text-emerald-400 transition">
+                      <h3 className="text-base font-extrabold text-white group-hover:text-emerald-500 transition">
                         {p.name}
                       </h3>
                       <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
@@ -1235,36 +1312,35 @@ export default function App() {
                       <span className="text-slate-400">
                         Active Queue: <strong className="text-white">{p.totalTasks} tasks</strong>
                       </span>
-                      <span className="text-emerald-400 font-bold group-hover:translate-x-1 transition">
-                        Open Workbench →
-                      </span>
+                      <span className="text-emerald-500 font-bold">Open Workbench →</span>
                     </div>
                   </div>
                 ))}
               </div>
             </section>
 
-            <section id="poc-request" className="bg-gradient-to-br from-[#0b1020] via-slate-900 to-emerald-950/30 border border-slate-800 rounded-3xl p-8 grid lg:grid-cols-12 gap-8 items-center shadow-2xl">
+            {/* POC REQUEST */}
+            <section id="poc-request" className="bg-[#0b1020] border border-slate-800 rounded-3xl p-8 grid lg:grid-cols-12 gap-8 items-center shadow-2xl">
               <div className="lg:col-span-5 space-y-3">
-                <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 text-xs font-bold">
+                <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-500 text-xs font-bold">
                   Enterprise Client Onboarding
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-black text-white">
                   Request a 50-Sample Diagnostic PoC
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Benchmark our human-in-the-loop quality before committing to volume. Submit 50 audio utterances, financial documents, or adversarial prompts and receive a fully audited Golden Dataset within 48 hours.
+                  Submit 50 audio utterances, financial documents, or adversarial prompts and receive a fully audited Golden Dataset within 48 hours.
                 </p>
               </div>
 
               <div className="lg:col-span-7">
                 {pocDone ? (
-                  <div className="bg-emerald-950/60 border border-emerald-500/40 rounded-2xl p-6 text-center space-y-3">
-                    <CheckCircle className="w-10 h-10 text-emerald-400 mx-auto" />
+                  <div className="bg-emerald-500/10 border border-emerald-500/40 rounded-2xl p-6 text-center space-y-3">
+                    <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto" />
                     <h3 className="text-lg font-bold text-white">Diagnostic PoC Logged in Client Portal</h3>
                     <button
                       onClick={() => setPocDone(false)}
-                      className="px-4 py-2 bg-slate-800 text-white rounded-xl text-xs font-bold"
+                      className="px-4 py-2 bg-emerald-500 text-slate-950 rounded-xl text-xs font-bold"
                     >
                       Submit Another PoC Scope
                     </button>
@@ -1277,7 +1353,7 @@ export default function App() {
                       value={pocForm.orgName}
                       onChange={e => setPocForm({ ...pocForm, orgName: e.target.value })}
                       placeholder="Organization / AI Lab Name *"
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-emerald-500 focus:outline-none"
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                     />
                     <input
                       type="email"
@@ -1285,12 +1361,12 @@ export default function App() {
                       value={pocForm.email}
                       onChange={e => setPocForm({ ...pocForm, email: e.target.value })}
                       placeholder="Corporate Email Address *"
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-emerald-500 focus:outline-none"
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                     />
                     <select
                       value={pocForm.scope}
                       onChange={e => setPocForm({ ...pocForm, scope: e.target.value })}
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-emerald-500 focus:outline-none"
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                     >
                       <option>Speech & Audio (S2S / Diarization)</option>
                       <option>FinTech RAG & FP&A Table Alignment</option>
@@ -1302,11 +1378,11 @@ export default function App() {
                       value={pocForm.notes}
                       onChange={e => setPocForm({ ...pocForm, notes: e.target.value })}
                       placeholder="Target dialects, SLA, or rubric notes"
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-emerald-500 focus:outline-none"
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                     />
                     <button
                       type="submit"
-                      className="sm:col-span-2 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-black rounded-xl shadow-lg"
+                      className="sm:col-span-2 py-3.5 bg-gradient-to-r from-emerald-500 to-cyan-500 text-slate-950 font-black rounded-xl shadow-lg"
                     >
                       Launch 50-Sample Diagnostic PoC →
                     </button>
@@ -1317,11 +1393,14 @@ export default function App() {
           </div>
         )}
 
+        {/* ===================================================================
+            TAB 2: ABOUT US & CLIENTS
+           =================================================================== */}
         {activeNav === 'about' && (
           <div className="space-y-10">
             <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-8 space-y-8">
               <div className="max-w-3xl space-y-3">
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-xs font-bold uppercase">
                   {brand.brandStatus} • Sovereign AI Evaluation Infrastructure
                 </span>
                 <h1 className="text-3xl sm:text-4xl font-black text-white">
@@ -1334,33 +1413,33 @@ export default function App() {
 
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-500">
                     <Cpu className="w-5 h-5" />
                   </div>
                   <h3 className="font-bold text-white text-base">Executive Systems Architecture</h3>
-                  <p className="text-xs text-emerald-400 font-bold">{brand.leadArchitect} — {brand.leadTitle}</p>
+                  <p className="text-xs text-emerald-500 font-bold">{brand.leadArchitect} — {brand.leadTitle}</p>
                   <p className="text-xs text-slate-400 leading-relaxed">
                     Full-stack systems architect (Python, JavaScript, React, SQL) and senior AI quality lead directing S2S voice evaluation, financial FP&A verification, and zero-trust split-vault security.
                   </p>
                 </div>
 
                 <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                  <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-500">
                     <Server className="w-5 h-5" />
                   </div>
                   <h3 className="font-bold text-white text-base">Acoustic & Verbatim Transcription</h3>
-                  <p className="text-xs text-cyan-400 font-bold">AR-EG, AR-SA/AE, Levantine & Maghrebi</p>
+                  <p className="text-xs text-cyan-500 font-bold">AR-EG, AR-SA/AE, Levantine & Maghrebi</p>
                   <p className="text-xs text-slate-400 leading-relaxed">
                     Native phonetic specialists executing millisecond speaker diarization, call-center noise tagging, and real-time duplex voice prosody grading.
                   </p>
                 </div>
 
                 <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500">
                     <Database className="w-5 h-5" />
                   </div>
                   <h3 className="font-bold text-white text-base">Quantitative Finance & Vision QA</h3>
-                  <p className="text-xs text-amber-400 font-bold">IFRS / Zakat Valuation & Multimodal OCR</p>
+                  <p className="text-xs text-amber-500 font-bold">IFRS / Zakat Valuation & Multimodal OCR</p>
                   <p className="text-xs text-slate-400 leading-relaxed">
                     Audits 3-statement DCF models, complex Arabic financial tables, receipt polygon bounding boxes, and L1/L2/L3 video action timelines.
                   </p>
@@ -1370,21 +1449,24 @@ export default function App() {
           </div>
         )}
 
+        {/* ===================================================================
+            TAB 3: PROJECTS WORKBENCH
+           =================================================================== */}
         {activeNav === 'projects' && (
           <div className="space-y-6">
             <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
               <div>
-                <span className="text-xs font-extrabold uppercase text-emerald-400">
+                <span className="text-xs font-extrabold uppercase text-emerald-500">
                   Zero-AI Production Environment
                 </span>
                 <h1 className="text-2xl sm:text-3xl font-black text-white flex items-center gap-2 mt-0.5">
-                  <Briefcase className="w-6 h-6 text-emerald-400" />
+                  <Briefcase className="w-6 h-6 text-emerald-500" />
                   <span>Enterprise Projects Workbench</span>
                 </h1>
               </div>
 
               {isCertified ? (
-                <div className="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs font-extrabold flex items-center gap-1.5">
+                <div className="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-500 text-xs font-extrabold flex items-center gap-1.5">
                   <ShieldCheck className="w-4 h-4" />
                   <span>Production Queues Unlocked ({currentUser?.role?.toUpperCase()})</span>
                 </div>
@@ -1403,13 +1485,13 @@ export default function App() {
 
             {!isCertified ? (
               <div className="bg-[#0b1020] border border-amber-500/40 rounded-3xl p-10 text-center space-y-5 max-w-3xl mx-auto my-6 shadow-2xl">
-                <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center mx-auto text-amber-400">
+                <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center mx-auto text-amber-500">
                   <Lock className="w-8 h-8" />
                 </div>
                 <h2 className="text-2xl font-black text-white">
                   Projects Queue Locked — Pending Owner Certification & Email Provisioning
                 </h2>
-                <div className="inline-block px-4 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-amber-400 text-xs font-mono font-bold">
+                <div className="inline-block px-4 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-amber-500 text-xs font-mono font-bold">
                   0 Active Tasks Assigned to Current Session
                 </div>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl mx-auto">
@@ -1428,9 +1510,9 @@ export default function App() {
                       setShowAuthModal(true);
                       setAuthTab('signin');
                     }}
-                    className="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-xl"
+                    className="px-5 py-2.5 bg-slate-800 text-white text-xs font-bold rounded-xl"
                   >
-                    Sign In with Owner / Certified Account
+                    Sign In with Certified Account
                   </button>
                 </div>
               </div>
@@ -1449,19 +1531,19 @@ export default function App() {
                       }}
                       className={`p-4 rounded-2xl border transition cursor-pointer ${
                         selectedProjectId === prj.id
-                          ? 'bg-emerald-950/30 border-emerald-500 shadow-lg'
-                          : 'bg-[#0b1020] border-slate-800 hover:border-slate-700'
+                          ? 'bg-emerald-500/10 border-emerald-500 shadow-lg'
+                          : 'bg-[#0b1020] border-slate-800 hover:border-slate-600'
                       }`}
                     >
                       <div className="flex justify-between items-center">
-                        <span className="font-mono text-xs font-bold text-emerald-400">{prj.id}</span>
-                        <span className="text-xs font-extrabold text-amber-300">{prj.payRate}</span>
+                        <span className="font-mono text-xs font-bold text-emerald-500">{prj.id}</span>
+                        <span className="text-xs font-extrabold text-amber-500">{prj.payRate}</span>
                       </div>
                       <h4 className="font-bold text-white text-sm mt-1">{prj.name}</h4>
                       <p className="text-xs text-slate-400 mt-1">{prj.desc}</p>
                       <div className="flex justify-between items-center mt-3 pt-2 border-t border-slate-800/80 text-[11px]">
                         <span className="text-slate-400">{prj.totalTasks} Tasks Available</span>
-                        <span className="text-cyan-400 font-bold">{prj.domain}</span>
+                        <span className="text-cyan-500 font-bold">{prj.domain}</span>
                       </div>
                     </div>
                   ))}
@@ -1470,12 +1552,12 @@ export default function App() {
                 <div className="lg:col-span-7 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-5">
                   <div className="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-4">
                     <div>
-                      <span className="text-xs text-emerald-400 font-mono font-bold">
+                      <span className="text-xs text-emerald-500 font-mono font-bold">
                         ACTIVE WORKBENCH • {currentProjectObj.id}
                       </span>
                       <h2 className="text-lg font-black text-white">{currentProjectObj.name}</h2>
                     </div>
-                    <span className="px-3 py-1 rounded-full bg-rose-500/15 text-rose-300 border border-rose-500/30 text-[11px] font-bold flex items-center gap-1">
+                    <span className="px-3 py-1 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 text-[11px] font-bold flex items-center gap-1">
                       <Lock className="w-3 h-3" />
                       Zero-AI Anti-Paste Lock Active
                     </span>
@@ -1486,18 +1568,18 @@ export default function App() {
                       <span className="text-slate-400 font-mono">
                         Queue Item #{workbenchTaskIndex + 1} of {currentProjectObj.totalTasks}
                       </span>
-                      <span className="text-emerald-400 font-bold">{currentProjectObj.payRate}</span>
+                      <span className="text-emerald-500 font-bold">{currentProjectObj.payRate}</span>
                     </div>
 
                     <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl text-xs space-y-1.5">
-                      <span className="text-[10px] font-bold uppercase text-cyan-400">
+                      <span className="text-[10px] font-bold uppercase text-cyan-500">
                         Stimulus / Audio-Document Prompt:
                       </span>
-                      <p className="text-slate-100 leading-relaxed">{currentProjectObj.samplePrompt}</p>
+                      <p className="leading-relaxed">{currentProjectObj.samplePrompt}</p>
                     </div>
 
                     <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1.5">
+                      <label className="block text-xs font-bold text-slate-400 mb-1.5">
                         Human Verbatim Transcription / Annotation / Audit Justification *
                       </label>
                       <textarea
@@ -1509,12 +1591,12 @@ export default function App() {
                           alert('ZERO-AI POLICY: External copy-paste is blocked inside production workbenches.');
                         }}
                         placeholder="Type 100% human evaluation output here (Clipboard paste is blocked by telemetry)..."
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-xs text-white"
                       />
                     </div>
 
                     {workbenchSavedMsg && (
-                      <div className="p-3 rounded-xl bg-emerald-950/60 border border-emerald-500/40 text-xs text-emerald-300 font-bold">
+                      <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-500 font-bold">
                         {workbenchSavedMsg}
                       </div>
                     )}
@@ -1523,7 +1605,7 @@ export default function App() {
                       <button
                         onClick={() => setWorkbenchTaskIndex(prev => Math.max(0, prev - 1))}
                         disabled={workbenchTaskIndex === 0}
-                        className="px-4 py-2 rounded-xl bg-slate-800 disabled:opacity-40 text-xs font-bold text-slate-300"
+                        className="px-4 py-2 rounded-xl bg-slate-800 disabled:opacity-40 text-xs font-bold text-slate-200"
                       >
                         ← Previous Item
                       </button>
@@ -1551,10 +1633,13 @@ export default function App() {
           </div>
         )}
 
+        {/* ===================================================================
+            TAB 4: EVALUATOR ONBOARDING & CV UPLOAD (STRICTLY EVALUATOR ONLY)
+           =================================================================== */}
         {activeNav === 'apply' && (
           <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl mx-auto shadow-2xl">
             <div>
-              <span className="text-xs font-extrabold uppercase text-emerald-400">
+              <span className="text-xs font-extrabold uppercase text-emerald-500">
                 Specialist Credentialing & Zero-AI Compliance
               </span>
               <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
@@ -1563,24 +1648,36 @@ export default function App() {
             </div>
 
             {appSubmitted ? (
-              <div className="p-8 rounded-2xl bg-emerald-950/40 border border-emerald-500/40 text-center space-y-4">
-                <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto" />
+              <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-center space-y-4">
+                <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
                 <h3 className="text-xl font-black text-white">
-                  Dossier, CV & SHA-256 Credentials Encrypted!
+                  Evaluator Dossier Logged — Pending Owner Certification!
                 </h3>
-                <button
-                  onClick={() => setActiveNav('projects')}
-                  className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs"
-                >
-                  Check Projects Queue Status →
-                </button>
+                <p className="text-xs text-slate-300 max-w-md mx-auto">
+                  You are now signed in as an <strong>Uncertified Evaluator</strong>. Your Projects Workbench is locked until the Master Owner certifies your account.
+                </p>
+                <div className="flex justify-center gap-3">
+                  <button
+                    onClick={() => setActiveNav('projects')}
+                    className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs"
+                  >
+                    View Locked Projects Queue →
+                  </button>
+                  <button
+                    onClick={() => setAppSubmitted(false)}
+                    className="px-4 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs"
+                  >
+                    Submit Another Application
+                  </button>
+                </div>
               </div>
             ) : (
-              <form onSubmit={handleOnboardingSubmit} className="space-y-5 text-xs">
+              <form onSubmit={handleOnboardingSubmit} autoComplete="off" className="space-y-5 text-xs">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <input
                     type="text"
                     required
+                    autoComplete="off"
                     placeholder="Full Legal Name (Passport / ID) *"
                     value={appForm.name}
                     onChange={e => setAppForm({ ...appForm, name: e.target.value })}
@@ -1589,7 +1686,8 @@ export default function App() {
                   <input
                     type="email"
                     required
-                    placeholder="Email Address (Workspace Login) *"
+                    autoComplete="new-password"
+                    placeholder="Applicant Email Address *"
                     value={appForm.email}
                     onChange={e => setAppForm({ ...appForm, email: e.target.value })}
                     className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1597,7 +1695,8 @@ export default function App() {
                   <input
                     type="password"
                     required
-                    placeholder="Create Workspace Password (SHA-256) *"
+                    autoComplete="new-password"
+                    placeholder="Create Evaluator Password (SHA-256) *"
                     value={appForm.pass}
                     onChange={e => setAppForm({ ...appForm, pass: e.target.value })}
                     className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -1605,7 +1704,7 @@ export default function App() {
                   <select
                     value={appForm.track}
                     onChange={e => setAppForm({ ...appForm, track: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-300 font-bold"
+                    className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
                   >
                     {PLATFORM_PROJECTS.map(p => (
                       <option key={p.id} value={p.name}>
@@ -1627,6 +1726,7 @@ export default function App() {
                   <input
                     type="text"
                     required
+                    autoComplete="off"
                     placeholder="Security Question Answer (For Password Recovery) *"
                     value={appForm.secAnswer}
                     onChange={e => setAppForm({ ...appForm, secAnswer: e.target.value })}
@@ -1634,7 +1734,7 @@ export default function App() {
                   />
                   <div className="sm:col-span-2 p-4 rounded-xl bg-slate-950 border border-dashed border-emerald-500/50 flex flex-wrap items-center justify-between gap-3">
                     <div>
-                      <label className="block text-emerald-400 font-bold mb-1">
+                      <label className="block text-emerald-500 font-bold mb-1">
                         Upload CV / Resume (PDF, DOC, DOCX) *
                       </label>
                       <input
@@ -1652,21 +1752,21 @@ export default function App() {
                             }));
                           reader.readAsDataURL(f);
                         }}
-                        className="text-xs text-slate-300"
+                        className="text-xs text-slate-400"
                       />
                     </div>
                     {appForm.cvFileName && (
-                      <span className="px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 font-bold">
+                      <span className="px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-500 font-bold">
                         📄 {appForm.cvFileName}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <div className="h-60 overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 font-mono text-[11px] text-slate-300">
+                <div className="h-56 overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 font-mono text-[11px] text-slate-300">
                   {MASTER_CONTRACT_ARTICLES.map(a => (
                     <div key={a.id}>
-                      <strong className="text-emerald-400">
+                      <strong className="text-emerald-500">
                         Article {a.id} — {a.title}:
                       </strong>{' '}
                       {a.content}
@@ -1674,7 +1774,7 @@ export default function App() {
                   ))}
                 </div>
 
-                <label className="flex items-center gap-2.5 cursor-pointer font-semibold text-slate-200">
+                <label className="flex items-center gap-2.5 cursor-pointer font-semibold">
                   <input
                     type="checkbox"
                     checked={appForm.agreedNDA}
@@ -1697,6 +1797,9 @@ export default function App() {
           </div>
         )}
 
+        {/* ===================================================================
+            TAB 5: CLIENT POC PORTAL
+           =================================================================== */}
         {activeNav === 'client-portal' && (
           <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5">
             <h1 className="text-2xl font-black text-white">Enterprise Client PoC Calibration Portal</h1>
@@ -1707,14 +1810,14 @@ export default function App() {
                   className="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-wrap justify-between items-center gap-3"
                 >
                   <div>
-                    <div className="font-extrabold text-emerald-400 text-sm">
+                    <div className="font-extrabold text-emerald-500 text-sm">
                       {p.id} — {p.orgName} ({p.email})
                     </div>
                     <div className="text-slate-400 mt-1">
                       {p.scope} • {p.msg}
                     </div>
                   </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-bold">
+                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold">
                     {p.status}
                   </span>
                 </div>
@@ -1723,6 +1826,9 @@ export default function App() {
           </div>
         )}
 
+        {/* ===================================================================
+            TAB 6: TWO-WAY HELPDESK & SENDER SUPPORT INBOX
+           =================================================================== */}
         {activeNav === 'helpdesk' && (
           <div className="grid lg:grid-cols-2 gap-6 text-xs">
             <form
@@ -1754,7 +1860,7 @@ export default function App() {
                 onChange={e => setNewTicketMsg(e.target.value)}
                 className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
               />
-              {ticketSubmitMsg && <p className="text-emerald-400 font-bold">{ticketSubmitMsg}</p>}
+              {ticketSubmitMsg && <p className="text-emerald-500 font-bold">{ticketSubmitMsg}</p>}
               <button
                 type="submit"
                 className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black"
@@ -1784,10 +1890,10 @@ export default function App() {
               {inboxTicket && (
                 <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="font-extrabold text-emerald-400 text-sm">
+                    <span className="font-extrabold text-emerald-500 text-sm">
                       {inboxTicket.id} — {inboxTicket.subject}
                     </span>
-                    <span className="px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-bold">
+                    <span className="px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-bold">
                       {inboxTicket.status}
                     </span>
                   </div>
@@ -1797,11 +1903,11 @@ export default function App() {
                         key={i}
                         className={`p-3 rounded-xl ${
                           m.sender === 'support'
-                            ? 'bg-emerald-950/50 border border-emerald-500/40 text-emerald-200'
-                            : 'bg-slate-900 text-slate-300'
+                            ? 'bg-emerald-500/15 border border-emerald-500/40'
+                            : 'bg-slate-900'
                         }`}
                       >
-                        <div className="text-[10px] font-bold uppercase text-emerald-400 mb-0.5">
+                        <div className="text-[10px] font-bold uppercase text-emerald-500 mb-0.5">
                           {m.sender === 'support' ? '✓ Official Support / Owner Reply' : 'Sender'} • {m.time}
                         </div>
                         <div className="whitespace-pre-line">{m.text}</div>
@@ -1816,7 +1922,7 @@ export default function App() {
                       ✓ Confirm Reply Received
                     </button>
                   ) : (
-                    <span className="inline-block text-emerald-400 font-bold">
+                    <span className="inline-block text-emerald-500 font-bold">
                       ✓ Delivery Receipt Confirmed
                     </span>
                   )}
@@ -1841,11 +1947,197 @@ export default function App() {
           </div>
         )}
 
+        {/* ===================================================================
+            TAB 7: WORKSPACE SETTINGS, APPEARANCE (BLACK/WHITE) & 12-ARTICLE NDA
+           =================================================================== */}
+        {activeNav === 'settings' && (
+          <div className="space-y-8 text-xs max-w-5xl mx-auto">
+            <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+              <div>
+                <span className="text-xs font-extrabold uppercase text-emerald-500">
+                  Workspace Preferences, Legal NDA & Security Center
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                  Platform Settings, Theme Mode & Master NDA Agreement
+                </h1>
+              </div>
+              <button
+                onClick={handleDownloadNdaDocument}
+                className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black flex items-center gap-2 shadow-lg"
+              >
+                <Download className="w-4 h-4" />
+                <span>Download 12-Article NDA Copy (.TXT)</span>
+              </button>
+            </div>
+
+            <div className="grid lg:grid-cols-12 gap-6">
+              {/* LEFT COLUMN: APPEARANCE SWITCHER (BLACK VS WHITE) & SECURITY */}
+              <div className="lg:col-span-5 space-y-6">
+                <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                  <h2 className="text-base font-black text-white flex items-center gap-2">
+                    <Settings className="w-5 h-5 text-emerald-500" />
+                    <span>1. Interface Appearance (Black / White)</span>
+                  </h2>
+                  <p className="text-slate-400 leading-relaxed">
+                    Choose between our signature <strong>Stealth Black Mode</strong> (optimized for low-glare long evaluation sessions) or <strong>Daylight White Mode</strong>.
+                  </p>
+
+                  <div className="grid grid-cols-2 gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setThemeMode('dark')}
+                      className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between h-24 ${
+                        isDark
+                          ? 'bg-slate-950 border-emerald-500 ring-2 ring-emerald-500/30'
+                          : 'bg-slate-900 text-white border-slate-700 opacity-80'
+                      }`}
+                    >
+                      <span className="text-base">🌙</span>
+                      <div>
+                        <div className="font-black text-white">Stealth Black</div>
+                        <div className="text-[10px] text-emerald-400 font-bold">
+                          {isDark ? '✓ Active Default' : 'Click to Activate'}
+                        </div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => setThemeMode('light')}
+                      className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between h-24 ${
+                        !isDark
+                          ? 'bg-white border-emerald-500 ring-2 ring-emerald-500/30 text-slate-900'
+                          : 'bg-slate-100 text-slate-900 border-slate-300 opacity-80'
+                      }`}
+                    >
+                      <span className="text-base">☀️</span>
+                      <div>
+                        <div className="font-black text-slate-900">Daylight White</div>
+                        <div className="text-[10px] text-emerald-600 font-bold">
+                          {!isDark ? '✓ Active Mode' : 'Click to Activate'}
+                        </div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* ACCOUNT SECURITY & RECOVERY CREDENTIALS */}
+                <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                  <h2 className="text-base font-black text-white flex items-center gap-2">
+                    <Key className="w-5 h-5 text-cyan-500" />
+                    <span>2. Account Security & SHA-256 Vault</span>
+                  </h2>
+                  {currentUser ? (
+                    <form onSubmit={handleUpdateUserSettings} className="space-y-3">
+                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
+                        <div className="text-[10px] uppercase text-slate-400 font-bold">Signed-In Identity</div>
+                        <div className="font-bold text-emerald-500 mt-0.5">
+                          {currentUser.name} ({currentUser.email}) — {currentUser.role.toUpperCase()}
+                        </div>
+                      </div>
+                      <input
+                        type="password"
+                        placeholder="New Password (leave blank to keep current)"
+                        value={settingsNewPass}
+                        onChange={e => setSettingsNewPass(e.target.value)}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      <select
+                        value={settingsSecQ}
+                        onChange={e => setSettingsSecQ(e.target.value)}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      >
+                        {SECURITY_QUESTIONS.map(q => (
+                          <option key={q} value={q}>
+                            {q}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="text"
+                        placeholder="Update Security Question Answer"
+                        value={settingsSecA}
+                        onChange={e => setSettingsSecA(e.target.value)}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      {settingsSavedMsg && <p className="text-emerald-500 font-bold">{settingsSavedMsg}</p>}
+                      <button
+                        type="submit"
+                        className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                      >
+                        Update Encrypted Security Profile
+                      </button>
+                    </form>
+                  ) : (
+                    <div className="space-y-3">
+                      <p className="text-slate-400">
+                        Sign in to update your password or recovery question in the SHA-256 Security Vault.
+                      </p>
+                      <button
+                        onClick={() => {
+                          setShowAuthModal(true);
+                          setAuthTab('signin');
+                        }}
+                        className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                      >
+                        Sign In to Manage Credentials
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* RIGHT COLUMN: PERMANENT 12-ARTICLE MASTER NDA & ZERO-AI POLICY */}
+              <div className="lg:col-span-7 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-emerald-500 block">
+                      LEGAL & COMPLIANCE REPOSITORY
+                    </span>
+                    <h2 className="text-base font-black text-white">
+                      3. Master Non-Disclosure Agreement (12 Articles) & Strict Zero-AI Policy
+                    </h2>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold text-[10px]">
+                    ✓ Enforceable Worldwide
+                  </span>
+                </div>
+
+                <div className="h-[420px] overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 font-mono text-[11px] leading-relaxed">
+                  {MASTER_CONTRACT_ARTICLES.map(art => (
+                    <div key={art.id} className="p-3 rounded-xl bg-slate-900/70 border border-slate-800/80 space-y-1">
+                      <div className="font-bold text-emerald-500">
+                        ARTICLE {art.id} — {art.title}
+                      </div>
+                      <p className="text-slate-300">{art.content}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-500 font-semibold flex items-center justify-between">
+                  <span>
+                    🔒 Article 1.2 Mandate: External LLMs, bots, and clipboard auto-typers are strictly prohibited.
+                  </span>
+                  <button
+                    onClick={handleDownloadNdaDocument}
+                    className="underline font-black ml-2 shrink-0"
+                  >
+                    Save PDF/TXT
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ===================================================================
+            TAB 8: MASTER OWNER & SUPPORT ADMIN CONSOLE
+           =================================================================== */}
         {activeNav === 'admin' && (
           <div className="space-y-6 text-xs">
             {!isOwner && currentUser?.role !== 'support' ? (
               <div className="p-10 rounded-3xl bg-[#0b1020] border border-rose-500/40 text-center space-y-4">
-                <Lock className="w-10 h-10 text-rose-400 mx-auto" />
+                <Lock className="w-10 h-10 text-rose-500 mx-auto" />
                 <h2 className="text-xl font-black text-white">Restricted Master Control Center</h2>
                 <button
                   onClick={() => {
@@ -1900,7 +2192,7 @@ export default function App() {
                             : 'bg-slate-900 text-slate-300 border border-slate-800'
                         }`}
                       >
-                        4. Stealth Brand Config
+                        4. Cloud Backend & Stealth Brand
                       </button>
                     )}
                   </div>
@@ -1928,9 +2220,9 @@ export default function App() {
                             {app.name} ({app.email})
                           </div>
                           <div className="text-slate-400">
-                            {app.dialect} • Track: <strong className="text-cyan-300">{app.track || 'General QA'}</strong> • CV:{' '}
-                            <strong className="text-amber-300">{app.cvFile}</strong> • Status:{' '}
-                            <strong className="text-emerald-400">{app.status}</strong>
+                            {app.dialect} • Track: <strong className="text-cyan-500">{app.track || 'General QA'}</strong> • CV:{' '}
+                            <strong className="text-amber-500">{app.cvFile}</strong> • Status:{' '}
+                            <strong className="text-emerald-500">{app.status}</strong>
                           </div>
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -1951,7 +2243,7 @@ export default function App() {
                           </button>
                           <button
                             onClick={() => handleDeleteApplicant(app.id)}
-                            className="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-300 border border-rose-500/40 font-bold"
+                            className="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-500 border border-rose-500/40 font-bold"
                           >
                             Delete
                           </button>
@@ -1969,16 +2261,16 @@ export default function App() {
                         className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
                       >
                         <div className="flex justify-between items-center">
-                          <span className="font-extrabold text-emerald-400 text-sm">
+                          <span className="font-extrabold text-emerald-500 text-sm">
                             {t.id} — {t.subject} ({t.senderEmail})
                           </span>
                           <div className="flex items-center gap-3">
                             {t.receiptConfirmed && (
-                              <span className="text-emerald-400 font-bold">✓ Receipt Confirmed by Sender</span>
+                              <span className="text-emerald-500 font-bold">✓ Receipt Confirmed by Sender</span>
                             )}
                             <button
                               onClick={() => handleDeleteTicket(t.id)}
-                              className="text-rose-400 font-bold"
+                              className="text-rose-500 font-bold"
                             >
                               Delete
                             </button>
@@ -1987,7 +2279,7 @@ export default function App() {
                         <div className="space-y-1.5 pl-3 border-l-2 border-emerald-500/40">
                           {t.thread.map((m, idx) => (
                             <div key={idx} className="text-slate-300">
-                              <strong className={m.sender === 'support' ? 'text-emerald-400' : 'text-cyan-400'}>
+                              <strong className={m.sender === 'support' ? 'text-emerald-500' : 'text-cyan-500'}>
                                 {m.sender.toUpperCase()}:
                               </strong>{' '}
                               {m.text}
@@ -2042,13 +2334,13 @@ export default function App() {
                       <select
                         value={provRole}
                         onChange={e => setProvRole(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-300 font-bold"
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
                       >
                         <option value="support">Technical Support / Helpdesk (support)</option>
                         <option value="evaluator">Certified Evaluator (evaluator)</option>
                         <option value="client">Enterprise Client (client)</option>
                       </select>
-                      {provMsg && <p className="text-emerald-400 font-bold">{provMsg}</p>}
+                      {provMsg && <p className="text-emerald-500 font-bold">{provMsg}</p>}
                       <button
                         type="submit"
                         className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
@@ -2072,7 +2364,7 @@ export default function App() {
                               <span className="font-bold text-white text-sm">{u.name}</span>
                               <span className="text-slate-400 ml-2">({u.email})</span>
                             </div>
-                            <span className="px-2.5 py-0.5 rounded bg-slate-950 text-emerald-400 font-mono font-bold uppercase">
+                            <span className="px-2.5 py-0.5 rounded bg-slate-950 text-emerald-500 font-mono font-bold uppercase">
                               {u.role}
                             </span>
                           </div>
@@ -2082,7 +2374,7 @@ export default function App() {
                           <div className="flex flex-wrap gap-2 pt-1">
                             <button
                               onClick={() => handleToggleProjectAccess(u.email)}
-                              className="px-3 py-1.5 rounded-lg bg-slate-800 text-emerald-300 font-bold"
+                              className="px-3 py-1.5 rounded-lg bg-slate-800 text-emerald-400 font-bold"
                             >
                               {u.certifiedForProjects ? '✓ Projects Unlocked' : '🔒 Projects Locked'}
                             </button>
@@ -2120,30 +2412,73 @@ export default function App() {
                 )}
 
                 {adminTab === '5' && isOwner && (
-                  <form
-                    onSubmit={handleSaveBrandConfig}
-                    className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4 max-w-lg"
-                  >
-                    <h3 className="font-bold text-white text-sm">Stealth Brand Configuration</h3>
-                    <input
-                      type="text"
-                      value={editBrand.brandName}
-                      onChange={e => setEditBrand({ ...editBrand, brandName: e.target.value })}
-                      className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <input
-                      type="text"
-                      value={editBrand.brandStatus}
-                      onChange={e => setEditBrand({ ...editBrand, brandStatus: e.target.value })}
-                      className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <button
-                      type="submit"
-                      className="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <form
+                      onSubmit={handleSaveBrandConfig}
+                      className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4"
                     >
-                      Save Brand Config
-                    </button>
-                  </form>
+                      <h3 className="font-black text-white text-sm">
+                        1. Stealth Brand Reveal Configuration
+                      </h3>
+                      <div>
+                        <label className="block text-slate-400 mb-1">Platform Brand Name</label>
+                        <input
+                          type="text"
+                          value={editBrand.brandName}
+                          onChange={e => setEditBrand({ ...editBrand, brandName: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-slate-400 mb-1">Operational Status Badge</label>
+                        <input
+                          type="text"
+                          value={editBrand.brandStatus}
+                          onChange={e => setEditBrand({ ...editBrand, brandStatus: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                      >
+                        Save Brand Config
+                      </button>
+                    </form>
+
+                    <form
+                      onSubmit={handleSaveBrandConfig}
+                      className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4"
+                    >
+                      <h3 className="font-black text-white text-sm flex items-center gap-2">
+                        <Database className="w-4 h-4 text-cyan-500" />
+                        <span>2. Cloud Backend Connector (Supabase / REST API)</span>
+                      </h3>
+                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                        Connect a free Supabase PostgreSQL project to sync evaluators, CVs, and tickets across all devices worldwide in real time.
+                      </p>
+                      <input
+                        type="url"
+                        placeholder="Supabase Project URL (https://xyz.supabase.co)"
+                        value={editBrand.cloudUrl || ''}
+                        onChange={e => setEditBrand({ ...editBrand, cloudUrl: e.target.value })}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      <input
+                        type="password"
+                        placeholder="Supabase Anon / Service Key"
+                        value={editBrand.cloudKey || ''}
+                        onChange={e => setEditBrand({ ...editBrand, cloudKey: e.target.value })}
+                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                      />
+                      <button
+                        type="submit"
+                        className="px-6 py-3 rounded-xl bg-cyan-500 text-slate-950 font-black"
+                      >
+                        Save & Connect Cloud Backend
+                      </button>
+                    </form>
+                  </div>
                 )}
               </>
             )}
@@ -2157,7 +2492,7 @@ export default function App() {
           <div className="w-full max-w-md bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 text-xs shadow-2xl">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-extrabold uppercase text-emerald-400 block">
+                <span className="text-[10px] font-extrabold uppercase text-emerald-500 block">
                   Cryptographic Split-Vault Access
                 </span>
                 <h3 className="font-black text-white text-base">Zero-Trust Workspace Sign-In</h3>
@@ -2214,7 +2549,7 @@ export default function App() {
                     placeholder="name@domain.com"
                     value={authEmail}
                     onChange={e => setAuthEmail(e.target.value)}
-                    className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-emerald-500 focus:outline-none"
+                    className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
                   />
                 </div>
                 <div>
@@ -2227,19 +2562,19 @@ export default function App() {
                       placeholder="Enter your password"
                       value={authPass}
                       onChange={e => setAuthPass(e.target.value)}
-                      className="w-full p-3.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white focus:border-emerald-500 focus:outline-none"
+                      className="w-full p-3.5 pr-10 rounded-xl bg-slate-950 border border-slate-800 text-white"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPasswordText(!showPasswordText)}
-                      className="absolute right-3 top-3.5 text-slate-400 hover:text-white"
+                      className="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-500"
                       title="Show / Hide Password"
                     >
                       {showPasswordText ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
-                {authMsg && <p className="text-rose-400 font-bold">{authMsg}</p>}
+                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
                 <button
                   type="submit"
                   className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-400 text-slate-950 font-black shadow-lg"
@@ -2254,7 +2589,8 @@ export default function App() {
                 <input
                   type="email"
                   required
-                  placeholder="Email Address *"
+                  autoComplete="new-password"
+                  placeholder="Evaluator Email Address *"
                   value={authEmail}
                   onChange={e => setAuthEmail(e.target.value)}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
@@ -2262,6 +2598,7 @@ export default function App() {
                 <input
                   type={showPasswordText ? 'text' : 'password'}
                   required
+                  autoComplete="new-password"
                   placeholder="Create Password *"
                   value={authPass}
                   onChange={e => setAuthPass(e.target.value)}
@@ -2281,17 +2618,18 @@ export default function App() {
                 <input
                   type="text"
                   required
+                  autoComplete="off"
                   placeholder="Security Question Answer *"
                   value={authSecA}
                   onChange={e => setAuthSecA(e.target.value)}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                 />
-                {authMsg && <p className="text-rose-400 font-bold">{authMsg}</p>}
+                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
                 <button
                   type="submit"
                   className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
                 >
-                  Encrypt & Create Account
+                  Encrypt & Create Evaluator Account
                 </button>
               </form>
             )}
@@ -2323,7 +2661,7 @@ export default function App() {
                     onChange={e => setResetFlowNewPass(e.target.value)}
                     className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                   />
-                  {resetFlowMsg && <p className="text-emerald-400 font-bold">{resetFlowMsg}</p>}
+                  {resetFlowMsg && <p className="text-emerald-500 font-bold">{resetFlowMsg}</p>}
                   <button
                     type="submit"
                     className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
@@ -2334,7 +2672,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={handleRequestResetLink}
-                  className="w-full py-2.5 rounded-xl bg-slate-800 text-amber-300 border border-amber-500/30 font-bold"
+                  className="w-full py-2.5 rounded-xl bg-slate-800 text-amber-400 border border-amber-500/30 font-bold"
                 >
                   ✉️ Request Reset Link from Helpdesk / Owner
                 </button>
@@ -2344,7 +2682,7 @@ export default function App() {
         </div>
       )}
 
-      <footer className="border-t border-slate-900/80 py-8 text-center text-xs text-slate-500 mt-16">
+      <footer className="border-t border-slate-800/40 py-8 text-center text-xs text-slate-500 mt-16">
         © {new Date().getFullYear()} {brand.brandName} ({brand.brandStatus}) • Zero-Trust Split-Vault SHA-256 Architecture
       </footer>
     </div>
