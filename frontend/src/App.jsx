@@ -15,11 +15,11 @@ import {
 } from './securityVault';
 
 // ============================================================================
-// STEALTH AI QA — CLOUD ENTERPRISE PLATFORM v10.0
-// - Pre-Configured Supabase Cloud Sync (wsomhieprlspugqotued.supabase.co)
-// - No-Code Pricing, Projects, Hero Copy & Theme Studio for Owner & Sales
-// - Full Black (Dark) / White (Light) Mode + Dynamic Accent Palettes
-// - Dedicated Settings & 12-Article Master NDA Compliance Center
+// STEALTH AI QA — CLOUD ENTERPRISE PLATFORM v11.0
+// 1. Dedicated Evaluator-Only Workbench (Hidden from public nav, strict live lock)
+// 2. Persistent Workspace Sidebar + Full User Profile (Age, Gender, Specialization, Persistent CV)
+// 3. Real Email Dispatch (Gmail / Mailto + Optional EmailJS) on Password Reset
+// 4. Strict Monochrome White Mode (Pure White background, Pure Black text & borders, Zero Colors)
 // ============================================================================
 
 const DEFAULT_SUPABASE_URL = 'https://wsomhieprlspugqotued.supabase.co';
@@ -44,7 +44,7 @@ const INITIAL_PLATFORM_CONFIG = {
   stat2Label: 'Zero-AI Policy Enforced',
   stat3Value: '48 Hours',
   stat3Label: 'Diagnostic PoC SLA',
-  accentColor: 'emerald', // emerald | cyan | violet | amber
+  accentColor: 'emerald',
   defaultTheme: 'dark',
   cloudUrl: DEFAULT_SUPABASE_URL,
   cloudKey: DEFAULT_SUPABASE_ANON_KEY
@@ -198,6 +198,15 @@ const INITIAL_PLATFORM_PROJECTS = [
   }
 ];
 
+const SPECIALIZATION_TRACKS = [
+  'Arabic Speech-to-Speech (S2S) & Acoustic Diarization',
+  'Verbatim Audio Transcription & Phonetic Tagging',
+  'Multimodal Data Annotation, OCR & Video Timelines',
+  'Financial Modeling, FP&A & Corporate RAG Audit',
+  'RLHF Side-by-Side (SxS) Preference Ranking & Red-Teaming',
+  'Full-Stack Software QA & OWASP Code Security'
+];
+
 const MASTER_CONTRACT_ARTICLES = [
   { id: '1.1', title: 'Confidentiality & Non-Disclosure Scope (NDA)', content: 'All datasets, audio files, rubrics, client identities, and evaluation prompts remain strictly confidential and proprietary.' },
   { id: '1.2', title: 'Strict Zero-AI Policy & 100% Human Cognition Mandate', content: 'Evaluators MUST NOT use external generative AI (ChatGPT, Claude, Gemini, Copilot), automated ASR transcription bots, or auto-typers. 100% human execution is mandatory; violations trigger immediate termination and fee forfeiture.' },
@@ -216,7 +225,7 @@ const MASTER_CONTRACT_ARTICLES = [
 export default function App() {
   const [themeMode, setThemeMode] = useState(() => {
     try {
-      return localStorage.getItem('stealth_theme_v10') || 'dark';
+      return localStorage.getItem('stealth_theme_v11') || 'dark';
     } catch {
       return 'dark';
     }
@@ -226,7 +235,7 @@ export default function App() {
 
   const [brand, setBrand] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_brand_v10');
+      const saved = localStorage.getItem('stealth_brand_v11');
       return saved ? { ...INITIAL_PLATFORM_CONFIG, ...JSON.parse(saved) } : INITIAL_PLATFORM_CONFIG;
     } catch {
       return INITIAL_PLATFORM_CONFIG;
@@ -235,7 +244,7 @@ export default function App() {
 
   const [projects, setProjects] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_projects_v10');
+      const saved = localStorage.getItem('stealth_projects_v11');
       return saved ? JSON.parse(saved) : INITIAL_PLATFORM_PROJECTS;
     } catch {
       return INITIAL_PLATFORM_PROJECTS;
@@ -243,12 +252,13 @@ export default function App() {
   });
 
   const [activeNav, setActiveNav] = useState('home');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeDemo, setActiveDemo] = useState(LIVE_STUDIO_DEMOS[0]);
   const [showDemoJson, setShowDemoJson] = useState(false);
 
   const [currentUser, setCurrentUser] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_session_v10');
+      const saved = localStorage.getItem('stealth_session_v11');
       return saved ? JSON.parse(saved) : null;
     } catch {
       return null;
@@ -257,7 +267,7 @@ export default function App() {
 
   const [users, setUsers] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_registry_v10');
+      const saved = localStorage.getItem('stealth_registry_v11');
       return saved ? JSON.parse(saved) : INITIAL_ACCOUNTS_REGISTRY;
     } catch {
       return INITIAL_ACCOUNTS_REGISTRY;
@@ -266,7 +276,7 @@ export default function App() {
 
   const [securityVault, setSecurityVault] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_vault_v10');
+      const saved = localStorage.getItem('stealth_vault_v11');
       return saved ? JSON.parse(saved) : INITIAL_SECURITY_VAULT;
     } catch {
       return INITIAL_SECURITY_VAULT;
@@ -275,7 +285,7 @@ export default function App() {
 
   const [applicants, setApplicants] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_applicants_v10');
+      const saved = localStorage.getItem('stealth_applicants_v11');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -283,6 +293,9 @@ export default function App() {
         id: 'APP-901',
         name: 'Nourhan El-Sayed',
         email: 'nourhan.voice@example.com',
+        age: '26',
+        gender: 'Female',
+        specialization: SPECIALIZATION_TRACKS[0],
         dialect: 'Egyptian (AR-EG • Cairene & Alexandrian)',
         track: 'Audio Transcription & Speaker Diarization',
         cvFile: 'Nourhan_ElSayed_AudioQA_CV.pdf',
@@ -296,6 +309,9 @@ export default function App() {
         id: 'APP-902',
         name: 'Faisal Al-Harbi',
         email: 'faisal.fpa@example.sa',
+        age: '29',
+        gender: 'Male',
+        specialization: SPECIALIZATION_TRACKS[3],
         dialect: 'Saudi / Gulf (AR-SA • Najdi & Hejazi)',
         track: 'Financial Modeling, FP&A & RAG Verification',
         cvFile: 'Faisal_AlHarbi_CFA_Resume.pdf',
@@ -310,7 +326,7 @@ export default function App() {
 
   const [tickets, setTickets] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_tickets_v10');
+      const saved = localStorage.getItem('stealth_tickets_v11');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -336,7 +352,7 @@ export default function App() {
 
   const [pocs, setPocs] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_pocs_v10');
+      const saved = localStorage.getItem('stealth_pocs_v11');
       if (saved) return JSON.parse(saved);
     } catch {}
     return [
@@ -354,7 +370,7 @@ export default function App() {
 
   const [resets, setResets] = useState(() => {
     try {
-      const saved = localStorage.getItem('stealth_resets_v10');
+      const saved = localStorage.getItem('stealth_resets_v11');
       return saved ? JSON.parse(saved) : [];
     } catch {
       return [];
@@ -418,9 +434,10 @@ export default function App() {
     }
   };
 
-  const pushToSupabaseCloud = async (overrideBrand, overrideProjects) => {
+  const pushToSupabaseCloud = async (overrideBrand, overrideProjects, overrideUsers) => {
     const activeBrand = overrideBrand || brand;
     const activeProjects = overrideProjects || projects;
+    const activeUsers = overrideUsers || users;
     const url = (activeBrand.cloudUrl || DEFAULT_SUPABASE_URL).trim();
     const key = (activeBrand.cloudKey || DEFAULT_SUPABASE_ANON_KEY).trim();
     if (!url || !key) return;
@@ -429,7 +446,7 @@ export default function App() {
       setCloudStatus('Syncing...');
       const payload = {
         id: 'GLOBAL_MAIN',
-        users_registry: users,
+        users_registry: activeUsers,
         security_vault: securityVault,
         applicants,
         tickets,
@@ -466,20 +483,20 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('stealth_theme_v10', themeMode);
-      localStorage.setItem('stealth_brand_v10', JSON.stringify(brand));
-      localStorage.setItem('stealth_projects_v10', JSON.stringify(projects));
+      localStorage.setItem('stealth_theme_v11', themeMode);
+      localStorage.setItem('stealth_brand_v11', JSON.stringify(brand));
+      localStorage.setItem('stealth_projects_v11', JSON.stringify(projects));
       if (currentUser) {
-        localStorage.setItem('stealth_session_v10', JSON.stringify(currentUser));
+        localStorage.setItem('stealth_session_v11', JSON.stringify(currentUser));
       } else {
-        localStorage.removeItem('stealth_session_v10');
+        localStorage.removeItem('stealth_session_v11');
       }
-      localStorage.setItem('stealth_registry_v10', JSON.stringify(users));
-      localStorage.setItem('stealth_vault_v10', JSON.stringify(securityVault));
-      localStorage.setItem('stealth_applicants_v10', JSON.stringify(applicants));
-      localStorage.setItem('stealth_tickets_v10', JSON.stringify(tickets));
-      localStorage.setItem('stealth_pocs_v10', JSON.stringify(pocs));
-      localStorage.setItem('stealth_resets_v10', JSON.stringify(resets));
+      localStorage.setItem('stealth_registry_v11', JSON.stringify(users));
+      localStorage.setItem('stealth_vault_v11', JSON.stringify(securityVault));
+      localStorage.setItem('stealth_applicants_v11', JSON.stringify(applicants));
+      localStorage.setItem('stealth_tickets_v11', JSON.stringify(tickets));
+      localStorage.setItem('stealth_pocs_v11', JSON.stringify(pocs));
+      localStorage.setItem('stealth_resets_v11', JSON.stringify(resets));
     } catch {}
 
     if (!isHydratingRef.current) {
@@ -490,14 +507,28 @@ export default function App() {
     }
   }, [themeMode, brand, projects, currentUser, users, securityVault, applicants, tickets, pocs, resets]);
 
-  // Real-time Ban Enforcement
+  // ==========================================================================
+  // LIVE SESSION SYNCHRONIZATION WITH ACCOUNTS REGISTRY (FIXES LOCK BUG)
+  // Whenever Owner locks/unlocks projects or bans user, currentUser updates immediately!
+  // ==========================================================================
   useEffect(() => {
-    if (currentUser && currentUser.role !== 'owner') {
+    if (currentUser && currentUser.keyId !== 'KEY-MASTER-OWNER') {
       const reg = users.find(u => u.email.toLowerCase() === currentUser.email.toLowerCase());
-      if (reg && (reg.isBanned || reg.status === 'BANNED')) {
-        setCurrentUser(null);
-        setActiveNav('home');
-        alert('ACCOUNT TERMINATED: Your access has been permanently revoked by the Master Owner.');
+      if (reg) {
+        if (reg.isBanned || reg.status === 'BANNED') {
+          setCurrentUser(null);
+          setActiveNav('home');
+          alert('ACCOUNT TERMINATED: Your access has been permanently revoked by the Master Owner.');
+        } else if (
+          reg.certifiedForProjects !== currentUser.certifiedForProjects ||
+          reg.role !== currentUser.role ||
+          reg.cvFile !== currentUser.cvFile ||
+          reg.age !== currentUser.age ||
+          reg.gender !== currentUser.gender ||
+          reg.specialization !== currentUser.specialization
+        ) {
+          setCurrentUser(reg);
+        }
       }
     }
   }, [users, currentUser]);
@@ -517,9 +548,13 @@ export default function App() {
   const [resetFlowNewPass, setResetFlowNewPass] = useState('');
   const [resetFlowMsg, setResetFlowMsg] = useState('');
 
+  // Onboarding Form (Includes Age, Gender, Specialization, Persistent CV)
   const [appForm, setAppForm] = useState({
     name: '',
     email: '',
+    age: '',
+    gender: 'Male',
+    specialization: SPECIALIZATION_TRACKS[0],
     dialect: 'Egyptian (AR-EG • Cairene / Alexandrian / Saidi)',
     track: INITIAL_PLATFORM_PROJECTS[0].name,
     pass: '',
@@ -530,6 +565,45 @@ export default function App() {
     agreedNDA: false
   });
   const [appSubmitted, setAppSubmitted] = useState(false);
+
+  // User Profile & Settings State (Age, Gender, Specialization, Bio, CV, Password)
+  const [profileForm, setProfileForm] = useState({
+    name: '',
+    age: '',
+    gender: 'Male',
+    specialization: SPECIALIZATION_TRACKS[0],
+    dialect: 'Egyptian (AR-EG • Cairene & Alexandrian)',
+    phone: '',
+    bio: '',
+    cvFile: '',
+    cvDataUrl: '',
+    secQuestion: SECURITY_QUESTIONS[0],
+    secAnswer: '',
+    newPassword: ''
+  });
+  const [profileSavedMsg, setProfileSavedMsg] = useState('');
+
+  // Populate Profile Form whenever currentUser changes
+  useEffect(() => {
+    if (currentUser) {
+      const reg = users.find(u => u.email.toLowerCase() === currentUser.email.toLowerCase()) || currentUser;
+      const appMatch = applicants.find(a => a.email.toLowerCase() === currentUser.email.toLowerCase());
+      setProfileForm({
+        name: reg.name || currentUser.name || '',
+        age: reg.age || appMatch?.age || '24',
+        gender: reg.gender || appMatch?.gender || 'Male',
+        specialization: reg.specialization || appMatch?.specialization || SPECIALIZATION_TRACKS[0],
+        dialect: reg.dialect || appMatch?.dialect || 'Egyptian (AR-EG • Cairene & Alexandrian)',
+        phone: reg.phone || '+20 ',
+        bio: reg.bio || 'Certified AI Quality Assurance, Bilingual Audio Transcription & Data Annotation Specialist.',
+        cvFile: reg.cvFile || appMatch?.cvFile || '',
+        cvDataUrl: reg.cvDataUrl || appMatch?.cvDataUrl || '',
+        secQuestion: reg.secQuestion || SECURITY_QUESTIONS[0],
+        secAnswer: reg.secAnswer || '',
+        newPassword: ''
+      });
+    }
+  }, [currentUser, users, applicants]);
 
   const [pocForm, setPocForm] = useState({
     orgName: '',
@@ -550,11 +624,12 @@ export default function App() {
 
   const [adminTab, setAdminTab] = useState('1');
   const [replyDrafts, setReplyDrafts] = useState({});
+  const [dispatchedResetModal, setDispatchedResetModal] = useState(null);
 
   const [provEmail, setProvEmail] = useState('');
   const [provPass, setProvPass] = useState('TempPass2026!');
-  const [provRole, setProvRole] = useState('sales');
-  const [provCertified, setProvCertified] = useState(true);
+  const [provRole, setProvRole] = useState('evaluator');
+  const [provCertified, setProvCertified] = useState(false);
   const [provMsg, setProvMsg] = useState('');
 
   const [editBrand, setEditBrand] = useState({ ...brand });
@@ -562,7 +637,6 @@ export default function App() {
     setEditBrand({ ...brand });
   }, [brand]);
 
-  // No-Code New Project Form for Owner & Sales
   const [newPrjForm, setNewPrjForm] = useState({
     id: '',
     name: '',
@@ -578,16 +652,19 @@ export default function App() {
   const [workbenchText, setWorkbenchText] = useState('');
   const [workbenchSavedMsg, setWorkbenchSavedMsg] = useState('');
 
-  const [settingsNewPass, setSettingsNewPass] = useState('');
-  const [settingsSecQ, setSettingsSecQ] = useState(SECURITY_QUESTIONS[0]);
-  const [settingsSecA, setSettingsSecA] = useState('');
-  const [settingsSavedMsg, setSettingsSavedMsg] = useState('');
+  // LIVE ROLE & LOCK CHECKS (Reads directly from live `users` registry!)
+  const liveRegistryUser = currentUser
+    ? users.find(u => u.email.toLowerCase() === currentUser.email.toLowerCase()) || currentUser
+    : null;
 
   const isOwner = currentUser?.role === 'owner' || currentUser?.keyId === 'KEY-MASTER-OWNER';
-  const isSales = currentUser?.role === 'sales';
-  const isSupport = currentUser?.role === 'support';
+  const isSales = liveRegistryUser?.role === 'sales';
+  const isSupport = liveRegistryUser?.role === 'support';
+  const isEvaluator = liveRegistryUser?.role === 'evaluator';
   const isExecutive = isOwner || isSales || isSupport;
-  const isCertified = isExecutive || currentUser?.certifiedForProjects;
+
+  // Strictly check if Evaluator is unlocked in live registry!
+  const isProjectQueueUnlocked = isOwner || (isEvaluator && Boolean(liveRegistryUser?.certifiedForProjects));
 
   useEffect(() => {
     if (activeNav === 'helpdesk' && currentUser?.email) {
@@ -597,9 +674,6 @@ export default function App() {
     }
   }, [activeNav, currentUser, tickets]);
 
-  // ==========================================================================
-  // STRICT MASTER OWNER CHECK (ONLY ALLOWED INSIDE SIGN-IN MODAL)
-  // ==========================================================================
   const verifyIsMasterOwner = async (emailInput, passInput) => {
     const eClean = (emailInput || '').trim().toLowerCase();
     const pClean = (passInput || '').trim();
@@ -636,12 +710,14 @@ export default function App() {
 
     const ownerMatched = await verifyIsMasterOwner(emailClean, passClean);
     if (ownerMatched) {
-      setUsers(prev => prev.filter(u => u.email.toLowerCase() !== emailClean));
       const ownerSession = {
         keyId: 'KEY-MASTER-OWNER',
         email: emailClean,
         role: 'owner',
         name: brand.leadArchitect,
+        age: '23',
+        gender: 'Male',
+        specialization: 'Principal AI Systems & Full-Stack Architecture',
         certifiedForProjects: true,
         status: 'ACTIVE',
         isBanned: false
@@ -680,7 +756,11 @@ export default function App() {
       setShowAuthModal(false);
       setAuthEmail('');
       setAuthPass('');
-      if (found.role === 'support' || found.role === 'sales') setActiveNav('admin');
+      if (found.role === 'support' || found.role === 'sales') {
+        setActiveNav('admin');
+      } else if (found.role === 'evaluator') {
+        setActiveNav('profile');
+      }
     } else {
       setAuthMsg('Invalid email or password. Click the eye icon to verify your typed password.');
     }
@@ -698,7 +778,7 @@ export default function App() {
 
     const expectedOwnerEmail = _decodeVector(_OV_E);
     if (cleanEmail === expectedOwnerEmail) {
-      setAuthMsg('This email is reserved for the Master Owner. Please switch to "Sign In" tab, or use a different email to test evaluator registration.');
+      setAuthMsg('This email is reserved for the Master Owner. Please switch to "Sign In" tab.');
       return;
     }
 
@@ -716,6 +796,11 @@ export default function App() {
       email: cleanEmail,
       role: 'evaluator',
       name: cleanEmail.split('@')[0],
+      age: '',
+      gender: 'Male',
+      specialization: SPECIALIZATION_TRACKS[0],
+      cvFile: '',
+      cvDataUrl: '',
       certifiedForProjects: false,
       secQuestion: authSecQ,
       secAnswer: authSecA.trim(),
@@ -730,7 +815,7 @@ export default function App() {
     setAuthEmail('');
     setAuthPass('');
     setAuthSecA('');
-    setActiveNav('projects');
+    setActiveNav('profile');
   };
 
   const handleInstantReset = async (e) => {
@@ -849,22 +934,49 @@ export default function App() {
     const cleanEmail = app.email.trim().toLowerCase();
     const existing = users.find(u => u.email.toLowerCase() === cleanEmail);
     if (existing) {
-      setUsers(prev => prev.map(u => u.email.toLowerCase() === cleanEmail ? { ...u, certifiedForProjects: true, isBanned: false, status: 'ACTIVE' } : u));
+      const updatedUsers = users.map(u =>
+        u.email.toLowerCase() === cleanEmail
+          ? {
+              ...u,
+              role: 'evaluator',
+              certifiedForProjects: true,
+              isBanned: false,
+              status: 'ACTIVE',
+              age: app.age || u.age,
+              gender: app.gender || u.gender,
+              specialization: app.specialization || u.specialization,
+              cvFile: app.cvFile || u.cvFile,
+              cvDataUrl: app.cvDataUrl || u.cvDataUrl
+            }
+          : u
+      );
+      setUsers(updatedUsers);
+      pushToSupabaseCloud(brand, projects, updatedUsers);
     } else {
       const newKeyId = 'KEY-EVAL-' + Date.now();
       const digest = await computeVaultDigest(cleanEmail, app.pass || 'EvalPass2026!');
       setSecurityVault(prev => ({ ...prev, [newKeyId]: digest }));
-      setUsers(prev => [...prev, {
-        keyId: newKeyId,
-        email: cleanEmail,
-        role: 'evaluator',
-        name: app.name,
-        certifiedForProjects: true,
-        secQuestion: app.secQuestion,
-        secAnswer: app.secAnswer,
-        status: 'ACTIVE',
-        isBanned: false
-      }]);
+      const updatedUsers = [
+        ...users,
+        {
+          keyId: newKeyId,
+          email: cleanEmail,
+          role: 'evaluator',
+          name: app.name,
+          age: app.age || '',
+          gender: app.gender || 'Male',
+          specialization: app.specialization || SPECIALIZATION_TRACKS[0],
+          cvFile: app.cvFile || '',
+          cvDataUrl: app.cvDataUrl || '',
+          certifiedForProjects: true,
+          secQuestion: app.secQuestion,
+          secAnswer: app.secAnswer,
+          status: 'ACTIVE',
+          isBanned: false
+        }
+      ];
+      setUsers(updatedUsers);
+      pushToSupabaseCloud(brand, projects, updatedUsers);
     }
   };
 
@@ -911,6 +1023,11 @@ export default function App() {
       email: cleanEmail,
       role: provRole,
       name: cleanEmail.split('@')[0],
+      age: '25',
+      gender: 'Male',
+      specialization: SPECIALIZATION_TRACKS[0],
+      cvFile: '',
+      cvDataUrl: '',
       certifiedForProjects: provCertified,
       secQuestion: SECURITY_QUESTIONS[0],
       secAnswer: 'Verified',
@@ -918,21 +1035,43 @@ export default function App() {
       isBanned: false
     };
     setSecurityVault(prev => ({ ...prev, [newKeyId]: digest }));
-    setUsers(prev => [...prev, newU]);
+    const updatedUsers = [...users, newU];
+    setUsers(updatedUsers);
+    pushToSupabaseCloud(brand, projects, updatedUsers);
     setProvMsg(`✓ ${cleanEmail} encrypted into SHA-256 Vault as ${provRole.toUpperCase()}!`);
     setProvEmail('');
   };
 
   const handleChangeUserRole = (email, nextRole) => {
-    setUsers(prev => prev.map(u => u.email.toLowerCase() === email.toLowerCase() ? { ...u, role: nextRole } : u));
+    const updatedUsers = users.map(u =>
+      u.email.toLowerCase() === email.toLowerCase() ? { ...u, role: nextRole } : u
+    );
+    setUsers(updatedUsers);
+    pushToSupabaseCloud(brand, projects, updatedUsers);
   };
 
+  // ==========================================================================
+  // STRICT REAL-TIME PROJECT LOCK / UNLOCK ENFORCEMENT
+  // Immediately locks/unlocks in `users`, updates active session, and syncs to Cloud!
+  // ==========================================================================
   const handleToggleProjectAccess = (email) => {
-    setUsers(prev => prev.map(u => u.email.toLowerCase() === email.toLowerCase() ? { ...u, certifiedForProjects: !u.certifiedForProjects } : u));
+    const updatedUsers = users.map(u => {
+      if (u.email.toLowerCase() === email.toLowerCase()) {
+        const nextState = !u.certifiedForProjects;
+        return { ...u, certifiedForProjects: nextState };
+      }
+      return u;
+    });
+    setUsers(updatedUsers);
+    if (currentUser && currentUser.email.toLowerCase() === email.toLowerCase()) {
+      const updatedMe = updatedUsers.find(u => u.email.toLowerCase() === email.toLowerCase());
+      if (updatedMe) setCurrentUser(updatedMe);
+    }
+    pushToSupabaseCloud(brand, projects, updatedUsers);
   };
 
   const handleToggleBanUser = (email) => {
-    setUsers(prev => prev.map(u => {
+    const updatedUsers = users.map(u => {
       if (u.email.toLowerCase() === email.toLowerCase()) {
         const nextBanned = !u.isBanned;
         return {
@@ -943,12 +1082,11 @@ export default function App() {
         };
       }
       return u;
-    }));
+    });
+    setUsers(updatedUsers);
+    pushToSupabaseCloud(brand, projects, updatedUsers);
   };
 
-  // ==========================================================================
-  // NO-CODE PRICING & PROJECTS CMS HANDLERS (FOR OWNER & SALES)
-  // ==========================================================================
   const handleProjectFieldChange = (id, field, value) => {
     setProjects(prev =>
       prev.map(p => (p.id === id ? { ...p, [field]: field === 'totalTasks' ? Number(value) || 0 : value } : p))
@@ -1024,10 +1162,13 @@ Timestamp: ${new Date().toUTCString()}
     URL.revokeObjectURL(url);
   };
 
+  // ==========================================================================
+  // PASSWORD RESET DISPATCH (OPENS REAL GMAIL / EMAIL CLIENT + INBOX TICKET)
+  // ==========================================================================
   const handleAdminDispatchResetLink = async (user) => {
     const tempPass = 'Reset#' + Math.floor(100000 + Math.random() * 900000);
     const token = 'TOK-' + Math.random().toString(36).substring(2, 9).toUpperCase();
-    const resetUrl = `${window.location.origin}${window.location.pathname}#reset-email=${encodeURIComponent(user.email)}&token=${token}`;
+    const resetUrl = `${window.location.origin}${window.location.pathname}`;
 
     const newDigest = await computeVaultDigest(user.email, tempPass);
     setSecurityVault(prev => ({ ...prev, [user.keyId]: newDigest }));
@@ -1039,7 +1180,7 @@ Timestamp: ${new Date().toUTCString()}
       thread: [
         {
           sender: 'support',
-          text: `Your password reset credentials have been generated by Helpdesk/Owner.\nTemporary Password: ${tempPass}\nReset Token: ${token}\nDirect Reset URL: ${resetUrl}`,
+          text: `Your password reset credentials have been generated by Helpdesk/Owner.\nTemporary Password: ${tempPass}\nReset Token: ${token}\nWorkspace Login URL: ${resetUrl}`,
           time: new Date().toLocaleString()
         }
       ],
@@ -1050,11 +1191,25 @@ Timestamp: ${new Date().toUTCString()}
       receiptConfirmed: false
     };
     setTickets(prev => [resetTicket, ...prev]);
-    alert(`✓ Reset link dispatched to ${user.email}’s Support Inbox!\nTemporary Password: ${tempPass}`);
+
+    const emailSubject = encodeURIComponent(`${brand.brandName} — Password Reset & Temporary Credentials`);
+    const emailBody = encodeURIComponent(
+      `Hello ${user.name || user.email},\n\nYour workspace password has been reset by the Master Administrator.\n\n• Registered Email: ${user.email}\n• New Temporary Password: ${tempPass}\n• Security Token: ${token}\n• Workspace Sign-In URL: ${resetUrl}\n\nPlease sign in using the temporary password above and update your password inside your Profile & Settings.\n\n— ${brand.brandName} Security Operations`
+    );
+
+    setDispatchedResetModal({
+      email: user.email,
+      tempPass,
+      token,
+      gmailComposeUrl: `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(user.email)}&su=${emailSubject}&body=${emailBody}`,
+      mailtoUrl: `mailto:${user.email}?subject=${emailSubject}&body=${emailBody}`
+    });
   };
 
   const handleDeleteUser = (email) => {
-    setUsers(prev => prev.filter(u => u.email.toLowerCase() !== email.toLowerCase()));
+    const updatedUsers = users.filter(u => u.email.toLowerCase() !== email.toLowerCase());
+    setUsers(updatedUsers);
+    pushToSupabaseCloud(brand, projects, updatedUsers);
   };
 
   const handleSaveBrandConfig = (e) => {
@@ -1078,7 +1233,7 @@ Timestamp: ${new Date().toUTCString()}
 
     const expectedOwnerEmail = _decodeVector(_OV_E);
     if (cleanEmail === expectedOwnerEmail) {
-      alert('Notice: Chrome auto-filled your Master Owner email. To test new Evaluator Onboarding, please enter a different email address (e.g. specialist@domain.com).');
+      alert('Notice: Chrome auto-filled your Master Owner email. To test new Evaluator Onboarding, please enter a different email address.');
       return;
     }
 
@@ -1090,6 +1245,9 @@ Timestamp: ${new Date().toUTCString()}
       keyId: newKeyId,
       name: appForm.name,
       email: cleanEmail,
+      age: appForm.age || '24',
+      gender: appForm.gender || 'Male',
+      specialization: appForm.specialization || SPECIALIZATION_TRACKS[0],
       dialect: appForm.dialect,
       track: appForm.track,
       cvFile: appForm.cvFileName || 'Uploaded_Specialist_CV.pdf',
@@ -1106,6 +1264,12 @@ Timestamp: ${new Date().toUTCString()}
       email: cleanEmail,
       role: 'evaluator',
       name: appForm.name,
+      age: appForm.age || '24',
+      gender: appForm.gender || 'Male',
+      specialization: appForm.specialization || SPECIALIZATION_TRACKS[0],
+      dialect: appForm.dialect,
+      cvFile: appForm.cvFileName || 'Uploaded_Specialist_CV.pdf',
+      cvDataUrl: appForm.cvDataUrl || '',
       certifiedForProjects: false,
       secQuestion: appForm.secQuestion,
       secAnswer: appForm.secAnswer,
@@ -1114,33 +1278,71 @@ Timestamp: ${new Date().toUTCString()}
     };
 
     const exists = users.find(u => u.email.toLowerCase() === cleanEmail);
+    let updatedUsers = users;
     if (!exists) {
       setSecurityVault(prev => ({ ...prev, [newKeyId]: digest }));
-      setUsers(prev => [...prev, newEvalUser]);
+      updatedUsers = [...users, newEvalUser];
+      setUsers(updatedUsers);
     }
     setCurrentUser(newEvalUser);
+    pushToSupabaseCloud(brand, projects, updatedUsers);
     setAppSubmitted(true);
   };
 
-  const handleUpdateUserSettings = async (e) => {
+  // ==========================================================================
+  // SAVE FULL PROFILE (AGE, GENDER, SPECIALIZATION, PERSISTENT CV & PASSWORD)
+  // ==========================================================================
+  const handleSaveFullProfile = async (e) => {
     e.preventDefault();
     if (!currentUser) return;
-    if (settingsNewPass && settingsNewPass.trim().length >= 6) {
-      const newDigest = await computeVaultDigest(currentUser.email, settingsNewPass.trim());
+
+    if (profileForm.newPassword && profileForm.newPassword.trim().length >= 6) {
+      const newDigest = await computeVaultDigest(currentUser.email, profileForm.newPassword.trim());
       setSecurityVault(prev => ({ ...prev, [currentUser.keyId]: newDigest }));
     }
-    if (settingsSecA.trim()) {
-      setUsers(prev =>
-        prev.map(u =>
-          u.email.toLowerCase() === currentUser.email.toLowerCase()
-            ? { ...u, secQuestion: settingsSecQ, secAnswer: settingsSecA.trim() }
-            : u
-        )
-      );
-    }
-    setSettingsNewPass('');
-    setSettingsSecA('');
-    setSettingsSavedMsg('✓ Security credentials & preferences encrypted and synced to Cloud!');
+
+    const updatedUserObj = {
+      ...liveRegistryUser,
+      name: profileForm.name.trim() || currentUser.name,
+      age: profileForm.age.trim(),
+      gender: profileForm.gender,
+      specialization: profileForm.specialization,
+      dialect: profileForm.dialect,
+      phone: profileForm.phone,
+      bio: profileForm.bio,
+      cvFile: profileForm.cvFile,
+      cvDataUrl: profileForm.cvDataUrl,
+      secQuestion: profileForm.secQuestion,
+      secAnswer: profileForm.secAnswer.trim() || liveRegistryUser?.secAnswer || 'Verified'
+    };
+
+    const updatedUsers = users.map(u =>
+      u.email.toLowerCase() === currentUser.email.toLowerCase() ? updatedUserObj : u
+    );
+    setUsers(updatedUsers);
+    setCurrentUser(updatedUserObj);
+
+    // Also keep applicant record CV in sync so Owner sees updated CV & specialization
+    setApplicants(prev =>
+      prev.map(a =>
+        a.email.toLowerCase() === currentUser.email.toLowerCase()
+          ? {
+              ...a,
+              name: updatedUserObj.name,
+              age: updatedUserObj.age,
+              gender: updatedUserObj.gender,
+              specialization: updatedUserObj.specialization,
+              dialect: updatedUserObj.dialect,
+              cvFile: updatedUserObj.cvFile || a.cvFile,
+              cvDataUrl: updatedUserObj.cvDataUrl || a.cvDataUrl
+            }
+          : a
+      )
+    );
+
+    setProfileForm(prev => ({ ...prev, newPassword: '' }));
+    setProfileSavedMsg('✓ Profile, Specialization, Persistent CV & Security Vault updated and synced to Cloud!');
+    pushToSupabaseCloud(brand, projects, updatedUsers);
   };
 
   const handlePocSubmit = (e) => {
@@ -1161,7 +1363,6 @@ Timestamp: ${new Date().toUTCString()}
 
   const currentProjectObj = projects.find(p => p.id === selectedProjectId) || projects[0];
 
-  // Dynamic Accent Gradient Helper (Editable by Owner & Sales)
   const accentGradMap = {
     emerald: 'from-emerald-500 to-teal-400',
     cyan: 'from-cyan-500 to-blue-500',
@@ -1170,12 +1371,66 @@ Timestamp: ${new Date().toUTCString()}
   };
   const activeAccentGrad = accentGradMap[brand.accentColor] || accentGradMap.emerald;
 
-  const rootThemeClass = isDark
-    ? 'bg-[#050811] text-slate-100'
-    : 'bg-slate-50 text-slate-900 [&_div.bg-\\[#0b1020\\]]:bg-white [&_div.bg-\\[#0b1020\\]]:border-slate-300 [&_div.bg-\\[#0b1020\\]]:shadow-slate-200/70 [&_form.bg-\\[#0b1020\\]]:bg-white [&_form.bg-\\[#0b1020\\]]:border-slate-300 [&_div.bg-slate-950]:bg-slate-100 [&_div.bg-slate-950]:border-slate-300 [&_div.bg-slate-900\\/80]:bg-white [&_div.bg-slate-900]:bg-white [&_input]:bg-white [&_input]:text-slate-900 [&_input]:border-slate-300 [&_select]:bg-white [&_select]:text-slate-900 [&_select]:border-slate-300 [&_textarea]:bg-white [&_textarea]:text-slate-900 [&_textarea]:border-slate-300 [&_h1]:text-slate-900 [&_h2]:text-slate-900 [&_h3]:text-slate-900 [&_h4]:text-slate-900 [&_p.text-slate-300]:text-slate-600 [&_p.text-slate-400]:text-slate-600 [&_span.text-slate-300]:text-slate-700 [&_span.text-white]:text-slate-900 [&_strong.text-white]:text-slate-900';
-
   return (
-    <div className={`min-h-screen font-sans flex flex-col selection:bg-emerald-500 selection:text-slate-950 relative overflow-x-hidden transition-colors duration-300 ${rootThemeClass}`}>
+    <div className={`min-h-screen font-sans flex flex-col relative overflow-x-hidden ${isDark ? 'bg-[#050811] text-slate-100' : 'strict-white-monochrome bg-white text-black'}`}>
+      {/* =====================================================================
+          STRICT MONOCHROME WHITE MODE ENGINE
+          When White Mode is active: 100% Pure White & Pure Black, Zero Colors,
+          Sharp Black Borders around all boxes, buttons, inputs, and cards!
+         ===================================================================== */}
+      {!isDark && (
+        <style>{`
+          .strict-white-monochrome,
+          .strict-white-monochrome main,
+          .strict-white-monochrome header,
+          .strict-white-monochrome aside,
+          .strict-white-monochrome footer,
+          .strict-white-monochrome section,
+          .strict-white-monochrome nav,
+          .strict-white-monochrome form,
+          .strict-white-monochrome div {
+            background-color: #ffffff !important;
+            background-image: none !important;
+            color: #000000 !important;
+            box-shadow: none !important;
+          }
+          .strict-white-monochrome h1,
+          .strict-white-monochrome h2,
+          .strict-white-monochrome h3,
+          .strict-white-monochrome h4,
+          .strict-white-monochrome p,
+          .strict-white-monochrome span,
+          .strict-white-monochrome label,
+          .strict-white-monochrome strong,
+          .strict-white-monochrome pre,
+          .strict-white-monochrome a,
+          .strict-white-monochrome svg {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+          }
+          .strict-white-monochrome [class*="border"],
+          .strict-white-monochrome input,
+          .strict-white-monochrome select,
+          .strict-white-monochrome textarea,
+          .strict-white-monochrome button {
+            border: 1.5px solid #000000 !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
+            color: #000000 !important;
+            box-shadow: none !important;
+          }
+          .strict-white-monochrome button:hover {
+            background-color: #000000 !important;
+            color: #ffffff !important;
+          }
+          .strict-white-monochrome button:hover span,
+          .strict-white-monochrome button:hover svg {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+          }
+        `}</style>
+      )}
+
       {isDark && (
         <>
           <div className="pointer-events-none fixed top-0 left-1/4 w-[600px] h-[350px] bg-emerald-500/10 rounded-full blur-[130px] -z-10" />
@@ -1183,18 +1438,18 @@ Timestamp: ${new Date().toUTCString()}
         </>
       )}
 
-      {/* TOP NAVIGATION HEADER */}
-      <header className={`border-b backdrop-blur-xl sticky top-0 z-40 px-4 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4 transition-colors ${isDark ? 'border-slate-800/80 bg-[#070b16]/90' : 'border-slate-200 bg-white/90 shadow-sm'}`}>
+      {/* TOP NAVIGATION HEADER (Notice: Projects Workbench is COMPLETELY HIDDEN for non-evaluators!) */}
+      <header className="border-b border-slate-800/80 bg-[#070b16]/90 backdrop-blur-xl sticky top-0 z-40 px-4 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-4">
         <div className="flex items-center gap-3.5 cursor-pointer group" onClick={() => setActiveNav('home')}>
-          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${activeAccentGrad} flex items-center justify-center font-black text-slate-950 shadow-lg group-hover:scale-105 transition`}>
+          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${activeAccentGrad} flex items-center justify-center font-black text-slate-950 shadow-lg`}>
             <Shield className="w-5 h-5 text-slate-950" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className={`font-black text-lg tracking-tight group-hover:text-emerald-500 transition ${isDark ? 'text-white' : 'text-slate-900'}`}>
+              <span className="font-black text-lg tracking-tight text-white">
                 {brand.brandName}
               </span>
-              <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold">
+              <span className="text-[10px] uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold">
                 {brand.brandStatus}
               </span>
               <span className="hidden xl:inline-flex items-center gap-1 text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
@@ -1205,54 +1460,58 @@ Timestamp: ${new Date().toUTCString()}
           </div>
         </div>
 
-        <nav className={`flex items-center flex-wrap gap-1 p-1.5 rounded-xl border text-xs font-semibold ${isDark ? 'bg-slate-900/90 border-slate-800/90' : 'bg-slate-100 border-slate-200'}`}>
+        <nav className="flex items-center flex-wrap gap-1 p-1.5 rounded-xl border border-slate-800/90 bg-slate-900/90 text-xs font-semibold">
           {[
-            { id: 'home', label: 'Enterprise Foundry' },
-            { id: 'about', label: 'About & Clients' },
-            { id: 'projects', label: 'Projects Workbench', locked: !isCertified },
-            { id: 'apply', label: 'Onboarding & CV' },
-            { id: 'client-portal', label: 'Client PoC' },
-            { id: 'helpdesk', label: 'Helpdesk Inbox' },
-            { id: 'settings', label: '⚙️ Settings & NDA' }
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveNav(tab.id)}
-              className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
-                activeNav === tab.id
-                  ? `bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-extrabold shadow-md`
-                  : isDark
-                  ? 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-                  : 'text-slate-600 hover:text-slate-950 hover:bg-white'
-              }`}
-            >
-              <span>{tab.label}</span>
-              {tab.locked && <Lock className="w-3 h-3 text-amber-500" />}
-            </button>
-          ))}
+            { id: 'home', label: 'Enterprise Foundry', show: true },
+            { id: 'about', label: 'About & Clients', show: true },
+            // ONLY visible to Evaluators or Owner! Completely hidden from general visitors/clients
+            {
+              id: 'evaluator-workbench',
+              label: '💼 Evaluator Workbench',
+              show: isEvaluator || isOwner,
+              locked: !isProjectQueueUnlocked
+            },
+            { id: 'apply', label: 'Onboarding & CV', show: !currentUser || isOwner },
+            { id: 'client-portal', label: 'Client PoC', show: true },
+            { id: 'helpdesk', label: 'Helpdesk Inbox', show: true },
+            { id: 'profile', label: '👤 My Profile & Settings', show: Boolean(currentUser) },
+            { id: 'settings', label: '📜 Legal NDA & Theme', show: true }
+          ]
+            .filter(t => t.show)
+            .map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveNav(tab.id)}
+                className={`px-3 py-1.5 rounded-lg transition flex items-center gap-1.5 ${
+                  activeNav === tab.id
+                    ? `bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-extrabold`
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                }`}
+              >
+                <span>{tab.label}</span>
+                {tab.locked && <Lock className="w-3 h-3 text-amber-400" />}
+              </button>
+            ))}
         </nav>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => setThemeMode(isDark ? 'light' : 'dark')}
-            className={`px-3 py-2 rounded-xl border text-xs font-bold flex items-center gap-1.5 transition ${
-              isDark
-                ? 'bg-slate-900 border-slate-700 text-amber-300 hover:bg-slate-800'
-                : 'bg-slate-100 border-slate-300 text-slate-800 hover:bg-slate-200'
-            }`}
+            className="px-3 py-2 rounded-xl border border-slate-700 bg-slate-900 text-amber-300 text-xs font-bold flex items-center gap-1.5"
           >
-            <span>{isDark ? '☀️ White Mode' : '🌙 Black Mode'}</span>
+            <span>{isDark ? '☀️ Pure White & Black' : '🌙 Stealth Dark Mode'}</span>
           </button>
 
           {currentUser ? (
-            <div className={`flex items-center gap-2.5 border rounded-xl px-3.5 py-1.5 text-xs ${isDark ? 'bg-slate-900/90 border-emerald-500/30' : 'bg-white border-emerald-500/40'}`}>
-              <UserCheck className="w-4 h-4 text-emerald-500" />
-              <div>
-                <span className={`font-bold block leading-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-                  {currentUser.name || currentUser.email}
+            <div className="flex items-center gap-2.5 border border-emerald-500/30 bg-slate-900/90 rounded-xl px-3.5 py-1.5 text-xs">
+              <UserCheck className="w-4 h-4 text-emerald-400" />
+              <div className="cursor-pointer" onClick={() => setActiveNav('profile')}>
+                <span className="font-bold block leading-tight text-white">
+                  {liveRegistryUser?.name || currentUser.name || currentUser.email}
                 </span>
-                <span className="text-[10px] text-emerald-500 font-extrabold uppercase tracking-wider">
-                  {currentUser.role} • SHA-256
+                <span className="text-[10px] text-emerald-400 font-extrabold uppercase tracking-wider">
+                  {liveRegistryUser?.role || currentUser.role} •{' '}
+                  {isProjectQueueUnlocked ? 'UNLOCKED' : 'LOCKED'}
                 </span>
               </div>
               <button
@@ -1260,7 +1519,7 @@ Timestamp: ${new Date().toUTCString()}
                   setCurrentUser(null);
                   setActiveNav('home');
                 }}
-                className="ml-1 px-2 py-1 rounded bg-rose-500/15 text-rose-500 hover:bg-rose-500/25 text-[11px] font-bold"
+                className="ml-1 px-2 py-1 rounded bg-rose-500/15 text-rose-400 hover:bg-rose-500/25 text-[11px] font-bold"
               >
                 Sign Out
               </button>
@@ -1274,10 +1533,10 @@ Timestamp: ${new Date().toUTCString()}
                 setAuthPass('');
                 setAuthMsg('');
               }}
-              className={`px-4 py-2 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg transition`}
+              className={`px-4 py-2 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-extrabold flex items-center gap-1.5 shadow-lg`}
             >
               <Key className="w-3.5 h-3.5" />
-              Workspace Sign-In
+              <span>Workspace Sign-In</span>
             </button>
           )}
 
@@ -1287,962 +1546,738 @@ Timestamp: ${new Date().toUTCString()}
               className="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-lg"
             >
               <Settings className="w-4 h-4" />
-              <span>{isSales ? 'Sales & Pricing CMS' : 'Master Admin'}</span>
+              <span>{isSales ? 'Sales CMS' : 'Master Admin'}</span>
             </button>
           )}
         </div>
       </header>
 
-      {/* MAIN CONTENT CONTAINER */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
-        {/* ===================================================================
-            TAB 1: HOME — SILICON VALLEY TIER-1 SPLIT HERO & INTERACTIVE STUDIO
-           =================================================================== */}
-        {activeNav === 'home' && (
-          <div className="space-y-20">
-            <section className="grid lg:grid-cols-12 gap-10 items-start">
-              <div className="lg:col-span-6 space-y-6 pt-2">
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 text-xs font-bold">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>{brand.heroBadge || 'Sovereign Human-in-the-Loop AI Data Infrastructure'}</span>
-                </div>
-
-                <h1 className="text-4xl sm:text-5xl font-black tracking-tight leading-[1.08] text-white">
-                  {brand.heroTitleLine1 || 'Eliminate Dialect Hallucinations with'}{' '}
-                  <span className={`bg-gradient-to-r ${activeAccentGrad} bg-clip-text text-transparent`}>
-                    {brand.heroTitleHighlight || 'Zero-Trust Human QA.'}
-                  </span>
-                </h1>
-
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-                  {brand.heroSubtitle}
-                </p>
-
-                <div className="flex flex-wrap gap-3.5 pt-2">
-                  <button
-                    onClick={() => setActiveNav('projects')}
-                    className={`px-6 py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-xl transition`}
-                  >
-                    <span>Explore Projects Workbench</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                  <button
-                    onClick={() => setActiveNav('settings')}
-                    className={`px-6 py-3.5 rounded-xl border font-bold text-xs sm:text-sm transition ${
-                      isDark
-                        ? 'bg-slate-900 hover:bg-slate-800 text-white border-slate-700'
-                        : 'bg-white hover:bg-slate-100 text-slate-900 border-slate-300'
-                    }`}
-                  >
-                    ⚙️ Appearance & 12-Article NDA
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-3 gap-3.5 pt-4">
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-emerald-500">{brand.stat1Value || '99.4%'}</div>
-                    <div className="text-xs font-bold text-white mt-0.5">{brand.stat1Label || 'Inter-Annotator Agreement'}</div>
-                    <div className="text-[11px] text-slate-400 mt-0.5">Multi-tier L1/L2 QA calibration</div>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-cyan-500">{brand.stat2Value || '100% Human'}</div>
-                    <div className="text-xs font-bold text-white mt-0.5">{brand.stat2Label || 'Zero-AI Policy Enforced'}</div>
-                    <div className="text-[11px] text-slate-400 mt-0.5">Clipboard & cadence telemetry</div>
-                  </div>
-                  <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90 backdrop-blur">
-                    <div className="text-2xl font-black text-amber-500">{brand.stat3Value || '48 Hours'}</div>
-                    <div className="text-xs font-bold text-white mt-0.5">{brand.stat3Label || 'Diagnostic PoC SLA'}</div>
-                    <div className="text-[11px] text-slate-400 mt-0.5">50-sample golden benchmark</div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="lg:col-span-6 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
-                  <div>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500 block">
-                      LIVE INTERACTIVE BENCHMARK STUDIO
-                    </span>
-                    <h3 className="text-base font-extrabold text-white">
-                      Side-by-Side (SxS) Defect & Hallucination Inspector
-                    </h3>
-                  </div>
-                  <button
-                    onClick={() => setShowDemoJson(!showDemoJson)}
-                    className="px-3 py-1.5 rounded-xl bg-slate-900 text-emerald-500 border border-emerald-500/30 font-mono text-xs font-bold flex items-center gap-1.5"
-                  >
-                    <Terminal className="w-3.5 h-3.5" />
-                    <span>{showDemoJson ? 'Visual SxS View' : '{ } View JSON Payload'}</span>
-                  </button>
-                </div>
-
-                <div className="grid grid-cols-3 gap-1.5 bg-slate-950 p-1.5 rounded-2xl border border-slate-800/80">
-                  {LIVE_STUDIO_DEMOS.map(demo => (
-                    <button
-                      key={demo.id}
-                      onClick={() => {
-                        setActiveDemo(demo);
-                        setShowDemoJson(false);
-                      }}
-                      className={`py-2 px-2.5 rounded-xl text-[11px] font-extrabold transition ${
-                        activeDemo.id === demo.id
-                          ? `bg-gradient-to-r ${activeAccentGrad} text-slate-950 shadow`
-                          : 'text-slate-400 hover:text-emerald-500'
-                      }`}
-                    >
-                      {demo.tabTitle}
-                    </button>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800/90 text-[11px]">
-                  <span className="font-mono text-cyan-500 font-bold">{activeDemo.badge}</span>
-                  <span className="text-slate-300 font-semibold">{activeDemo.domain}</span>
-                  <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-500 border border-rose-500/30 font-extrabold text-[10px]">
-                    {activeDemo.defectTag}
-                  </span>
-                </div>
-
-                {showDemoJson ? (
-                  <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 font-mono text-xs text-emerald-500 overflow-x-auto">
-                    <pre>{JSON.stringify(activeDemo.jsonPayload, null, 2)}</pre>
-                  </div>
-                ) : (
-                  <>
-                    <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/90 text-xs space-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
-                        Evaluation Stimulus / Audio Utterance:
-                      </span>
-                      <p className="font-medium leading-relaxed">{activeDemo.stimulus}</p>
-                    </div>
-
-                    <div className="grid sm:grid-cols-2 gap-3.5 text-xs">
-                      <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-extrabold text-rose-500">❌ {activeDemo.modelA.name}</span>
-                          <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-500">
-                            {activeDemo.modelA.latency}
-                          </span>
-                        </div>
-                        <p className="text-slate-300 text-[11px] leading-relaxed">{activeDemo.modelA.response}</p>
-                        <div className="pt-1 space-y-1">
-                          <div className="flex justify-between text-[10px] text-rose-500 font-bold">
-                            <span>Factual Grounding</span>
-                            <span>{activeDemo.modelA.factuality}%</span>
-                          </div>
-                          <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
-                            <div className="h-full bg-rose-500" style={{ width: `${activeDemo.modelA.factuality}%` }} />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 space-y-2.5">
-                        <div className="flex items-center justify-between">
-                          <span className="font-extrabold text-emerald-500">✅ {activeDemo.modelB.name}</span>
-                          <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-500">
-                            {activeDemo.modelB.latency}
-                          </span>
-                        </div>
-                        <p className="text-slate-300 text-[11px] leading-relaxed">{activeDemo.modelB.response}</p>
-                        <div className="pt-1 space-y-1">
-                          <div className="flex justify-between text-[10px] text-emerald-500 font-bold">
-                            <span>Factual Grounding & Dialect Fit</span>
-                            <span>{activeDemo.modelB.factuality}%</span>
-                          </div>
-                          <div className="w-full h-1.5 bg-slate-950 rounded-full overflow-hidden">
-                            <div className="h-full bg-emerald-500" style={{ width: `${activeDemo.modelB.factuality}%` }} />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                )}
-
-                <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-[11px] text-amber-500 font-semibold flex items-center justify-between">
-                  <span>⚡ {activeDemo.verdict}</span>
-                  <span className="text-emerald-500 font-mono font-bold">L2 AUDIT PASSED</span>
-                </div>
-              </div>
-            </section>
-
-            {/* BENTO GRID OF DYNAMIC PROJECTS & PRICING */}
-            <section className="space-y-6">
-              <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* =====================================================================
+          WORKSPACE LAYOUT WITH PERSISTENT SIDEBAR FOR LOGGED-IN SPECIALISTS
+         ===================================================================== */}
+      <div className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8">
+        {/* DEDICATED COLLAPSIBLE SIDEBAR (Shows when logged in or inside Profile/Settings/Workbench) */}
+        {(currentUser || activeNav === 'profile' || activeNav === 'settings' || activeNav === 'evaluator-workbench') && (
+          <aside className={`lg:w-72 shrink-0 bg-[#0b1020] border border-slate-800 rounded-3xl p-5 space-y-5 self-start sticky top-24 ${!sidebarOpen ? 'lg:w-20' : ''}`}>
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              {sidebarOpen && (
                 <div>
-                  <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-500">
-                    Production Pipelines & Live Rate Cards
+                  <span className="text-[10px] font-extrabold uppercase text-emerald-400 block">
+                    Specialist Portal
                   </span>
-                  <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                    Built for Sovereign LLMs, Voice AI & Quantitative Finance
-                  </h2>
+                  <h3 className="text-sm font-black text-white">Workspace Navigation</h3>
                 </div>
-                <button
-                  onClick={() => setActiveNav('projects')}
-                  className="text-xs font-bold text-cyan-500 hover:underline flex items-center gap-1"
-                >
-                  <span>View All {projects.length} Production Queues</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+              )}
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs font-bold text-slate-300"
+                title="Toggle Sidebar"
+              >
+                {sidebarOpen ? '◀' : '▶'}
+              </button>
+            </div>
 
-              <div className="grid md:grid-cols-3 gap-5">
-                {projects.slice(0, 6).map(p => (
-                  <div
-                    key={p.id}
-                    onClick={() => {
-                      setSelectedProjectId(p.id);
-                      setActiveNav('projects');
-                    }}
-                    className="group p-6 rounded-3xl bg-[#0b1020] border border-slate-800/90 hover:border-emerald-500/50 transition cursor-pointer flex flex-col justify-between space-y-4 shadow-lg"
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30">
-                          {p.domain}
-                        </span>
-                        <span className="font-mono text-xs font-bold text-amber-500">{p.payRate}</span>
-                      </div>
-                      <h3 className="text-base font-extrabold text-white group-hover:text-emerald-500 transition">
-                        {p.name}
-                      </h3>
-                      <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
-                    </div>
-                    <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
-                      <span className="text-slate-400">
-                        Active Queue: <strong className="text-white">{p.totalTasks} tasks</strong>
-                      </span>
-                      <span className="text-emerald-500 font-bold">Open Workbench →</span>
-                    </div>
+            {sidebarOpen && currentUser && (
+              <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+                <div className="font-black text-white text-sm truncate">
+                  {liveRegistryUser?.name || currentUser.name}
+                </div>
+                <div className="text-[11px] text-slate-400 truncate">{currentUser.email}</div>
+                <div className="flex flex-wrap gap-1.5 pt-1">
+                  <span className="px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-mono text-[10px] font-bold uppercase">
+                    ROLE: {liveRegistryUser?.role || currentUser.role}
+                  </span>
+                  <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold border ${isProjectQueueUnlocked ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30' : 'bg-rose-500/15 text-rose-400 border-rose-500/30'}`}>
+                    {isProjectQueueUnlocked ? '✓ QUEUE UNLOCKED' : '🔒 QUEUE LOCKED'}
+                  </span>
+                </div>
+                {profileForm.cvFile && (
+                  <div className="pt-1 text-[11px] text-amber-400 font-semibold truncate">
+                    📄 CV: {profileForm.cvFile}
                   </div>
-                ))}
-              </div>
-            </section>
-
-            {/* POC REQUEST */}
-            <section id="poc-request" className="bg-[#0b1020] border border-slate-800 rounded-3xl p-8 grid lg:grid-cols-12 gap-8 items-center shadow-2xl">
-              <div className="lg:col-span-5 space-y-3">
-                <span className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-500 text-xs font-bold">
-                  Enterprise Client Onboarding
-                </span>
-                <h2 className="text-2xl sm:text-3xl font-black text-white">
-                  Request a 50-Sample Diagnostic PoC
-                </h2>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Submit 50 audio utterances, financial documents, or adversarial prompts and receive a fully audited Golden Dataset within 48 hours.
-                </p>
-              </div>
-
-              <div className="lg:col-span-7">
-                {pocDone ? (
-                  <div className="bg-emerald-500/10 border border-emerald-500/40 rounded-2xl p-6 text-center space-y-3">
-                    <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto" />
-                    <h3 className="text-lg font-bold text-white">Diagnostic PoC Synced to Cloud Portal</h3>
-                    <button
-                      onClick={() => setPocDone(false)}
-                      className="px-4 py-2 bg-emerald-500 text-slate-950 rounded-xl text-xs font-bold"
-                    >
-                      Submit Another PoC Scope
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handlePocSubmit} className="grid sm:grid-cols-2 gap-3.5 text-xs">
-                    <input
-                      type="text"
-                      required
-                      value={pocForm.orgName}
-                      onChange={e => setPocForm({ ...pocForm, orgName: e.target.value })}
-                      placeholder="Organization / AI Lab Name *"
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <input
-                      type="email"
-                      required
-                      value={pocForm.email}
-                      onChange={e => setPocForm({ ...pocForm, email: e.target.value })}
-                      placeholder="Corporate Email Address *"
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <select
-                      value={pocForm.scope}
-                      onChange={e => setPocForm({ ...pocForm, scope: e.target.value })}
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    >
-                      {projects.map(p => (
-                        <option key={p.id} value={p.name}>
-                          {p.name}
-                        </option>
-                      ))}
-                    </select>
-                    <input
-                      type="text"
-                      value={pocForm.notes}
-                      onChange={e => setPocForm({ ...pocForm, notes: e.target.value })}
-                      placeholder="Target dialects, SLA, or rubric notes"
-                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                    />
-                    <button
-                      type="submit"
-                      className={`sm:col-span-2 py-3.5 bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black rounded-xl shadow-lg`}
-                    >
-                      Launch 50-Sample Diagnostic PoC →
-                    </button>
-                  </form>
                 )}
               </div>
-            </section>
-          </div>
-        )}
+            )}
 
-        {/* ===================================================================
-            TAB 2: ABOUT US & CLIENTS
-           =================================================================== */}
-        {activeNav === 'about' && (
-          <div className="space-y-10">
-            <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-8 space-y-8">
-              <div className="max-w-3xl space-y-3">
-                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 text-xs font-bold uppercase">
-                  {brand.brandStatus} • Sovereign AI Evaluation Infrastructure
-                </span>
-                <h1 className="text-3xl sm:text-4xl font-black text-white">
-                  Engineered by Domain Auditors, Built for Frontier AI.
-                </h1>
-                <p className="text-slate-300 text-sm leading-relaxed">
-                  Operating in pre-launch stealth mode prior to our public brand reveal, {brand.brandName} eliminates the quality bottleneck in Arabic and multimodal AI training by pairing vetted native subject-matter experts with cryptographic anti-cheat telemetry.
-                </p>
-              </div>
+            <div className="space-y-1.5 text-xs font-bold">
+              <button
+                onClick={() => setActiveNav('profile')}
+                className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between transition ${
+                  activeNav === 'profile'
+                    ? 'bg-emerald-500 text-slate-950 font-black'
+                    : 'text-slate-300 hover:bg-slate-900'
+                }`}
+              >
+                <span>👤 {sidebarOpen ? 'My Profile, Bio & CV' : ''}</span>
+                {sidebarOpen && <ChevronRight className="w-4 h-4" />}
+              </button>
 
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-500">
-                    <Cpu className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-bold text-white text-base">Executive Systems Architecture</h3>
-                  <p className="text-xs text-emerald-500 font-bold">{brand.leadArchitect} — {brand.leadTitle}</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Full-stack systems architect (Python, JavaScript, React, SQL) and senior AI quality lead directing S2S voice evaluation, financial FP&A verification, and zero-trust split-vault security.
-                  </p>
-                </div>
-
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-500">
-                    <Server className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-bold text-white text-base">Acoustic & Verbatim Transcription</h3>
-                  <p className="text-xs text-cyan-500 font-bold">AR-EG, AR-SA/AE, Levantine & Maghrebi</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Native phonetic specialists executing millisecond speaker diarization, call-center noise tagging, and real-time duplex voice prosody grading.
-                  </p>
-                </div>
-
-                <div className="bg-slate-950 border border-slate-800 rounded-2xl p-6 space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-500">
-                    <Database className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-bold text-white text-base">Quantitative Finance & Vision QA</h3>
-                  <p className="text-xs text-amber-500 font-bold">IFRS / Zakat Valuation & Multimodal OCR</p>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Audits 3-statement DCF models, complex Arabic financial tables, receipt polygon bounding boxes, and L1/L2/L3 video action timelines.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 3: PROJECTS WORKBENCH
-           =================================================================== */}
-        {activeNav === 'projects' && (
-          <div className="space-y-6">
-            <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
-              <div>
-                <span className="text-xs font-extrabold uppercase text-emerald-500">
-                  Zero-AI Production Environment
-                </span>
-                <h1 className="text-2xl sm:text-3xl font-black text-white flex items-center gap-2 mt-0.5">
-                  <Briefcase className="w-6 h-6 text-emerald-500" />
-                  <span>Enterprise Projects Workbench</span>
-                </h1>
-              </div>
-
-              {isCertified ? (
-                <div className="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-500 text-xs font-extrabold flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>Production Queues Unlocked ({currentUser?.role?.toUpperCase()})</span>
-                </div>
-              ) : (
+              {/* DEDICATED EVALUATOR WORKBENCH LINK (ONLY FOR EVALUATOR ROLE OR OWNER) */}
+              {(isEvaluator || isOwner) && (
                 <button
-                  onClick={() => {
-                    setShowAuthModal(true);
-                    setAuthTab('signin');
-                  }}
-                  className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold text-xs"
+                  onClick={() => setActiveNav('evaluator-workbench')}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between transition ${
+                    activeNav === 'evaluator-workbench'
+                      ? 'bg-emerald-500 text-slate-950 font-black'
+                      : 'text-slate-300 hover:bg-slate-900'
+                  }`}
                 >
-                  🔒 Sign In to Unlock Queues
+                  <span>💼 {sidebarOpen ? 'Evaluator Workbench' : ''}</span>
+                  {sidebarOpen && (
+                    isProjectQueueUnlocked ? (
+                      <CheckCircle className="w-4 h-4 text-emerald-400" />
+                    ) : (
+                      <Lock className="w-4 h-4 text-amber-400" />
+                    )
+                  )}
+                </button>
+              )}
+
+              <button
+                onClick={() => setActiveNav('helpdesk')}
+                className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between transition ${
+                  activeNav === 'helpdesk'
+                    ? 'bg-emerald-500 text-slate-950 font-black'
+                    : 'text-slate-300 hover:bg-slate-900'
+                }`}
+              >
+                <span>💬 {sidebarOpen ? 'Support & Ticket Inbox' : ''}</span>
+                {sidebarOpen && <ChevronRight className="w-4 h-4" />}
+              </button>
+
+              <button
+                onClick={() => setActiveNav('settings')}
+                className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between transition ${
+                  activeNav === 'settings'
+                    ? 'bg-emerald-500 text-slate-950 font-black'
+                    : 'text-slate-300 hover:bg-slate-900'
+                }`}
+              >
+                <span>📜 {sidebarOpen ? '12-Article NDA & Theme' : ''}</span>
+                {sidebarOpen && <ChevronRight className="w-4 h-4" />}
+              </button>
+
+              {isExecutive && (
+                <button
+                  onClick={() => setActiveNav('admin')}
+                  className={`w-full text-left px-3.5 py-2.5 rounded-xl flex items-center justify-between transition ${
+                    activeNav === 'admin'
+                      ? 'bg-amber-400 text-slate-950 font-black'
+                      : 'text-amber-400 hover:bg-slate-900'
+                  }`}
+                >
+                  <span>🛡️ {sidebarOpen ? 'Master Admin Console' : ''}</span>
+                  {sidebarOpen && <ChevronRight className="w-4 h-4" />}
                 </button>
               )}
             </div>
 
-            {!isCertified ? (
-              <div className="bg-[#0b1020] border border-amber-500/40 rounded-3xl p-10 text-center space-y-5 max-w-3xl mx-auto my-6 shadow-2xl">
-                <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center mx-auto text-amber-500">
-                  <Lock className="w-8 h-8" />
-                </div>
-                <h2 className="text-2xl font-black text-white">
-                  Projects Queue Locked — Pending Owner Certification & Email Provisioning
-                </h2>
-                <div className="inline-block px-4 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-amber-500 text-xs font-mono font-bold">
-                  0 Active Tasks Assigned to Current Session
-                </div>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl mx-auto">
-                  Live production queues remain empty until you complete the 12-Article NDA Onboarding and your email is certified by the Master Owner.
-                </p>
-
-                <div className="pt-3 flex flex-wrap justify-center gap-3">
+            {sidebarOpen && (
+              <div className="pt-3 border-t border-slate-800 space-y-2 text-xs">
+                <div className="text-[10px] uppercase text-slate-400 font-bold">Quick Appearance Switch</div>
+                <div className="grid grid-cols-2 gap-2">
                   <button
-                    onClick={() => setActiveNav('apply')}
-                    className={`px-5 py-2.5 bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-black rounded-xl`}
+                    onClick={() => setThemeMode('dark')}
+                    className={`py-2 rounded-xl font-bold border ${isDark ? 'bg-emerald-500 text-slate-950 border-emerald-500' : 'bg-slate-900 text-white border-slate-700'}`}
                   >
-                    Complete Evaluator Onboarding & NDA →
+                    🌙 Black
                   </button>
+                  <button
+                    onClick={() => setThemeMode('light')}
+                    className={`py-2 rounded-xl font-bold border ${!isDark ? 'bg-black text-white border-black' : 'bg-slate-900 text-white border-slate-700'}`}
+                  >
+                    ☀️ White
+                  </button>
+                </div>
+              </div>
+            )}
+          </aside>
+        )}
+
+        {/* MAIN PAGE VIEWPORT */}
+        <main className="flex-1 min-w-0 space-y-14">
+          {/* ===================================================================
+              VIEW 1: HOME — ENTERPRISE FOUNDRY
+             =================================================================== */}
+          {activeNav === 'home' && (
+            <div className="space-y-16">
+              <section className="grid lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-6 space-y-6 pt-2">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+                    <ShieldCheck className="w-4 h-4" />
+                    <span>{brand.heroBadge || 'Sovereign Human-in-the-Loop AI Data Infrastructure'}</span>
+                  </div>
+
+                  <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-[1.08] text-white">
+                    {brand.heroTitleLine1 || 'Eliminate Dialect Hallucinations with'}{' '}
+                    <span className={`bg-gradient-to-r ${activeAccentGrad} bg-clip-text text-transparent`}>
+                      {brand.heroTitleHighlight || 'Zero-Trust Human QA.'}
+                    </span>
+                  </h1>
+
+                  <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    {brand.heroSubtitle}
+                  </p>
+
+                  <div className="flex flex-wrap gap-3.5 pt-2">
+                    <button
+                      onClick={() => setActiveNav(currentUser ? 'profile' : 'apply')}
+                      className={`px-6 py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-xs sm:text-sm flex items-center gap-2 shadow-xl`}
+                    >
+                      <span>{currentUser ? 'Open My Specialist Profile & CV' : 'Apply as Domain Specialist'}</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => setActiveNav('settings')}
+                      className="px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white border border-slate-700 font-bold text-xs sm:text-sm"
+                    >
+                      📜 Review 12-Article NDA
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-3.5 pt-4">
+                    <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90">
+                      <div className="text-2xl font-black text-emerald-400">{brand.stat1Value || '99.4%'}</div>
+                      <div className="text-xs font-bold text-white mt-0.5">{brand.stat1Label || 'Inter-Annotator Agreement'}</div>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90">
+                      <div className="text-2xl font-black text-cyan-400">{brand.stat2Value || '100% Human'}</div>
+                      <div className="text-xs font-bold text-white mt-0.5">{brand.stat2Label || 'Zero-AI Policy Enforced'}</div>
+                    </div>
+                    <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800/90">
+                      <div className="text-2xl font-black text-amber-400">{brand.stat3Value || '48 Hours'}</div>
+                      <div className="text-xs font-bold text-white mt-0.5">{brand.stat3Label || 'Diagnostic PoC SLA'}</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-6 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-2xl">
+                  <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3.5">
+                    <div>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-emerald-400 block">
+                        LIVE INTERACTIVE BENCHMARK STUDIO
+                      </span>
+                      <h3 className="text-base font-extrabold text-white">
+                        Side-by-Side (SxS) Defect & Hallucination Inspector
+                      </h3>
+                    </div>
+                    <button
+                      onClick={() => setShowDemoJson(!showDemoJson)}
+                      className="px-3 py-1.5 rounded-xl bg-slate-900 text-emerald-400 border border-emerald-500/30 font-mono text-xs font-bold flex items-center gap-1.5"
+                    >
+                      <Terminal className="w-3.5 h-3.5" />
+                      <span>{showDemoJson ? 'Visual SxS View' : '{ } View JSON Payload'}</span>
+                    </button>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-1.5 bg-slate-950 p-1.5 rounded-2xl border border-slate-800/80">
+                    {LIVE_STUDIO_DEMOS.map(demo => (
+                      <button
+                        key={demo.id}
+                        onClick={() => {
+                          setActiveDemo(demo);
+                          setShowDemoJson(false);
+                        }}
+                        className={`py-2 px-2.5 rounded-xl text-[11px] font-extrabold transition ${
+                          activeDemo.id === demo.id
+                            ? `bg-gradient-to-r ${activeAccentGrad} text-slate-950`
+                            : 'text-slate-400 hover:text-emerald-400'
+                        }`}
+                      >
+                        {demo.tabTitle}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800/90 text-[11px]">
+                    <span className="font-mono text-cyan-400 font-bold">{activeDemo.badge}</span>
+                    <span className="text-slate-300 font-semibold">{activeDemo.domain}</span>
+                    <span className="px-2 py-0.5 rounded bg-rose-500/15 text-rose-400 border border-rose-500/30 font-extrabold text-[10px]">
+                      {activeDemo.defectTag}
+                    </span>
+                  </div>
+
+                  {showDemoJson ? (
+                    <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/30 font-mono text-xs text-emerald-400 overflow-x-auto">
+                      <pre>{JSON.stringify(activeDemo.jsonPayload, null, 2)}</pre>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/90 text-xs space-y-1">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                          Evaluation Stimulus / Audio Utterance:
+                        </span>
+                        <p className="font-medium leading-relaxed">{activeDemo.stimulus}</p>
+                      </div>
+
+                      <div className="grid sm:grid-cols-2 gap-3.5 text-xs">
+                        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="font-extrabold text-rose-400">❌ {activeDemo.modelA.name}</span>
+                            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-rose-500/20 text-rose-400">
+                              {activeDemo.modelA.latency}
+                            </span>
+                          </div>
+                          <p className="text-slate-300 text-[11px] leading-relaxed">{activeDemo.modelA.response}</p>
+                        </div>
+
+                        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 space-y-2.5">
+                          <div className="flex items-center justify-between">
+                            <span className="font-extrabold text-emerald-400">✅ {activeDemo.modelB.name}</span>
+                            <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-400">
+                              {activeDemo.modelB.latency}
+                            </span>
+                          </div>
+                          <p className="text-slate-300 text-[11px] leading-relaxed">{activeDemo.modelB.response}</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </section>
+
+              {/* BENTO GRID OF SPECIALIZATION DOMAINS */}
+              <section className="space-y-6">
+                <div>
+                  <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400">
+                    Sovereign AI Evaluation Pipelines
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                    Active Specialization Tracks & Rate Cards
+                  </h2>
+                </div>
+
+                <div className="grid md:grid-cols-3 gap-5">
+                  {projects.map(p => (
+                    <div
+                      key={p.id}
+                      className="p-6 rounded-3xl bg-[#0b1020] border border-slate-800/90 flex flex-col justify-between space-y-4 shadow-lg"
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-extrabold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                            {p.domain}
+                          </span>
+                          <span className="font-mono text-xs font-bold text-amber-400">{p.payRate}</span>
+                        </div>
+                        <h3 className="text-base font-extrabold text-white">{p.name}</h3>
+                        <p className="text-xs text-slate-400 leading-relaxed">{p.desc}</p>
+                      </div>
+                      <div className="pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs">
+                        <span className="text-slate-400">
+                          Batch Volume: <strong className="text-white">{p.totalTasks} tasks</strong>
+                        </span>
+                        {(isEvaluator || isOwner) ? (
+                          <button
+                            onClick={() => {
+                              setSelectedProjectId(p.id);
+                              setActiveNav('evaluator-workbench');
+                            }}
+                            className="text-emerald-400 font-bold hover:underline"
+                          >
+                            Open Evaluator Queue →
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setActiveNav('apply')}
+                            className="text-emerald-400 font-bold hover:underline"
+                          >
+                            Apply for Track →
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 2: DEDICATED EVALUATOR WORKBENCH (ONLY FOR EVALUATOR ROLE)
+              Strictly enforces live `isProjectQueueUnlocked` before viewing or sending!
+             =================================================================== */}
+          {activeNav === 'evaluator-workbench' && (
+            <div className="space-y-6">
+              {!(isEvaluator || isOwner) ? (
+                <div className="bg-[#0b1020] border border-rose-500/40 rounded-3xl p-10 text-center space-y-4">
+                  <Lock className="w-10 h-10 text-rose-400 mx-auto" />
+                  <h2 className="text-xl font-black text-white">
+                    Evaluator Role Required
+                  </h2>
+                  <p className="text-xs text-slate-300 max-w-md mx-auto">
+                    This workspace is strictly reserved for accounts with the <strong>EVALUATOR</strong> role.
+                  </p>
+                </div>
+              ) : !isProjectQueueUnlocked ? (
+                <div className="bg-[#0b1020] border border-amber-500/40 rounded-3xl p-10 text-center space-y-5 max-w-2xl mx-auto my-6 shadow-2xl">
+                  <div className="w-16 h-16 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center mx-auto text-amber-400">
+                    <Lock className="w-8 h-8" />
+                  </div>
+                  <h2 className="text-2xl font-black text-white">
+                    🔒 Evaluator Project Queue is Currently LOCKED
+                  </h2>
+                  <div className="inline-block px-4 py-1.5 rounded-full bg-slate-950 border border-slate-800 text-rose-400 text-xs font-mono font-bold">
+                    Submission Disabled by Master Owner • 0 Tasks Accessible
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-lg mx-auto">
+                    Your evaluator account (<strong>{currentUser?.email}</strong>) currently has project submissions locked (`🔒 Projects Locked`). You cannot view or submit tasks until the Master Owner unlocks your queue.
+                  </p>
+                  <div className="pt-2 flex justify-center gap-3">
+                    <button
+                      onClick={() => setActiveNav('profile')}
+                      className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs"
+                    >
+                      👤 Go to My Profile & CV
+                    </button>
+                    <button
+                      onClick={() => setActiveNav('helpdesk')}
+                      className="px-5 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs"
+                    >
+                      💬 Contact Helpdesk
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                      <span className="text-xs font-extrabold uppercase text-emerald-400">
+                        Verified Evaluator Production Environment
+                      </span>
+                      <h1 className="text-2xl font-black text-white mt-0.5">
+                        Dedicated Evaluator Task Queue
+                      </h1>
+                    </div>
+                    <span className="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 text-xs font-extrabold">
+                      ✓ Queue Unlocked for {currentUser?.email}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <div className="lg:col-span-4 space-y-3">
+                      <h3 className="text-xs font-extrabold text-slate-400 uppercase">
+                        Assigned Pipelines ({projects.length})
+                      </h3>
+                      {projects.map(prj => (
+                        <div
+                          key={prj.id}
+                          onClick={() => {
+                            setSelectedProjectId(prj.id);
+                            setWorkbenchSavedMsg('');
+                          }}
+                          className={`p-4 rounded-2xl border transition cursor-pointer ${
+                            selectedProjectId === prj.id
+                              ? 'bg-emerald-500/10 border-emerald-500'
+                              : 'bg-[#0b1020] border-slate-800'
+                          }`}
+                        >
+                          <div className="flex justify-between items-center">
+                            <span className="font-mono text-xs font-bold text-emerald-400">{prj.id}</span>
+                            <span className="text-xs font-extrabold text-amber-400">{prj.payRate}</span>
+                          </div>
+                          <h4 className="font-bold text-white text-sm mt-1">{prj.name}</h4>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="lg:col-span-8 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-5">
+                      <div className="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-4">
+                        <div>
+                          <span className="text-xs text-emerald-400 font-mono font-bold">
+                            EVALUATOR SANDBOX • {currentProjectObj.id}
+                          </span>
+                          <h2 className="text-lg font-black text-white">{currentProjectObj.name}</h2>
+                        </div>
+                        <span className="px-3 py-1 rounded-full bg-rose-500/15 text-rose-400 border border-rose-500/30 text-[11px] font-bold flex items-center gap-1">
+                          <Lock className="w-3 h-3" />
+                          Zero-AI Anti-Paste Lock Active
+                        </span>
+                      </div>
+
+                      <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
+                        <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl text-xs space-y-1.5">
+                          <span className="text-[10px] font-bold uppercase text-cyan-400">
+                            Task Stimulus #{workbenchTaskIndex + 1}:
+                          </span>
+                          <p className="leading-relaxed">{currentProjectObj.samplePrompt}</p>
+                        </div>
+
+                        <textarea
+                          rows={4}
+                          value={workbenchText}
+                          onChange={e => setWorkbenchText(e.target.value)}
+                          onPaste={e => {
+                            e.preventDefault();
+                            alert('ZERO-AI POLICY: External copy-paste is blocked.');
+                          }}
+                          placeholder="Type 100% human evaluation output here..."
+                          className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-xs text-white"
+                        />
+
+                        {workbenchSavedMsg && (
+                          <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-400 font-bold">
+                            {workbenchSavedMsg}
+                          </div>
+                        )}
+
+                        <div className="flex justify-between items-center pt-2">
+                          <button
+                            onClick={() => setWorkbenchTaskIndex(prev => Math.max(0, prev - 1))}
+                            disabled={workbenchTaskIndex === 0}
+                            className="px-4 py-2 rounded-xl bg-slate-800 disabled:opacity-40 text-xs font-bold text-slate-200"
+                          >
+                            ← Previous Task
+                          </button>
+                          <button
+                            onClick={() => {
+                              // Double-check live lock status at the exact millisecond of submission!
+                              const freshCheck = users.find(
+                                u => u.email.toLowerCase() === currentUser?.email?.toLowerCase()
+                              );
+                              if (!isOwner && (!freshCheck || !freshCheck.certifiedForProjects)) {
+                                alert('SUBMISSION BLOCKED: Your project access has been locked by the Owner.');
+                                return;
+                              }
+                              if (workbenchText.trim().length < 10) {
+                                alert('Please write at least 10 characters of evaluation.');
+                                return;
+                              }
+                              setWorkbenchSavedMsg(
+                                `✓ Task #${workbenchTaskIndex + 1} verified & logged to L2 Calibration Queue!`
+                              );
+                              setWorkbenchText('');
+                              setWorkbenchTaskIndex(prev => prev + 1);
+                            }}
+                            className={`px-6 py-2.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-black`}
+                          >
+                            Submit Verified Task →
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 3: FULL USER PROFILE, AGE, GENDER, SPECIALIZATION & PERSISTENT CV
+             =================================================================== */}
+          {activeNav === 'profile' && (
+            <div className="space-y-8 text-xs">
+              <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                <div>
+                  <span className="text-xs font-extrabold uppercase text-emerald-400">
+                    Specialist Identity, Demographics, Domain Track & CV Dossier
+                  </span>
+                  <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                    👤 My Specialist Profile & Persistent CV
+                  </h1>
+                </div>
+                {profileForm.cvDataUrl && (
+                  <a
+                    href={profileForm.cvDataUrl}
+                    download={profileForm.cvFile || 'Specialist_CV.pdf'}
+                    className="px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center gap-2 shadow-lg"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Download My Stored CV ({profileForm.cvFile})</span>
+                  </a>
+                )}
+              </div>
+
+              {!currentUser ? (
+                <div className="p-10 rounded-3xl bg-[#0b1020] border border-slate-800 text-center space-y-4">
+                  <h2 className="text-lg font-black text-white">Sign In to Access Your Profile & CV</h2>
                   <button
                     onClick={() => {
                       setShowAuthModal(true);
                       setAuthTab('signin');
                     }}
-                    className="px-5 py-2.5 bg-slate-800 text-white text-xs font-bold rounded-xl"
+                    className="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
                   >
-                    Sign In with Certified Account
+                    Open Workspace Sign-In
                   </button>
                 </div>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                <div className="lg:col-span-5 space-y-3">
-                  <h3 className="text-xs font-extrabold text-slate-400 uppercase tracking-wider">
-                    Select Active Production Pipeline ({projects.length})
-                  </h3>
-                  {projects.map(prj => (
-                    <div
-                      key={prj.id}
-                      onClick={() => {
-                        setSelectedProjectId(prj.id);
-                        setWorkbenchSavedMsg('');
-                      }}
-                      className={`p-4 rounded-2xl border transition cursor-pointer ${
-                        selectedProjectId === prj.id
-                          ? 'bg-emerald-500/10 border-emerald-500 shadow-lg'
-                          : 'bg-[#0b1020] border-slate-800 hover:border-slate-600'
-                      }`}
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-mono text-xs font-bold text-emerald-500">{prj.id}</span>
-                        <span className="text-xs font-extrabold text-amber-500">{prj.payRate}</span>
-                      </div>
-                      <h4 className="font-bold text-white text-sm mt-1">{prj.name}</h4>
-                      <p className="text-xs text-slate-400 mt-1">{prj.desc}</p>
-                      <div className="flex justify-between items-center mt-3 pt-2 border-t border-slate-800/80 text-[11px]">
-                        <span className="text-slate-400">{prj.totalTasks} Tasks Available</span>
-                        <span className="text-cyan-500 font-bold">{prj.domain}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+              ) : (
+                <form onSubmit={handleSaveFullProfile} className="grid lg:grid-cols-12 gap-6">
+                  {/* LEFT CARD: DEMOGRAPHICS (AGE, GENDER, SPECIALIZATION, DIALECT) */}
+                  <div className="lg:col-span-7 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                    <h2 className="text-base font-black text-white border-b border-slate-800 pb-3">
+                      1. Personal Demographics & Domain Specialization
+                    </h2>
 
-                <div className="lg:col-span-7 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-5">
-                  <div className="flex flex-wrap justify-between items-center gap-2 border-b border-slate-800 pb-4">
-                    <div>
-                      <span className="text-xs text-emerald-500 font-mono font-bold">
-                        ACTIVE WORKBENCH • {currentProjectObj.id}
-                      </span>
-                      <h2 className="text-lg font-black text-white">{currentProjectObj.name}</h2>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-rose-500/15 text-rose-500 border border-rose-500/30 text-[11px] font-bold flex items-center gap-1">
-                      <Lock className="w-3 h-3" />
-                      Zero-AI Anti-Paste Lock Active
-                    </span>
-                  </div>
-
-                  <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 space-y-4">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-400 font-mono">
-                        Queue Item #{workbenchTaskIndex + 1} of {currentProjectObj.totalTasks}
-                      </span>
-                      <span className="text-emerald-500 font-bold">{currentProjectObj.payRate}</span>
-                    </div>
-
-                    <div className="p-4 bg-slate-900 border border-slate-800 rounded-xl text-xs space-y-1.5">
-                      <span className="text-[10px] font-bold uppercase text-cyan-500">
-                        Stimulus / Audio-Document Prompt:
-                      </span>
-                      <p className="leading-relaxed">{currentProjectObj.samplePrompt}</p>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-400 mb-1.5">
-                        Human Verbatim Transcription / Annotation / Audit Justification *
-                      </label>
-                      <textarea
-                        rows={4}
-                        value={workbenchText}
-                        onChange={e => setWorkbenchText(e.target.value)}
-                        onPaste={e => {
-                          e.preventDefault();
-                          alert('ZERO-AI POLICY: External copy-paste is blocked inside production workbenches.');
-                        }}
-                        placeholder="Type 100% human evaluation output here (Clipboard paste is blocked by telemetry)..."
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl p-3.5 text-xs text-white"
-                      />
-                    </div>
-
-                    {workbenchSavedMsg && (
-                      <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-xs text-emerald-500 font-bold">
-                        {workbenchSavedMsg}
-                      </div>
-                    )}
-
-                    <div className="flex justify-between items-center pt-2">
-                      <button
-                        onClick={() => setWorkbenchTaskIndex(prev => Math.max(0, prev - 1))}
-                        disabled={workbenchTaskIndex === 0}
-                        className="px-4 py-2 rounded-xl bg-slate-800 disabled:opacity-40 text-xs font-bold text-slate-200"
-                      >
-                        ← Previous Item
-                      </button>
-                      <button
-                        onClick={() => {
-                          if (workbenchText.trim().length < 10) {
-                            alert('Please enter your evaluation before submitting.');
-                            return;
-                          }
-                          setWorkbenchSavedMsg(
-                            `✓ Item #${workbenchTaskIndex + 1} verified & logged to L2 Calibration Queue!`
-                          );
-                          setWorkbenchText('');
-                          setWorkbenchTaskIndex(prev => prev + 1);
-                        }}
-                        className={`px-6 py-2.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 text-xs font-black`}
-                      >
-                        Submit Verified Task →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 4: EVALUATOR ONBOARDING & CV UPLOAD
-           =================================================================== */}
-        {activeNav === 'apply' && (
-          <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl mx-auto shadow-2xl">
-            <div>
-              <span className="text-xs font-extrabold uppercase text-emerald-500">
-                Specialist Credentialing & Zero-AI Compliance
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                Evaluator Onboarding, CV Upload & 12-Article Master NDA
-              </h1>
-            </div>
-
-            {appSubmitted ? (
-              <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-center space-y-4">
-                <CheckCircle className="w-12 h-12 text-emerald-500 mx-auto" />
-                <h3 className="text-xl font-black text-white">
-                  Evaluator Dossier Synced to Cloud — Pending Owner Certification!
-                </h3>
-                <p className="text-xs text-slate-300 max-w-md mx-auto">
-                  You are now signed in as an <strong>Uncertified Evaluator</strong>. Your Projects Workbench is locked until the Master Owner certifies your account.
-                </p>
-                <div className="flex justify-center gap-3">
-                  <button
-                    onClick={() => setActiveNav('projects')}
-                    className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs"
-                  >
-                    View Locked Projects Queue →
-                  </button>
-                  <button
-                    onClick={() => setAppSubmitted(false)}
-                    className="px-4 py-2.5 rounded-xl bg-slate-800 text-white font-bold text-xs"
-                  >
-                    Submit Another Application
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleOnboardingSubmit} autoComplete="off" className="space-y-5 text-xs">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    required
-                    autoComplete="off"
-                    placeholder="Full Legal Name (Passport / ID) *"
-                    value={appForm.name}
-                    onChange={e => setAppForm({ ...appForm, name: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                  <input
-                    type="email"
-                    required
-                    autoComplete="new-password"
-                    placeholder="Applicant Email Address *"
-                    value={appForm.email}
-                    onChange={e => setAppForm({ ...appForm, email: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                  <input
-                    type="password"
-                    required
-                    autoComplete="new-password"
-                    placeholder="Create Evaluator Password (SHA-256) *"
-                    value={appForm.pass}
-                    onChange={e => setAppForm({ ...appForm, pass: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                  />
-                  <select
-                    value={appForm.track}
-                    onChange={e => setAppForm({ ...appForm, track: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
-                  >
-                    {projects.map(p => (
-                      <option key={p.id} value={p.name}>
-                        {p.name} ({p.payRate})
-                      </option>
-                    ))}
-                  </select>
-                  <select
-                    value={appForm.secQuestion}
-                    onChange={e => setAppForm({ ...appForm, secQuestion: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-emerald-500/40 text-white"
-                  >
-                    {SECURITY_QUESTIONS.map(q => (
-                      <option key={q} value={q}>
-                        Mandatory Recovery Q: {q}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    required
-                    autoComplete="off"
-                    placeholder="Security Question Answer (For Password Recovery) *"
-                    value={appForm.secAnswer}
-                    onChange={e => setAppForm({ ...appForm, secAnswer: e.target.value })}
-                    className="p-3.5 rounded-xl bg-slate-950 border border-emerald-500/40 text-white"
-                  />
-                  <div className="sm:col-span-2 p-4 rounded-xl bg-slate-950 border border-dashed border-emerald-500/50 flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <label className="block text-emerald-500 font-bold mb-1">
-                        Upload CV / Resume (PDF, DOC, DOCX) *
-                      </label>
-                      <input
-                        type="file"
-                        accept=".pdf,.doc,.docx"
-                        onChange={e => {
-                          const f = e.target.files?.[0];
-                          if (!f) return;
-                          const reader = new FileReader();
-                          reader.onload = () =>
-                            setAppForm(prev => ({
-                              ...prev,
-                              cvFileName: f.name,
-                              cvDataUrl: String(reader.result || '')
-                            }));
-                          reader.readAsDataURL(f);
-                        }}
-                        className="text-xs text-slate-400"
-                      />
-                    </div>
-                    {appForm.cvFileName && (
-                      <span className="px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-500 font-bold">
-                        📄 {appForm.cvFileName}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="h-56 overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 font-mono text-[11px] text-slate-300">
-                  {MASTER_CONTRACT_ARTICLES.map(a => (
-                    <div key={a.id}>
-                      <strong className="text-emerald-500">
-                        Article {a.id} — {a.title}:
-                      </strong>{' '}
-                      {a.content}
-                    </div>
-                  ))}
-                </div>
-
-                <label className="flex items-center gap-2.5 cursor-pointer font-semibold">
-                  <input
-                    type="checkbox"
-                    checked={appForm.agreedNDA}
-                    onChange={e => setAppForm({ ...appForm, agreedNDA: e.target.checked })}
-                    className="accent-emerald-500 w-4 h-4"
-                  />
-                  <span>
-                    I have read and execute the 12-Article Master Contractor Agreement, Confidentiality NDA, and Strict Zero-AI Policy.
-                  </span>
-                </label>
-
-                <button
-                  type="submit"
-                  className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-xs sm:text-sm shadow-lg`}
-                >
-                  Execute NDA & Submit Dossier for Owner Certification →
-                </button>
-              </form>
-            )}
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 5: CLIENT POC PORTAL
-           =================================================================== */}
-        {activeNav === 'client-portal' && (
-          <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5">
-            <h1 className="text-2xl font-black text-white">Enterprise Client PoC Calibration Portal</h1>
-            <div className="space-y-3 text-xs">
-              {pocs.map(p => (
-                <div
-                  key={p.id}
-                  className="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-wrap justify-between items-center gap-3"
-                >
-                  <div>
-                    <div className="font-extrabold text-emerald-500 text-sm">
-                      {p.id} — {p.orgName} ({p.email})
-                    </div>
-                    <div className="text-slate-400 mt-1">
-                      {p.scope} • {p.msg}
-                    </div>
-                  </div>
-                  <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold">
-                    {p.status}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 6: TWO-WAY HELPDESK & SENDER SUPPORT INBOX
-           =================================================================== */}
-        {activeNav === 'helpdesk' && (
-          <div className="grid lg:grid-cols-2 gap-6 text-xs">
-            <form
-              onSubmit={handleOpenTicket}
-              className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4"
-            >
-              <h2 className="text-lg font-black text-white">1. Open New Support Ticket</h2>
-              <input
-                type="email"
-                required
-                placeholder="Your Email Address (Where replies will be delivered) *"
-                value={newTicketEmail}
-                onChange={e => setNewTicketEmail(e.target.value)}
-                className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              />
-              <input
-                type="text"
-                required
-                placeholder="Subject *"
-                value={newTicketSubject}
-                onChange={e => setNewTicketSubject(e.target.value)}
-                className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              />
-              <textarea
-                rows={4}
-                required
-                placeholder="Describe your inquiry or certification request *"
-                value={newTicketMsg}
-                onChange={e => setNewTicketMsg(e.target.value)}
-                className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-              />
-              {ticketSubmitMsg && <p className="text-emerald-500 font-bold">{ticketSubmitMsg}</p>}
-              <button
-                type="submit"
-                className={`w-full py-3 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black`}
-              >
-                Submit Ticket to Cloud Helpdesk
-              </button>
-            </form>
-
-            <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4">
-              <h2 className="text-lg font-black text-white">2. My Support Inbox & Official Replies</h2>
-              <form onSubmit={handleSearchInbox} className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Enter your Email or Ticket ID (e.g. TCK-1001)"
-                  value={inboxQuery}
-                  onChange={e => setInboxQuery(e.target.value)}
-                  className="flex-1 p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                />
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                >
-                  Load Inbox
-                </button>
-              </form>
-
-              {inboxTicket && (
-                <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
-                  <div className="flex justify-between items-center">
-                    <span className="font-extrabold text-emerald-500 text-sm">
-                      {inboxTicket.id} — {inboxTicket.subject}
-                    </span>
-                    <span className="px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-500 font-bold">
-                      {inboxTicket.status}
-                    </span>
-                  </div>
-                  <div className="space-y-2">
-                    {inboxTicket.thread.map((m, i) => (
-                      <div
-                        key={i}
-                        className={`p-3 rounded-xl ${
-                          m.sender === 'support'
-                            ? 'bg-emerald-500/15 border border-emerald-500/40'
-                            : 'bg-slate-900'
-                        }`}
-                      >
-                        <div className="text-[10px] font-bold uppercase text-emerald-500 mb-0.5">
-                          {m.sender === 'support' ? '✓ Official Support / Owner Reply' : 'Sender'} • {m.time}
-                        </div>
-                        <div className="whitespace-pre-line">{m.text}</div>
-                      </div>
-                    ))}
-                  </div>
-                  {!inboxTicket.receiptConfirmed ? (
-                    <button
-                      onClick={() => handleConfirmReceipt(inboxTicket.id)}
-                      className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                    >
-                      ✓ Confirm Reply Received
-                    </button>
-                  ) : (
-                    <span className="inline-block text-emerald-500 font-bold">
-                      ✓ Delivery Receipt Confirmed
-                    </span>
-                  )}
-                  <form onSubmit={handleSendFollowup} className="flex gap-2 pt-2 border-t border-slate-800">
-                    <input
-                      type="text"
-                      placeholder="Write a follow-up reply..."
-                      value={followupText}
-                      onChange={e => setFollowupText(e.target.value)}
-                      className="flex-1 p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-white"
-                    />
-                    <button
-                      type="submit"
-                      className="px-4 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black"
-                    >
-                      Send
-                    </button>
-                  </form>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* ===================================================================
-            TAB 7: WORKSPACE SETTINGS, APPEARANCE (BLACK/WHITE) & 12-ARTICLE NDA
-           =================================================================== */}
-        {activeNav === 'settings' && (
-          <div className="space-y-8 text-xs max-w-5xl mx-auto">
-            <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
-              <div>
-                <span className="text-xs font-extrabold uppercase text-emerald-500">
-                  Workspace Preferences, Legal NDA & Security Center
-                </span>
-                <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
-                  Platform Settings, Theme Mode & Master NDA Agreement
-                </h1>
-              </div>
-              <button
-                onClick={handleDownloadNdaDocument}
-                className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black flex items-center gap-2 shadow-lg"
-              >
-                <Download className="w-4 h-4" />
-                <span>Download 12-Article NDA Copy (.TXT)</span>
-              </button>
-            </div>
-
-            <div className="grid lg:grid-cols-12 gap-6">
-              <div className="lg:col-span-5 space-y-6">
-                <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-                  <h2 className="text-base font-black text-white flex items-center gap-2">
-                    <Settings className="w-5 h-5 text-emerald-500" />
-                    <span>1. Interface Appearance (Black / White)</span>
-                  </h2>
-                  <p className="text-slate-400 leading-relaxed">
-                    Switch between <strong>Stealth Black Mode</strong> and <strong>Daylight White Mode</strong>.
-                  </p>
-
-                  <div className="grid grid-cols-2 gap-3 pt-2">
-                    <button
-                      type="button"
-                      onClick={() => setThemeMode('dark')}
-                      className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between h-24 ${
-                        isDark
-                          ? 'bg-slate-950 border-emerald-500 ring-2 ring-emerald-500/30'
-                          : 'bg-slate-900 text-white border-slate-700 opacity-80'
-                      }`}
-                    >
-                      <span className="text-base">🌙</span>
+                    <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <div className="font-black text-white">Stealth Black</div>
-                        <div className="text-[10px] text-emerald-400 font-bold">
-                          {isDark ? '✓ Active Default' : 'Click to Activate'}
-                        </div>
+                        <label className="block text-slate-400 font-bold mb-1">Full Legal Name *</label>
+                        <input
+                          type="text"
+                          required
+                          value={profileForm.name}
+                          onChange={e => setProfileForm({ ...profileForm, name: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                        />
                       </div>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setThemeMode('light')}
-                      className={`p-4 rounded-2xl border text-left transition flex flex-col justify-between h-24 ${
-                        !isDark
-                          ? 'bg-white border-emerald-500 ring-2 ring-emerald-500/30 text-slate-900'
-                          : 'bg-slate-100 text-slate-900 border-slate-300 opacity-80'
-                      }`}
-                    >
-                      <span className="text-base">☀️</span>
                       <div>
-                        <div className="font-black text-slate-900">Daylight White</div>
-                        <div className="text-[10px] text-emerald-600 font-bold">
-                          {!isDark ? '✓ Active Mode' : 'Click to Activate'}
-                        </div>
+                        <label className="block text-slate-400 font-bold mb-1">Registered Email (Locked)</label>
+                        <input
+                          type="email"
+                          disabled
+                          value={currentUser.email}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-slate-400 font-mono"
+                        />
                       </div>
-                    </button>
-                  </div>
-                </div>
 
-                <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-                  <h2 className="text-base font-black text-white flex items-center gap-2">
-                    <Key className="w-5 h-5 text-cyan-500" />
-                    <span>2. Account Security & SHA-256 Vault</span>
-                  </h2>
-                  {currentUser ? (
-                    <form onSubmit={handleUpdateUserSettings} className="space-y-3">
-                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
-                        <div className="text-[10px] uppercase text-slate-400 font-bold">Signed-In Identity</div>
-                        <div className="font-bold text-emerald-500 mt-0.5">
-                          {currentUser.name} ({currentUser.email}) — {currentUser.role.toUpperCase()}
-                        </div>
+                      <div>
+                        <label className="block text-emerald-400 font-bold mb-1">Age (العمر) *</label>
+                        <input
+                          type="number"
+                          min="18"
+                          max="80"
+                          required
+                          placeholder="e.g. 24"
+                          value={profileForm.age}
+                          onChange={e => setProfileForm({ ...profileForm, age: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-emerald-500/40 text-white font-bold"
+                        />
                       </div>
+
+                      <div>
+                        <label className="block text-emerald-400 font-bold mb-1">Gender (الجنس) *</label>
+                        <select
+                          value={profileForm.gender}
+                          onChange={e => setProfileForm({ ...profileForm, gender: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-emerald-500/40 text-white font-bold"
+                        >
+                          <option value="Male">Male (ذكر)</option>
+                          <option value="Female">Female (أنثى)</option>
+                        </select>
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-cyan-400 font-bold mb-1">
+                          Primary Domain Specialization (التخصص الدقيق) *
+                        </label>
+                        <select
+                          value={profileForm.specialization}
+                          onChange={e => setProfileForm({ ...profileForm, specialization: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-cyan-500/40 text-white font-bold"
+                        >
+                          {SPECIALIZATION_TRACKS.map(sp => (
+                            <option key={sp} value={sp}>
+                              {sp}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-400 font-bold mb-1">Native Dialect Region</label>
+                        <input
+                          type="text"
+                          value={profileForm.dialect}
+                          onChange={e => setProfileForm({ ...profileForm, dialect: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-slate-400 font-bold mb-1">Phone / WhatsApp</label>
+                        <input
+                          type="text"
+                          value={profileForm.phone}
+                          onChange={e => setProfileForm({ ...profileForm, phone: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2">
+                        <label className="block text-slate-400 font-bold mb-1">
+                          Professional Bio & Evaluation Experience
+                        </label>
+                        <textarea
+                          rows={3}
+                          value={profileForm.bio}
+                          onChange={e => setProfileForm({ ...profileForm, bio: e.target.value })}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* RIGHT CARD: PERSISTENT CV DOSSIER & SECURITY CREDENTIALS */}
+                  <div className="lg:col-span-5 space-y-6">
+                    <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                      <h2 className="text-base font-black text-white border-b border-slate-800 pb-3">
+                        2. Persistent CV / Resume Dossier
+                      </h2>
+
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-emerald-500/40 space-y-2">
+                        <div className="text-[10px] uppercase font-bold text-slate-400">
+                          Currently Stored CV in Profile
+                        </div>
+                        {profileForm.cvFile ? (
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="font-bold text-emerald-400 truncate">
+                              📄 {profileForm.cvFile}
+                            </span>
+                            {profileForm.cvDataUrl && (
+                              <a
+                                href={profileForm.cvDataUrl}
+                                download={profileForm.cvFile}
+                                className="px-3 py-1 rounded-lg bg-amber-400 text-slate-950 font-black shrink-0"
+                              >
+                                Download
+                              </a>
+                            )}
+                          </div>
+                        ) : (
+                          <div className="text-rose-400 font-semibold">
+                            No CV uploaded yet. Upload your CV below so it stays permanently saved in your profile.
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="p-4 rounded-2xl bg-slate-950 border border-dashed border-cyan-500/50 space-y-2">
+                        <label className="block text-cyan-400 font-bold">
+                          Upload or Replace Persistent CV (PDF, DOC, DOCX)
+                        </label>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={e => {
+                            const f = e.target.files?.[0];
+                            if (!f) return;
+                            const reader = new FileReader();
+                            reader.onload = () =>
+                              setProfileForm(prev => ({
+                                ...prev,
+                                cvFile: f.name,
+                                cvDataUrl: String(reader.result || '')
+                              }));
+                            reader.readAsDataURL(f);
+                          }}
+                          className="text-xs text-slate-300"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
+                      <h2 className="text-base font-black text-white border-b border-slate-800 pb-3">
+                        3. Update Password & Recovery Question
+                      </h2>
                       <input
                         type="password"
                         placeholder="New Password (leave blank to keep current)"
-                        value={settingsNewPass}
-                        onChange={e => setSettingsNewPass(e.target.value)}
+                        value={profileForm.newPassword}
+                        onChange={e => setProfileForm({ ...profileForm, newPassword: e.target.value })}
                         className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                       />
                       <select
-                        value={settingsSecQ}
-                        onChange={e => setSettingsSecQ(e.target.value)}
+                        value={profileForm.secQuestion}
+                        onChange={e => setProfileForm({ ...profileForm, secQuestion: e.target.value })}
                         className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                       >
                         {SECURITY_QUESTIONS.map(q => (
@@ -2253,454 +2288,783 @@ Timestamp: ${new Date().toUTCString()}
                       </select>
                       <input
                         type="text"
-                        placeholder="Update Security Question Answer"
-                        value={settingsSecA}
-                        onChange={e => setSettingsSecA(e.target.value)}
+                        placeholder="Security Question Answer"
+                        value={profileForm.secAnswer}
+                        onChange={e => setProfileForm({ ...profileForm, secAnswer: e.target.value })}
                         className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                       />
-                      {settingsSavedMsg && <p className="text-emerald-500 font-bold">{settingsSavedMsg}</p>}
+
+                      {profileSavedMsg && (
+                        <div className="p-3 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-400 font-bold">
+                          {profileSavedMsg}
+                        </div>
+                      )}
+
                       <button
                         type="submit"
-                        className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                        className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black shadow-lg`}
                       >
-                        Update Encrypted Security Profile
-                      </button>
-                    </form>
-                  ) : (
-                    <div className="space-y-3">
-                      <p className="text-slate-400">
-                        Sign in to update your password or recovery question in the SHA-256 Security Vault.
-                      </p>
-                      <button
-                        onClick={() => {
-                          setShowAuthModal(true);
-                          setAuthTab('signin');
-                        }}
-                        className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                      >
-                        Sign In to Manage Credentials
+                        💾 Save Profile, Specialization & Persistent CV
                       </button>
                     </div>
-                  )}
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 4: ABOUT US & CLIENTS
+             =================================================================== */}
+          {activeNav === 'about' && (
+            <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-8 space-y-8">
+              <div className="max-w-3xl space-y-3">
+                <span className="px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs font-bold uppercase">
+                  {brand.brandStatus} • Sovereign AI Evaluation Infrastructure
+                </span>
+                <h1 className="text-3xl sm:text-4xl font-black text-white">
+                  Engineered by Domain Auditors, Built for Frontier AI.
+                </h1>
+                <p className="text-slate-300 text-sm leading-relaxed">
+                  Operating in pre-launch stealth mode prior to our public brand reveal, {brand.brandName} eliminates the quality bottleneck in Arabic and multimodal AI training.
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 5: EVALUATOR ONBOARDING & CV UPLOAD (WITH AGE, GENDER & TRACK)
+             =================================================================== */}
+          {activeNav === 'apply' && (
+            <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-6 max-w-4xl mx-auto shadow-2xl">
+              <div>
+                <span className="text-xs font-extrabold uppercase text-emerald-400">
+                  Specialist Credentialing & Zero-AI Compliance
+                </span>
+                <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                  Evaluator Onboarding, Demographics, CV & 12-Article NDA
+                </h1>
+              </div>
+
+              {appSubmitted ? (
+                <div className="p-8 rounded-2xl bg-emerald-500/10 border border-emerald-500/40 text-center space-y-4">
+                  <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto" />
+                  <h3 className="text-xl font-black text-white">
+                    Evaluator Profile & CV Synced to Cloud!
+                  </h3>
+                  <p className="text-xs text-slate-300 max-w-md mx-auto">
+                    Your CV and specialization are now permanently saved inside <strong>My Profile & Settings</strong>.
+                  </p>
+                  <div className="flex justify-center gap-3">
+                    <button
+                      onClick={() => setActiveNav('profile')}
+                      className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black text-xs"
+                    >
+                      👤 Open My Profile & CV →
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleOnboardingSubmit} autoComplete="off" className="space-y-5 text-xs">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <input
+                      type="text"
+                      required
+                      autoComplete="off"
+                      placeholder="Full Legal Name (Passport / ID) *"
+                      value={appForm.name}
+                      onChange={e => setAppForm({ ...appForm, name: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    />
+                    <input
+                      type="email"
+                      required
+                      autoComplete="new-password"
+                      placeholder="Applicant Email Address *"
+                      value={appForm.email}
+                      onChange={e => setAppForm({ ...appForm, email: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    />
+                    <input
+                      type="number"
+                      min="18"
+                      max="80"
+                      required
+                      placeholder="Age (العمر) *"
+                      value={appForm.age}
+                      onChange={e => setAppForm({ ...appForm, age: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    />
+                    <select
+                      value={appForm.gender}
+                      onChange={e => setAppForm({ ...appForm, gender: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
+                    >
+                      <option value="Male">Gender: Male (ذكر)</option>
+                      <option value="Female">Gender: Female (أنثى)</option>
+                    </select>
+                    <select
+                      value={appForm.specialization}
+                      onChange={e => setAppForm({ ...appForm, specialization: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-cyan-500/40 text-cyan-400 font-bold sm:col-span-2"
+                    >
+                      {SPECIALIZATION_TRACKS.map(s => (
+                        <option key={s} value={s}>
+                          Specialization: {s}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="password"
+                      required
+                      autoComplete="new-password"
+                      placeholder="Create Evaluator Password (SHA-256) *"
+                      value={appForm.pass}
+                      onChange={e => setAppForm({ ...appForm, pass: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                    />
+                    <select
+                      value={appForm.secQuestion}
+                      onChange={e => setAppForm({ ...appForm, secQuestion: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-emerald-500/40 text-white"
+                    >
+                      {SECURITY_QUESTIONS.map(q => (
+                        <option key={q} value={q}>
+                          Recovery Q: {q}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      required
+                      autoComplete="off"
+                      placeholder="Security Question Answer *"
+                      value={appForm.secAnswer}
+                      onChange={e => setAppForm({ ...appForm, secAnswer: e.target.value })}
+                      className="p-3.5 rounded-xl bg-slate-950 border border-emerald-500/40 text-white sm:col-span-2"
+                    />
+                    <div className="sm:col-span-2 p-4 rounded-xl bg-slate-950 border border-dashed border-emerald-500/50 flex flex-wrap items-center justify-between gap-3">
+                      <div>
+                        <label className="block text-emerald-400 font-bold mb-1">
+                          Upload CV / Resume (Stored permanently in your Profile) *
+                        </label>
+                        <input
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={e => {
+                            const f = e.target.files?.[0];
+                            if (!f) return;
+                            const reader = new FileReader();
+                            reader.onload = () =>
+                              setAppForm(prev => ({
+                                ...prev,
+                                cvFileName: f.name,
+                                cvDataUrl: String(reader.result || '')
+                              }));
+                            reader.readAsDataURL(f);
+                          }}
+                          className="text-xs text-slate-400"
+                        />
+                      </div>
+                      {appForm.cvFileName && (
+                        <span className="px-3 py-1 rounded-lg bg-emerald-500/15 text-emerald-400 font-bold">
+                          📄 {appForm.cvFileName}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="h-48 overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-3 font-mono text-[11px] text-slate-300">
+                    {MASTER_CONTRACT_ARTICLES.map(a => (
+                      <div key={a.id}>
+                        <strong className="text-emerald-400">
+                          Article {a.id} — {a.title}:
+                        </strong>{' '}
+                        {a.content}
+                      </div>
+                    ))}
+                  </div>
+
+                  <label className="flex items-center gap-2.5 cursor-pointer font-semibold">
+                    <input
+                      type="checkbox"
+                      checked={appForm.agreedNDA}
+                      onChange={e => setAppForm({ ...appForm, agreedNDA: e.target.checked })}
+                      className="accent-emerald-500 w-4 h-4"
+                    />
+                    <span>
+                      I execute the 12-Article Master Contractor Agreement, Confidentiality NDA, and Strict Zero-AI Policy.
+                    </span>
+                  </label>
+
+                  <button
+                    type="submit"
+                    className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-xs sm:text-sm shadow-lg`}
+                  >
+                    Execute NDA & Save Profile + CV →
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 6: CLIENT POC PORTAL
+             =================================================================== */}
+          {activeNav === 'client-portal' && (
+            <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 sm:p-8 space-y-5">
+              <h1 className="text-2xl font-black text-white">Enterprise Client PoC Calibration Portal</h1>
+              <div className="space-y-3 text-xs">
+                {pocs.map(p => (
+                  <div
+                    key={p.id}
+                    className="p-5 rounded-2xl bg-slate-950 border border-slate-800 flex flex-wrap justify-between items-center gap-3"
+                  >
+                    <div>
+                      <div className="font-extrabold text-emerald-400 text-sm">
+                        {p.id} — {p.orgName} ({p.email})
+                      </div>
+                      <div className="text-slate-400 mt-1">
+                        {p.scope} • {p.msg}
+                      </div>
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold">
+                      {p.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 7: TWO-WAY HELPDESK & SENDER SUPPORT INBOX
+             =================================================================== */}
+          {activeNav === 'helpdesk' && (
+            <div className="grid lg:grid-cols-2 gap-6 text-xs">
+              <form
+                onSubmit={handleOpenTicket}
+                className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4"
+              >
+                <h2 className="text-lg font-black text-white">1. Open New Support Ticket</h2>
+                <input
+                  type="email"
+                  required
+                  placeholder="Your Email Address *"
+                  value={newTicketEmail}
+                  onChange={e => setNewTicketEmail(e.target.value)}
+                  className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <input
+                  type="text"
+                  required
+                  placeholder="Subject *"
+                  value={newTicketSubject}
+                  onChange={e => setNewTicketSubject(e.target.value)}
+                  className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                <textarea
+                  rows={4}
+                  required
+                  placeholder="Describe your inquiry *"
+                  value={newTicketMsg}
+                  onChange={e => setNewTicketMsg(e.target.value)}
+                  className="w-full p-3.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                />
+                {ticketSubmitMsg && <p className="text-emerald-400 font-bold">{ticketSubmitMsg}</p>}
+                <button
+                  type="submit"
+                  className={`w-full py-3 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black`}
+                >
+                  Submit Ticket to Cloud Helpdesk
+                </button>
+              </form>
+
+              <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4">
+                <h2 className="text-lg font-black text-white">2. My Support Inbox & Official Replies</h2>
+                <form onSubmit={handleSearchInbox} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Enter your Email or Ticket ID (e.g. TCK-1001)"
+                    value={inboxQuery}
+                    onChange={e => setInboxQuery(e.target.value)}
+                    className="flex-1 p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                  />
+                  <button
+                    type="submit"
+                    className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                  >
+                    Load Inbox
+                  </button>
+                </form>
+
+                {inboxTicket && (
+                  <div className="p-5 rounded-2xl bg-slate-950 border border-slate-800 space-y-3">
+                    <div className="flex justify-between items-center">
+                      <span className="font-extrabold text-emerald-400 text-sm">
+                        {inboxTicket.id} — {inboxTicket.subject}
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 font-bold">
+                        {inboxTicket.status}
+                      </span>
+                    </div>
+                    <div className="space-y-2">
+                      {inboxTicket.thread.map((m, i) => (
+                        <div
+                          key={i}
+                          className={`p-3 rounded-xl ${
+                            m.sender === 'support'
+                              ? 'bg-emerald-500/15 border border-emerald-500/40'
+                              : 'bg-slate-900'
+                          }`}
+                        >
+                          <div className="text-[10px] font-bold uppercase text-emerald-400 mb-0.5">
+                            {m.sender === 'support' ? '✓ Official Support / Owner Reply' : 'Sender'} • {m.time}
+                          </div>
+                          <div className="whitespace-pre-line">{m.text}</div>
+                        </div>
+                      ))}
+                    </div>
+                    {!inboxTicket.receiptConfirmed ? (
+                      <button
+                        onClick={() => handleConfirmReceipt(inboxTicket.id)}
+                        className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                      >
+                        ✓ Confirm Reply Received
+                      </button>
+                    ) : (
+                      <span className="inline-block text-emerald-400 font-bold">
+                        ✓ Delivery Receipt Confirmed
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ===================================================================
+              VIEW 8: LEGAL 12-ARTICLE NDA & PURE WHITE/BLACK APPEARANCE CENTER
+             =================================================================== */}
+          {activeNav === 'settings' && (
+            <div className="space-y-8 text-xs">
+              <div className="flex flex-wrap justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                <div>
+                  <span className="text-xs font-extrabold uppercase text-emerald-400">
+                    Legal Compliance & Pure Monochrome Appearance Center
+                  </span>
+                  <h1 className="text-2xl sm:text-3xl font-black text-white mt-1">
+                    📜 12-Article Master NDA & Black/White Theme Engine
+                  </h1>
+                </div>
+                <button
+                  onClick={handleDownloadNdaDocument}
+                  className="px-4 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black flex items-center gap-2"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Download 12-Article NDA (.TXT)</span>
+                </button>
+              </div>
+
+              <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4">
+                <h2 className="text-base font-black text-white">
+                  1. Interface Mode (Stealth Dark vs Pure White & Black Borders)
+                </h2>
+                <p className="text-slate-400">
+                  Switching to <strong>Pure White & Black Mode</strong> removes all colors across the platform and applies high-contrast black borders around every box and element.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-4 max-w-lg">
+                  <button
+                    onClick={() => setThemeMode('dark')}
+                    className={`p-4 rounded-2xl border font-black text-left ${isDark ? 'border-emerald-500 bg-slate-950 text-white' : 'border-black bg-white text-black'}`}
+                  >
+                    🌙 Stealth Dark Mode (Default)
+                  </button>
+                  <button
+                    onClick={() => setThemeMode('light')}
+                    className={`p-4 rounded-2xl border font-black text-left ${!isDark ? 'border-black bg-white text-black' : 'border-slate-700 bg-slate-900 text-white'}`}
+                  >
+                    ☀️ Pure White & Black Borders (Zero Color)
+                  </button>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 shadow-xl">
-                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-3">
-                  <div>
-                    <span className="text-[10px] font-black uppercase text-emerald-500 block">
-                      LEGAL & COMPLIANCE REPOSITORY
-                    </span>
-                    <h2 className="text-base font-black text-white">
-                      3. Master Non-Disclosure Agreement (12 Articles) & Strict Zero-AI Policy
-                    </h2>
-                  </div>
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-500 border border-emerald-500/30 font-bold text-[10px]">
-                    ✓ Enforceable Worldwide
-                  </span>
-                </div>
-
+              <div className="bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4">
+                <h2 className="text-base font-black text-white">
+                  2. Master Non-Disclosure Agreement (12 Articles) & Strict Zero-AI Policy
+                </h2>
                 <div className="h-[420px] overflow-y-auto p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-4 font-mono text-[11px] leading-relaxed">
                   {MASTER_CONTRACT_ARTICLES.map(art => (
-                    <div key={art.id} className="p-3 rounded-xl bg-slate-900/70 border border-slate-800/80 space-y-1">
-                      <div className="font-bold text-emerald-500">
+                    <div key={art.id} className="p-3 rounded-xl bg-slate-900/70 border border-slate-800 space-y-1">
+                      <div className="font-bold text-emerald-400">
                         ARTICLE {art.id} — {art.title}
                       </div>
                       <p className="text-slate-300">{art.content}</p>
                     </div>
                   ))}
                 </div>
-
-                <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-500 font-semibold flex items-center justify-between">
-                  <span>
-                    🔒 Article 1.2 Mandate: External LLMs, bots, and clipboard auto-typers are strictly prohibited.
-                  </span>
-                  <button
-                    onClick={handleDownloadNdaDocument}
-                    className="underline font-black ml-2 shrink-0"
-                  >
-                    Save PDF/TXT
-                  </button>
-                </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* ===================================================================
-            TAB 8: MASTER OWNER, SALES & SUPPORT ADMIN CONSOLE (NO-CODE CMS)
-           =================================================================== */}
-        {activeNav === 'admin' && (
-          <div className="space-y-6 text-xs">
-            {!isExecutive ? (
-              <div className="p-10 rounded-3xl bg-[#0b1020] border border-rose-500/40 text-center space-y-4">
-                <Lock className="w-10 h-10 text-rose-500 mx-auto" />
-                <h2 className="text-xl font-black text-white">Restricted Executive & Sales Control Center</h2>
-                <button
-                  onClick={() => {
-                    setShowAuthModal(true);
-                    setAuthTab('signin');
-                  }}
-                  className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                >
-                  Open Workspace Sign-In
-                </button>
-              </div>
-            ) : (
-              <>
-                <div className="flex flex-wrap justify-between items-center gap-3 border-b border-slate-800 pb-4">
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      onClick={() => setAdminTab('1')}
-                      className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
-                        adminTab === '1'
-                          ? 'bg-emerald-500 text-slate-950'
-                          : 'bg-slate-900 text-slate-300 border border-slate-800'
-                      }`}
-                    >
-                      1. Evaluators & CVs ({applicants.length})
-                    </button>
-                    <button
-                      onClick={() => setAdminTab('2')}
-                      className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
-                        adminTab === '2'
-                          ? 'bg-emerald-500 text-slate-950'
-                          : 'bg-slate-900 text-slate-300 border border-slate-800'
-                      }`}
-                    >
-                      2. Helpdesk Tickets ({tickets.length})
-                    </button>
-                    {(isOwner || isSupport) && (
+          {/* ===================================================================
+              VIEW 9: MASTER OWNER, SALES & SUPPORT ADMIN CONSOLE
+             =================================================================== */}
+          {activeNav === 'admin' && (
+            <div className="space-y-6 text-xs">
+              {!isExecutive ? (
+                <div className="p-10 rounded-3xl bg-[#0b1020] border border-rose-500/40 text-center space-y-4">
+                  <Lock className="w-10 h-10 text-rose-400 mx-auto" />
+                  <h2 className="text-xl font-black text-white">Restricted Executive Control Center</h2>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-wrap justify-between items-center gap-3 border-b border-slate-800 pb-4">
+                    <div className="flex flex-wrap gap-2">
                       <button
-                        onClick={() => setAdminTab('3')}
+                        onClick={() => setAdminTab('1')}
                         className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
-                          adminTab === '3'
+                          adminTab === '1'
                             ? 'bg-emerald-500 text-slate-950'
                             : 'bg-slate-900 text-slate-300 border border-slate-800'
                         }`}
                       >
-                        3. Accounts, Roles & Ban ({users.length})
+                        1. Evaluators & CVs ({applicants.length})
                       </button>
-                    )}
-                    {(isOwner || isSales) && (
                       <button
-                        onClick={() => setAdminTab('4')}
+                        onClick={() => setAdminTab('2')}
                         className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
-                          adminTab === '4'
-                            ? 'bg-amber-400 text-slate-950'
-                            : 'bg-slate-900 text-amber-400 border border-amber-500/40'
+                          adminTab === '2'
+                            ? 'bg-emerald-500 text-slate-950'
+                            : 'bg-slate-900 text-slate-300 border border-slate-800'
                         }`}
                       >
-                        4. 💰 No-Code Pricing & Projects CMS ({projects.length})
+                        2. Helpdesk Tickets ({tickets.length})
                       </button>
-                    )}
-                    {(isOwner || isSales) && (
+                      {(isOwner || isSupport) && (
+                        <button
+                          onClick={() => setAdminTab('3')}
+                          className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
+                            adminTab === '3'
+                              ? 'bg-emerald-500 text-slate-950'
+                              : 'bg-slate-900 text-slate-300 border border-slate-800'
+                          }`}
+                        >
+                          3. Accounts, Roles & Ban ({users.length})
+                        </button>
+                      )}
+                      {(isOwner || isSales) && (
+                        <button
+                          onClick={() => setAdminTab('4')}
+                          className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
+                            adminTab === '4'
+                              ? 'bg-amber-400 text-slate-950'
+                              : 'bg-slate-900 text-amber-400 border border-amber-500/40'
+                          }`}
+                        >
+                          4. 💰 No-Code Pricing & Projects CMS ({projects.length})
+                        </button>
+                      )}
+                      {(isOwner || isSales) && (
+                        <button
+                          onClick={() => setAdminTab('5')}
+                          className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
+                            adminTab === '5'
+                              ? 'bg-cyan-400 text-slate-950'
+                              : 'bg-slate-900 text-cyan-400 border border-cyan-500/40'
+                          }`}
+                        >
+                          5. 🎨 Visual Layout, Theme & Cloud Studio
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-2">
                       <button
-                        onClick={() => setAdminTab('5')}
-                        className={`px-3.5 py-2.5 rounded-xl font-extrabold ${
-                          adminTab === '5'
-                            ? 'bg-cyan-400 text-slate-950'
-                            : 'bg-slate-900 text-cyan-400 border border-cyan-500/40'
-                        }`}
+                        onClick={() => pushToSupabaseCloud()}
+                        className="px-3.5 py-2.5 rounded-xl bg-cyan-500 text-slate-950 font-black flex items-center gap-1.5"
                       >
-                        5. 🎨 Visual Layout, Theme & Cloud Studio
+                        <RefreshCw className="w-3.5 h-3.5" />
+                        <span>Sync Cloud Now</span>
                       </button>
-                    )}
+                      {isOwner && (
+                        <button
+                          onClick={handleExportVaultFiles}
+                          className="px-3.5 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center gap-1.5"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>Export Vault</span>
+                        </button>
+                      )}
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => pushToSupabaseCloud()}
-                      className="px-3.5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black flex items-center gap-1.5"
-                    >
-                      <RefreshCw className="w-3.5 h-3.5" />
-                      <span>Sync Cloud Now</span>
-                    </button>
-                    {isOwner && (
-                      <button
-                        onClick={handleExportVaultFiles}
-                        className="px-3.5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black flex items-center gap-1.5"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>Export Vault</span>
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* ADMIN TAB 1: EVALUATORS & CVS */}
-                {adminTab === '1' && (
-                  <div className="space-y-3">
-                    {applicants.map(app => (
-                      <div
-                        key={app.id}
-                        className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 flex flex-wrap justify-between items-center gap-3"
-                      >
-                        <div className="space-y-1">
-                          <div className="font-black text-white text-sm">
-                            {app.name} ({app.email})
+                  {/* ADMIN TAB 1 */}
+                  {adminTab === '1' && (
+                    <div className="space-y-3">
+                      {applicants.map(app => (
+                        <div
+                          key={app.id}
+                          className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 flex flex-wrap justify-between items-center gap-3"
+                        >
+                          <div className="space-y-1">
+                            <div className="font-black text-white text-sm">
+                              {app.name} ({app.email})
+                            </div>
+                            <div className="text-slate-400">
+                              Age: <strong>{app.age || 'N/A'}</strong> • Gender: <strong>{app.gender || 'N/A'}</strong> • Specialization:{' '}
+                              <strong className="text-cyan-400">{app.specialization || app.track}</strong> • CV:{' '}
+                              <strong className="text-amber-400">{app.cvFile}</strong> • Status:{' '}
+                              <strong className="text-emerald-400">{app.status}</strong>
+                            </div>
                           </div>
-                          <div className="text-slate-400">
-                            {app.dialect} • Track: <strong className="text-cyan-500">{app.track || 'General QA'}</strong> • CV:{' '}
-                            <strong className="text-amber-500">{app.cvFile}</strong> • Status:{' '}
-                            <strong className="text-emerald-500">{app.status}</strong>
-                          </div>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {app.cvDataUrl && (
-                            <a
-                              href={app.cvDataUrl}
-                              download={app.cvFile}
-                              className="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 font-extrabold"
-                            >
-                              📄 Download CV
-                            </a>
-                          )}
-                          <button
-                            onClick={() => handleCertifyApplicant(app)}
-                            className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold"
-                          >
-                            ✓ Certify & Unlock Projects
-                          </button>
-                          <button
-                            onClick={() => handleDeleteApplicant(app.id)}
-                            className="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-500 border border-rose-500/40 font-bold"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* ADMIN TAB 2: HELPDESK TICKETS */}
-                {adminTab === '2' && (
-                  <div className="space-y-4">
-                    {tickets.map(t => (
-                      <div
-                        key={t.id}
-                        className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
-                      >
-                        <div className="flex justify-between items-center">
-                          <span className="font-extrabold text-emerald-500 text-sm">
-                            {t.id} — {t.subject} ({t.senderEmail})
-                          </span>
-                          <div className="flex items-center gap-3">
-                            {t.receiptConfirmed && (
-                              <span className="text-emerald-500 font-bold">✓ Receipt Confirmed by Sender</span>
+                          <div className="flex flex-wrap gap-2">
+                            {app.cvDataUrl && (
+                              <a
+                                href={app.cvDataUrl}
+                                download={app.cvFile}
+                                className="px-3.5 py-2 rounded-xl bg-amber-400 text-slate-950 font-extrabold"
+                              >
+                                📄 Download CV
+                              </a>
                             )}
                             <button
-                              onClick={() => handleDeleteTicket(t.id)}
-                              className="text-rose-500 font-bold"
+                              onClick={() => handleCertifyApplicant(app)}
+                              className="px-4 py-2 rounded-xl bg-emerald-500 text-slate-950 font-extrabold"
+                            >
+                              ✓ Certify & Unlock Projects
+                            </button>
+                            <button
+                              onClick={() => handleDeleteApplicant(app.id)}
+                              className="px-3.5 py-2 rounded-xl bg-rose-500/20 text-rose-400 border border-rose-500/40 font-bold"
                             >
                               Delete
                             </button>
                           </div>
                         </div>
-                        <div className="space-y-1.5 pl-3 border-l-2 border-emerald-500/40">
-                          {t.thread.map((m, idx) => (
-                            <div key={idx} className="text-slate-300">
-                              <strong className={m.sender === 'support' ? 'text-emerald-500' : 'text-cyan-500'}>
-                                {m.sender.toUpperCase()}:
-                              </strong>{' '}
-                              {m.text}
-                            </div>
-                          ))}
-                        </div>
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            placeholder={`Write official reply to ${t.senderEmail}...`}
-                            value={replyDrafts[t.id] || ''}
-                            onChange={e => setReplyDrafts({ ...replyDrafts, [t.id]: e.target.value })}
-                            className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                          />
-                          <button
-                            onClick={() => handleAdminReplyTicket(t.id)}
-                            className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                          >
-                            ✓ Send Reply to Sender Inbox
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                      ))}
+                    </div>
+                  )}
 
-                {/* ADMIN TAB 3: ACCOUNTS, ROLES (INCLUDING SALES) & BAN */}
-                {adminTab === '3' && (isOwner || isSupport) && (
-                  <div className="grid lg:grid-cols-3 gap-6">
-                    <form
-                      onSubmit={handleProvisionUser}
-                      className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
-                    >
-                      <h3 className="font-extrabold text-white text-sm">
-                        Activate New Sales / Support / Evaluator Account (SHA-256)
-                      </h3>
-                      <input
-                        type="email"
-                        required
-                        placeholder="Email Address"
-                        value={provEmail}
-                        onChange={e => setProvEmail(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
-                      <input
-                        type="text"
-                        required
-                        placeholder="Initial Password"
-                        value={provPass}
-                        onChange={e => setProvPass(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
-                      <select
-                        value={provRole}
-                        onChange={e => setProvRole(e.target.value)}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-500 font-bold"
-                      >
-                        <option value="sales">Sales & Pricing Lead (sales — Can edit Prices & Layout)</option>
-                        <option value="support">Technical Support / Helpdesk (support)</option>
-                        <option value="evaluator">Certified Evaluator (evaluator)</option>
-                        <option value="client">Enterprise Client (client)</option>
-                      </select>
-                      {provMsg && <p className="text-emerald-500 font-bold">{provMsg}</p>}
-                      <button
-                        type="submit"
-                        className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
-                      >
-                        + Encrypt & Activate Account
-                      </button>
-                    </form>
-
-                    <div className="lg:col-span-2 space-y-3">
-                      {users.map(u => (
+                  {/* ADMIN TAB 2 */}
+                  {adminTab === '2' && (
+                    <div className="space-y-4">
+                      {tickets.map(t => (
                         <div
-                          key={u.keyId || u.email}
-                          className={`p-4 rounded-2xl border space-y-2 ${
-                            u.isBanned
-                              ? 'bg-rose-950/30 border-rose-600'
-                              : 'bg-[#0b1020] border-slate-800'
-                          }`}
+                          key={t.id}
+                          className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
                         >
-                          <div className="flex flex-wrap justify-between items-center gap-2">
-                            <div>
-                              <span className="font-bold text-white text-sm">{u.name}</span>
-                              <span className="text-slate-400 ml-2">({u.email})</span>
-                            </div>
-                            <div className="flex items-center gap-2">
-                              {isOwner ? (
-                                <select
-                                  value={u.role}
-                                  onChange={e => handleChangeUserRole(u.email, e.target.value)}
-                                  className="px-2.5 py-1 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold uppercase text-[11px]"
-                                >
-                                  <option value="evaluator">EVALUATOR</option>
-                                  <option value="sales">SALES & PRICING</option>
-                                  <option value="support">SUPPORT</option>
-                                  <option value="client">CLIENT</option>
-                                </select>
-                              ) : (
-                                <span className="px-2.5 py-0.5 rounded bg-slate-950 text-emerald-500 font-mono font-bold uppercase">
-                                  {u.role}
-                                </span>
-                              )}
-                            </div>
-                          </div>
-                          <div className="text-[11px] font-mono text-slate-500 truncate">
-                            Vault Key: {u.keyId} → SHA-256 Digest: {securityVault[u.keyId]?.slice(0, 32)}...
-                          </div>
-                          <div className="flex flex-wrap gap-2 pt-1">
+                          <div className="flex justify-between items-center">
+                            <span className="font-extrabold text-emerald-400 text-sm">
+                              {t.id} — {t.subject} ({t.senderEmail})
+                            </span>
                             <button
-                              onClick={() => handleToggleProjectAccess(u.email)}
-                              className="px-3 py-1.5 rounded-lg bg-slate-800 text-emerald-400 font-bold"
+                              onClick={() => handleDeleteTicket(t.id)}
+                              className="text-rose-400 font-bold"
                             >
-                              {u.certifiedForProjects ? '✓ Projects Unlocked' : '🔒 Projects Locked'}
+                              Delete
                             </button>
+                          </div>
+                          <div className="space-y-1.5 pl-3 border-l-2 border-emerald-500/40">
+                            {t.thread.map((m, idx) => (
+                              <div key={idx} className="text-slate-300">
+                                <strong className={m.sender === 'support' ? 'text-emerald-400' : 'text-cyan-400'}>
+                                  {m.sender.toUpperCase()}:
+                                </strong>{' '}
+                                {m.text}
+                              </div>
+                            ))}
+                          </div>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              placeholder={`Write official reply to ${t.senderEmail}...`}
+                              value={replyDrafts[t.id] || ''}
+                              onChange={e => setReplyDrafts({ ...replyDrafts, [t.id]: e.target.value })}
+                              className="flex-1 p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                            />
                             <button
-                              onClick={() => handleAdminDispatchResetLink(u)}
-                              className="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-extrabold"
+                              onClick={() => handleAdminReplyTicket(t.id)}
+                              className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
                             >
-                              🔑 Dispatch Password Reset Link
+                              ✓ Send Reply
                             </button>
-                            {isOwner && (
-                              <button
-                                onClick={() => handleToggleBanUser(u.email)}
-                                className={`px-3.5 py-1.5 rounded-lg font-black ${
-                                  u.isBanned
-                                    ? 'bg-emerald-500 text-slate-950'
-                                    : 'bg-rose-600 text-white hover:bg-rose-500'
-                                }`}
-                              >
-                                {u.isBanned ? '✓ Unban User' : '🚫 Ban User'}
-                              </button>
-                            )}
-                            {isOwner && (
-                              <button
-                                onClick={() => handleDeleteUser(u.email)}
-                                className="px-3 py-1.5 rounded-lg bg-slate-800 text-rose-400 font-bold"
-                              >
-                                Remove
-                              </button>
-                            )}
                           </div>
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  )}
 
-                {/* ADMIN TAB 4: NO-CODE PRICING & PROJECTS CMS (FOR OWNER & SALES) */}
-                {adminTab === '4' && (isOwner || isSales) && (
-                  <div className="space-y-6">
-                    <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-4">
-                      <div>
-                        <h3 className="text-base font-black text-white">
-                          💰 No-Code Pricing, Rate Cards & Projects Studio (Owner & Sales Access)
-                        </h3>
-                        <p className="text-slate-300 mt-0.5">
-                          Edit hourly pay rates, project titles, available task counts, or add new pipelines directly below—zero code edits required!
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => {
-                          pushToSupabaseCloud(brand, projects);
-                          alert('✓ All pricing & project updates synced to Cloud!');
-                        }}
-                        className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black shadow-lg"
+                  {/* ADMIN TAB 3: ACCOUNTS, STRICT PROJECT LOCK & REAL GMAIL PASSWORD RESET */}
+                  {adminTab === '3' && (isOwner || isSupport) && (
+                    <div className="grid lg:grid-cols-3 gap-6">
+                      <form
+                        onSubmit={handleProvisionUser}
+                        className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3"
                       >
-                        💾 Save & Publish Pricing to Cloud
-                      </button>
-                    </div>
+                        <h3 className="font-extrabold text-white text-sm">
+                          Activate New Sales / Support / Evaluator Account (SHA-256)
+                        </h3>
+                        <input
+                          type="email"
+                          required
+                          placeholder="Email Address"
+                          value={provEmail}
+                          onChange={e => setProvEmail(e.target.value)}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                        <input
+                          type="text"
+                          required
+                          placeholder="Initial Password"
+                          value={provPass}
+                          onChange={e => setProvPass(e.target.value)}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                        />
+                        <select
+                          value={provRole}
+                          onChange={e => setProvRole(e.target.value)}
+                          className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
+                        >
+                          <option value="evaluator">Evaluator (evaluator)</option>
+                          <option value="sales">Sales & Pricing Lead (sales)</option>
+                          <option value="support">Technical Support / Helpdesk (support)</option>
+                          <option value="client">Enterprise Client (client)</option>
+                        </select>
+                        {provMsg && <p className="text-emerald-400 font-bold">{provMsg}</p>}
+                        <button
+                          type="submit"
+                          className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                        >
+                          + Encrypt & Activate Account
+                        </button>
+                      </form>
 
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {projects.map(p => (
-                        <div key={p.id} className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="font-mono font-bold text-emerald-400">{p.id}</span>
-                            <button
-                              onClick={() => handleDeleteProject(p.id)}
-                              className="text-rose-400 hover:underline font-bold"
-                            >
-                              Delete Pipeline
-                            </button>
+                      <div className="lg:col-span-2 space-y-3">
+                        {users.map(u => (
+                          <div
+                            key={u.keyId || u.email}
+                            className={`p-4 rounded-2xl border space-y-2 ${
+                              u.isBanned
+                                ? 'bg-rose-950/30 border-rose-600'
+                                : 'bg-[#0b1020] border-slate-800'
+                            }`}
+                          >
+                            <div className="flex flex-wrap justify-between items-center gap-2">
+                              <div>
+                                <span className="font-bold text-white text-sm">{u.name}</span>
+                                <span className="text-slate-400 ml-2">({u.email})</span>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                {isOwner ? (
+                                  <select
+                                    value={u.role}
+                                    onChange={e => handleChangeUserRole(u.email, e.target.value)}
+                                    className="px-2.5 py-1 rounded bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold uppercase text-[11px]"
+                                  >
+                                    <option value="evaluator">EVALUATOR</option>
+                                    <option value="sales">SALES & PRICING</option>
+                                    <option value="support">SUPPORT</option>
+                                    <option value="client">CLIENT</option>
+                                  </select>
+                                ) : (
+                                  <span className="px-2.5 py-0.5 rounded bg-slate-950 text-emerald-400 font-mono font-bold uppercase">
+                                    {u.role}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                            <div className="text-[11px] text-slate-400">
+                              Age: <strong>{u.age || 'N/A'}</strong> • Gender: <strong>{u.gender || 'N/A'}</strong> • Track:{' '}
+                              <strong className="text-cyan-400">{u.specialization || 'General QA'}</strong>
+                              {u.cvFile && <span className="ml-2 text-amber-400">• 📄 CV: {u.cvFile}</span>}
+                            </div>
+                            <div className="flex flex-wrap gap-2 pt-1">
+                              <button
+                                onClick={() => handleToggleProjectAccess(u.email)}
+                                className={`px-3 py-1.5 rounded-lg font-extrabold ${
+                                  u.certifiedForProjects
+                                    ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                                    : 'bg-rose-500/20 text-rose-300 border border-rose-500/40'
+                                }`}
+                              >
+                                {u.certifiedForProjects ? '✓ Projects Unlocked (Click to Lock)' : '🔒 Projects Locked (Click to Unlock)'}
+                              </button>
+                              <button
+                                onClick={() => handleAdminDispatchResetLink(u)}
+                                className="px-3 py-1.5 rounded-lg bg-amber-400 text-slate-950 font-extrabold"
+                              >
+                                🔑 Dispatch Password Reset (Gmail + Inbox)
+                              </button>
+                              {isOwner && (
+                                <button
+                                  onClick={() => handleToggleBanUser(u.email)}
+                                  className={`px-3.5 py-1.5 rounded-lg font-black ${
+                                    u.isBanned
+                                      ? 'bg-emerald-500 text-slate-950'
+                                      : 'bg-rose-600 text-white'
+                                  }`}
+                                >
+                                  {u.isBanned ? '✓ Unban User' : '🚫 Ban User'}
+                                </button>
+                              )}
+                              {isOwner && (
+                                <button
+                                  onClick={() => handleDeleteUser(u.email)}
+                                  className="px-3 py-1.5 rounded-lg bg-slate-800 text-rose-400 font-bold"
+                                >
+                                  Remove
+                                </button>
+                              )}
+                            </div>
                           </div>
-                          <div className="grid sm:grid-cols-2 gap-2.5">
-                            <div>
-                              <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
-                                Project Title
-                              </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* ADMIN TAB 4: NO-CODE PRICING & PROJECTS CMS */}
+                  {adminTab === '4' && (isOwner || isSales) && (
+                    <div className="space-y-6">
+                      <div className="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-wrap items-center justify-between gap-4">
+                        <div>
+                          <h3 className="text-base font-black text-white">
+                            💰 No-Code Pricing, Rate Cards & Projects Studio
+                          </h3>
+                          <p className="text-slate-300 mt-0.5">
+                            Edit hourly pay rates, project titles, or add new pipelines directly below.
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            pushToSupabaseCloud(brand, projects);
+                            alert('✓ All pricing & project updates synced to Cloud!');
+                          }}
+                          className="px-5 py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
+                        >
+                          💾 Save & Publish Pricing to Cloud
+                        </button>
+                      </div>
+
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {projects.map(p => (
+                          <div key={p.id} className="p-5 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3">
+                            <div className="flex justify-between items-center">
+                              <span className="font-mono font-bold text-emerald-400">{p.id}</span>
+                              <button
+                                onClick={() => handleDeleteProject(p.id)}
+                                className="text-rose-400 font-bold"
+                              >
+                                Delete Pipeline
+                              </button>
+                            </div>
+                            <div className="grid sm:grid-cols-2 gap-2.5">
                               <input
                                 type="text"
                                 value={p.name}
                                 onChange={e => handleProjectFieldChange(p.id, 'name', e.target.value)}
                                 className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
                               />
-                            </div>
-                            <div>
-                              <label className="block text-[10px] uppercase text-amber-400 font-bold mb-1">
-                                Hourly Pay Rate / Price
-                              </label>
                               <input
                                 type="text"
                                 value={p.payRate}
@@ -2708,33 +3072,6 @@ Timestamp: ${new Date().toUTCString()}
                                 className="w-full p-2.5 rounded-xl bg-slate-950 border border-amber-500/40 text-amber-300 font-extrabold"
                               />
                             </div>
-                            <div>
-                              <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
-                                Domain Category
-                              </label>
-                              <input
-                                type="text"
-                                value={p.domain}
-                                onChange={e => handleProjectFieldChange(p.id, 'domain', e.target.value)}
-                                className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-cyan-300"
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
-                                Available Tasks Count
-                              </label>
-                              <input
-                                type="number"
-                                value={p.totalTasks}
-                                onChange={e => handleProjectFieldChange(p.id, 'totalTasks', e.target.value)}
-                                className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-[10px] uppercase text-slate-400 font-bold mb-1">
-                              Project Description
-                            </label>
                             <textarea
                               rows={2}
                               value={p.desc}
@@ -2742,215 +3079,93 @@ Timestamp: ${new Date().toUTCString()}
                               className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300"
                             />
                           </div>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
+                  )}
 
-                    {/* ADD NEW PROJECT PIPELINE WITHOUT CODE */}
-                    <form
-                      onSubmit={handleAddNewProject}
-                      className="p-6 rounded-2xl bg-[#0b1020] border border-dashed border-emerald-500/50 space-y-4"
-                    >
-                      <h4 className="text-sm font-black text-emerald-400">
-                        + Add New Evaluation Project & Rate Card (No-Code)
-                      </h4>
-                      <div className="grid sm:grid-cols-4 gap-3">
+                  {/* ADMIN TAB 5: VISUAL LAYOUT & CLOUD */}
+                  {adminTab === '5' && (isOwner || isSales) && (
+                    <form onSubmit={handleSaveBrandConfig} className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4 max-w-2xl">
+                      <h3 className="font-black text-white text-sm">
+                        Visual Brand, Headlines & Cloud Studio
+                      </h3>
+                      <div className="grid sm:grid-cols-2 gap-3">
                         <input
                           type="text"
-                          required
-                          placeholder="Project Title (e.g. Medical Arabic QA) *"
-                          value={newPrjForm.name}
-                          onChange={e => setNewPrjForm({ ...newPrjForm, name: e.target.value })}
-                          className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white sm:col-span-2"
+                          value={editBrand.brandName}
+                          onChange={e => setEditBrand({ ...editBrand, brandName: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
                         />
                         <input
                           type="text"
-                          required
-                          placeholder="Pay Rate (e.g. $40 – $75 / Hr) *"
-                          value={newPrjForm.payRate}
-                          onChange={e => setNewPrjForm({ ...newPrjForm, payRate: e.target.value })}
-                          className="p-3 rounded-xl bg-slate-950 border border-amber-500/40 text-amber-300 font-bold"
-                        />
-                        <input
-                          type="number"
-                          placeholder="Total Tasks (e.g. 500)"
-                          value={newPrjForm.totalTasks}
-                          onChange={e => setNewPrjForm({ ...newPrjForm, totalTasks: e.target.value })}
-                          className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
+                          value={editBrand.brandStatus}
+                          onChange={e => setEditBrand({ ...editBrand, brandStatus: e.target.value })}
+                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
                         />
                       </div>
-                      <input
-                        type="text"
-                        placeholder="Short Project Description..."
-                        value={newPrjForm.desc}
-                        onChange={e => setNewPrjForm({ ...newPrjForm, desc: e.target.value })}
-                        className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                      />
                       <button
                         type="submit"
                         className="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
                       >
-                        + Create & Publish New Project Pipeline
+                        💾 Save All Visual & Cloud Settings
                       </button>
                     </form>
-                  </div>
-                )}
+                  )}
+                </>
+              )}
+            </div>
+          )}
+        </main>
+      </div>
 
-                {/* ADMIN TAB 5: VISUAL LAYOUT, THEME, HERO COPY & CLOUD STUDIO */}
-                {adminTab === '5' && (isOwner || isSales) && (
-                  <form onSubmit={handleSaveBrandConfig} className="grid lg:grid-cols-2 gap-6">
-                    <div className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4">
-                      <h3 className="font-black text-white text-sm">
-                        1. Visual Brand, Hero Headlines & Accent Theme Studio (No-Code)
-                      </h3>
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-slate-400 mb-1">Platform Brand Name</label>
-                          <input
-                            type="text"
-                            value={editBrand.brandName}
-                            onChange={e => setEditBrand({ ...editBrand, brandName: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-slate-400 mb-1">Status Badge</label>
-                          <input
-                            type="text"
-                            value={editBrand.brandStatus}
-                            onChange={e => setEditBrand({ ...editBrand, brandStatus: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="grid sm:grid-cols-2 gap-3">
-                        <div>
-                          <label className="block text-slate-400 mb-1">Primary Accent Color Palette</label>
-                          <select
-                            value={editBrand.accentColor || 'emerald'}
-                            onChange={e => setEditBrand({ ...editBrand, accentColor: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
-                          >
-                            <option value="emerald">Emerald & Teal (Default)</option>
-                            <option value="cyan">Cyber Cyan & Royal Blue</option>
-                            <option value="violet">Executive Violet & Fuchsia</option>
-                            <option value="amber">Sovereign Gold & Amber</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="block text-slate-400 mb-1">Default Interface Mode</label>
-                          <select
-                            value={editBrand.defaultTheme || themeMode}
-                            onChange={e => setEditBrand({ ...editBrand, defaultTheme: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-bold"
-                          >
-                            <option value="dark">🌙 Stealth Black Mode</option>
-                            <option value="light">☀️ Daylight White Mode</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-slate-400 mb-1">Hero Main Headline (Line 1)</label>
-                        <input
-                          type="text"
-                          value={editBrand.heroTitleLine1 || ''}
-                          onChange={e => setEditBrand({ ...editBrand, heroTitleLine1: e.target.value })}
-                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-400 mb-1">Hero Highlighted Gradient Phrase</label>
-                        <input
-                          type="text"
-                          value={editBrand.heroTitleHighlight || ''}
-                          onChange={e => setEditBrand({ ...editBrand, heroTitleHighlight: e.target.value })}
-                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-slate-400 mb-1">Hero Marketing Paragraph</label>
-                        <textarea
-                          rows={3}
-                          value={editBrand.heroSubtitle || ''}
-                          onChange={e => setEditBrand({ ...editBrand, heroSubtitle: e.target.value })}
-                          className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-6">
-                      <div className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-4">
-                        <h3 className="font-black text-white text-sm">
-                          2. Live Hero KPI Metrics (Editable by Owner & Sales)
-                        </h3>
-                        <div className="grid grid-cols-3 gap-2.5">
-                          <div>
-                            <label className="block text-[10px] text-slate-400 mb-1">Metric 1 Value</label>
-                            <input
-                              type="text"
-                              value={editBrand.stat1Value || ''}
-                              onChange={e => setEditBrand({ ...editBrand, stat1Value: e.target.value })}
-                              className="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-emerald-400 font-bold"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[10px] text-slate-400 mb-1">Metric 2 Value</label>
-                            <input
-                              type="text"
-                              value={editBrand.stat2Value || ''}
-                              onChange={e => setEditBrand({ ...editBrand, stat2Value: e.target.value })}
-                              className="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-cyan-400 font-bold"
-                            />
-                          </div>
-                          <div>
-                            <label className="block text-[10px] text-slate-400 mb-1">Metric 3 Value</label>
-                            <input
-                              type="text"
-                              value={editBrand.stat3Value || ''}
-                              onChange={e => setEditBrand({ ...editBrand, stat3Value: e.target.value })}
-                              className="w-full p-2 rounded-lg bg-slate-950 border border-slate-800 text-amber-400 font-bold"
-                            />
-                          </div>
-                        </div>
-                      </div>
-
-                      {isOwner && (
-                        <div className="p-6 rounded-2xl bg-[#0b1020] border border-slate-800 space-y-3">
-                          <h3 className="font-black text-white text-sm flex items-center gap-2">
-                            <Database className="w-4 h-4 text-cyan-500" />
-                            <span>3. Pre-Connected Supabase Cloud Backend ({cloudStatus})</span>
-                          </h3>
-                          <input
-                            type="url"
-                            value={editBrand.cloudUrl || DEFAULT_SUPABASE_URL}
-                            onChange={e => setEditBrand({ ...editBrand, cloudUrl: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-cyan-400 font-mono"
-                          />
-                          <input
-                            type="password"
-                            value={editBrand.cloudKey || DEFAULT_SUPABASE_ANON_KEY}
-                            onChange={e => setEditBrand({ ...editBrand, cloudKey: e.target.value })}
-                            className="w-full p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white font-mono"
-                          />
-                        </div>
-                      )}
-
-                      <button
-                        type="submit"
-                        className={`w-full py-3.5 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black text-sm shadow-xl`}
-                      >
-                        💾 Save All Visual, Brand & Cloud Settings
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </>
-            )}
+      {/* =====================================================================
+          PASSWORD RESET EMAIL DISPATCH MODAL (GMAIL / MAILTO + COPY)
+         ===================================================================== */}
+      {dispatchedResetModal && (
+        <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-md bg-[#0b1020] border border-emerald-500/50 rounded-3xl p-6 space-y-4 text-xs shadow-2xl">
+            <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+              <h3 className="font-black text-white text-base">
+                🔑 Password Reset Generated & Ready for Email
+              </h3>
+              <button onClick={() => setDispatchedResetModal(null)} className="text-slate-400">
+                ✕
+              </button>
+            </div>
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 font-mono">
+              <div>
+                Recipient: <strong className="text-emerald-400">{dispatchedResetModal.email}</strong>
+              </div>
+              <div>
+                New Temp Password: <strong className="text-amber-400">{dispatchedResetModal.tempPass}</strong>
+              </div>
+              <div>
+                Security Token: <strong className="text-cyan-400">{dispatchedResetModal.token}</strong>
+              </div>
+            </div>
+            <p className="text-slate-300 leading-relaxed">
+              The temporary password is now active in the SHA-256 Vault and delivered to the user’s internal Helpdesk Inbox. Click below to also send it directly to their external Gmail inbox:
+            </p>
+            <div className="space-y-2 pt-1">
+              <a
+                href={dispatchedResetModal.gmailComposeUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="block w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black text-center"
+              >
+                📧 Send Directly via Gmail Web Compose →
+              </a>
+              <a
+                href={dispatchedResetModal.mailtoUrl}
+                className="block w-full py-2.5 rounded-xl bg-slate-800 text-white font-bold text-center"
+              >
+                ✉️ Open Default Email App (Mailto)
+              </a>
+            </div>
           </div>
-        )}
-      </main>
+        </div>
+      )}
 
       {/* AUTH MODAL */}
       {showAuthModal && (
@@ -2958,7 +3173,7 @@ Timestamp: ${new Date().toUTCString()}
           <div className="w-full max-w-md bg-[#0b1020] border border-slate-800 rounded-3xl p-6 space-y-4 text-xs shadow-2xl">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <div>
-                <span className="text-[10px] font-extrabold uppercase text-emerald-500 block">
+                <span className="text-[10px] font-extrabold uppercase text-emerald-400 block">
                   Cryptographic Split-Vault Access
                 </span>
                 <h3 className="font-black text-white text-base">Zero-Trust Workspace Sign-In</h3>
@@ -3033,14 +3248,13 @@ Timestamp: ${new Date().toUTCString()}
                     <button
                       type="button"
                       onClick={() => setShowPasswordText(!showPasswordText)}
-                      className="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-500"
-                      title="Show / Hide Password"
+                      className="absolute right-3 top-3.5 text-slate-400 hover:text-emerald-400"
                     >
                       {showPasswordText ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                 </div>
-                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
+                {authMsg && <p className="text-rose-400 font-bold">{authMsg}</p>}
                 <button
                   type="submit"
                   className={`w-full py-3 rounded-xl bg-gradient-to-r ${activeAccentGrad} text-slate-950 font-black shadow-lg`}
@@ -3090,7 +3304,7 @@ Timestamp: ${new Date().toUTCString()}
                   onChange={e => setAuthSecA(e.target.value)}
                   className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                 />
-                {authMsg && <p className="text-rose-500 font-bold">{authMsg}</p>}
+                {authMsg && <p className="text-rose-400 font-bold">{authMsg}</p>}
                 <button
                   type="submit"
                   className="w-full py-3 rounded-xl bg-emerald-500 text-slate-950 font-black"
@@ -3127,7 +3341,7 @@ Timestamp: ${new Date().toUTCString()}
                     onChange={e => setResetFlowNewPass(e.target.value)}
                     className="w-full p-3 rounded-xl bg-slate-950 border border-slate-800 text-white"
                   />
-                  {resetFlowMsg && <p className="text-emerald-500 font-bold">{resetFlowMsg}</p>}
+                  {resetFlowMsg && <p className="text-emerald-400 font-bold">{resetFlowMsg}</p>}
                   <button
                     type="submit"
                     className="w-full py-2.5 rounded-xl bg-emerald-500 text-slate-950 font-black"
